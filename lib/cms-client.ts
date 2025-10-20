@@ -185,6 +185,18 @@ export async function getPhases(
 }
 
 /**
+ * Convenience helper used by pages to fetch all phases for a given locale
+ * with modules and resources populated.
+ */
+export async function fetchPhases(locale: 'en' | 'ar'): Promise<Phase[]> {
+  return getPhases({
+    locale,
+    populate: ['modules', 'modules.resources'],
+    sort: 'order:asc',
+  });
+}
+
+/**
  * Get single phase by ID
  */
 export async function getPhaseById(
