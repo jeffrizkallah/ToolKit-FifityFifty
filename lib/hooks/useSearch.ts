@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useMemo, useCallback, useEffect } from 'react';
-import Fuse from 'fuse.js';
-import type { Phase, Module } from '@/lib/types/cms';
+import Fuse, { type FuseResultMatch } from 'fuse.js';
+import type { Phase } from '@/lib/types/cms';
 
 /**
  * Search Hook using Fuse.js for fuzzy searching
@@ -22,7 +22,7 @@ export interface SearchableItem {
 
 export interface SearchResult extends SearchableItem {
   score: number;
-  matches?: readonly Fuse.FuseResultMatch[];
+  matches?: readonly FuseResultMatch[];
 }
 
 interface UseSearchOptions {

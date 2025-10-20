@@ -40,9 +40,9 @@ export function ResourceLibraryClient({ phases, locale }: ResourceLibraryClientP
     hasFilters,
   } = useResourceLibrary(phases);
 
-  const handleDownload = (resourceId: number) => {
+  const handleDownload = (_resourceId: number, resourceName: string, fileType: string, moduleSlug: string) => {
     // Track download in analytics
-    trackDownload(resourceId.toString());
+    trackDownload(resourceName, fileType, moduleSlug);
   };
 
   return (

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo, useCallback } from 'react';
-import type { Phase, Module, Resource } from '@/lib/types/cms';
+import type { Phase, Resource } from '@/lib/types/cms';
 
 /**
  * Resource Library Hook
@@ -110,17 +110,13 @@ export function useResourceLibrary(
 
     filteredResources.forEach((resource) => {
       let key: string;
-      let label: string;
 
       if (groupBy === 'phase') {
         key = resource.phaseSlug;
-        label = resource.phaseTitle;
       } else if (groupBy === 'module') {
         key = `${resource.phaseSlug}-${resource.moduleSlug}`;
-        label = `${resource.phaseTitle} › ${resource.moduleTitle}`;
       } else {
         key = resource.attributes.file_type;
-        label = resource.attributes.file_type;
       }
 
       if (!groups.has(key)) {

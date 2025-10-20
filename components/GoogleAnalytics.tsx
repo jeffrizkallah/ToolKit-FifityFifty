@@ -11,7 +11,7 @@
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { isAnalyticsEnabled, getConsent } from '@/lib/consent';
+import { isAnalyticsEnabled } from '@/lib/consent';
 
 interface GoogleAnalyticsProps {
   gaId: string;

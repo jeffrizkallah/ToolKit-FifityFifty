@@ -18,7 +18,6 @@ interface FooterProps {
 
 export function Footer({ locale }: FooterProps) {
   const t = useTranslations('Navigation');
-  const isRTL = locale === 'ar';
 
   const footerLinks = [
     { key: 'home', href: '#' },

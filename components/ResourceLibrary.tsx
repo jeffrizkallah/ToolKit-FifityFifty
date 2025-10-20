@@ -1,10 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { Download, FileText, File, Sheet, X, Search as SearchIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
 import type { ResourceWithContext, ResourceFileType } from '@/lib/hooks/useResourceLibrary';
 
 /**
@@ -16,13 +14,13 @@ import type { ResourceWithContext, ResourceFileType } from '@/lib/hooks/useResou
 interface ResourceCardProps {
   resource: ResourceWithContext;
   locale: string;
-  onDownload?: (resourceId: number) => void;
+  onDownload?: (resourceId: number, resourceName: string, fileType: string, moduleSlug: string) => void;
   showContext?: boolean;
 }
 
 export function ResourceCard({
   resource,
-  locale,
+  locale: _locale,
   onDownload,
   showContext = true,
 }: ResourceCardProps) {
@@ -33,7 +31,12 @@ export function ResourceCard({
 
   const handleDownload = () => {
     if (onDownload) {
-      onDownload(resource.id);
+      onDownload(
+        resource.id,
+        resource.attributes.title,
+        resource.attributes.file_type,
+        resource.moduleSlug
+      );
     }
   };
 
@@ -112,7 +115,7 @@ interface ResourceGroupProps {
   label: string;
   resources: ResourceWithContext[];
   locale: string;
-  onDownload?: (resourceId: number) => void;
+  onDownload?: (resourceId: number, resourceName: string, fileType: string, moduleSlug: string) => void;
   showContext?: boolean;
 }
 
@@ -161,7 +164,7 @@ export function FileTypeFilter({
   selectedType,
   onTypeChange,
   counts,
-  locale,
+  locale: _locale,
 }: FileTypeFilterProps) {
   const t = useTranslations('Resources');
 
@@ -244,7 +247,7 @@ interface GroupBySelectorProps {
   locale: string;
 }
 
-export function GroupBySelector({ value, onChange, locale }: GroupBySelectorProps) {
+export function GroupBySelector({ value, onChange, locale: _locale }: GroupBySelectorProps) {
   const t = useTranslations('Resources');
 
   return (

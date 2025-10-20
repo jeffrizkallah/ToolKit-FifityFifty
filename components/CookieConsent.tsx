@@ -8,17 +8,14 @@
  */
 
 import { useState, useEffect } from 'react';
-import { useTranslations } from 'next-intl';
-import { X } from 'lucide-react';
 import { Button } from './ui/button';
-import { getConsent, setConsent, shouldShowConsentBanner } from '@/lib/consent';
+import { setConsent, shouldShowConsentBanner } from '@/lib/consent';
 
 interface CookieConsentProps {
   locale: 'en' | 'ar';
 }
 
 export function CookieConsent({ locale }: CookieConsentProps) {
-  const t = useTranslations('CookieConsent');
   const [isVisible, setIsVisible] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 

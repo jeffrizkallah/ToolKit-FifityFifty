@@ -132,7 +132,6 @@ export function ProgressSummary({
   className?: string;
 }) {
   const { getCompletedCount } = useProgress();
-  const t = useTranslations('Progress');
   
   const completedCount = getCompletedCount();
 
