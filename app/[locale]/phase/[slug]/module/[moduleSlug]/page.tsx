@@ -1,7 +1,7 @@
 import { setRequestLocale } from 'next-intl/server';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getModuleBySlug, getModulesByPhase, getMediaUrl } from '@/lib/cms-client';
+import { getModuleBySlug, getModulesByPhase } from '@/lib/cms-client';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ArrowRight, ArrowLeft, CheckCircle } from 'lucide-react';
