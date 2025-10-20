@@ -11,8 +11,6 @@ import { Home, Search } from 'lucide-react';
 
 export default function NotFoundPage() {
   // Note: We can't use useParams() here since this is a special Next.js page
-  // Default to English if locale detection fails
-  const locale = 'en';
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center px-4">
