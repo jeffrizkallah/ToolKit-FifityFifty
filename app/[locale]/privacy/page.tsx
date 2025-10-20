@@ -5,7 +5,6 @@
  * Comprehensive privacy policy explaining data collection and usage
  */
 
-import { useTranslations } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
 
 interface PrivacyPageProps {
