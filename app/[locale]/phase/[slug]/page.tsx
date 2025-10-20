@@ -29,15 +29,26 @@ export async function generateStaticParams() {
   const locales = ['en', 'ar'];
   const allParams = [];
 
-  for (const locale of locales) {
-    const phases = await getPhases({ locale: locale as 'en' | 'ar' });
-    
-    for (const phase of phases) {
-      allParams.push({
-        locale,
-        slug: phase.attributes.slug,
-      });
+  try {
+    for (const locale of locales) {
+      try {
+        const phases = await getPhases({ locale: locale as 'en' | 'ar' });
+        
+        for (const phase of phases) {
+          allParams.push({
+            locale,
+            slug: phase.attributes.slug,
+          });
+        }
+      } catch (error) {
+        console.warn(`Failed to fetch phases for locale ${locale}:`, error);
+        // Continue with other locales even if one fails
+      }
     }
+  } catch (error) {
+    console.warn('Failed to generate static params for phases:', error);
+    // Return empty array to prevent build failure
+    return [];
   }
 
   return allParams;
@@ -48,40 +59,49 @@ export async function generateMetadata({
   params: { locale, slug },
 }: PhasePageProps): Promise<Metadata> {
   const validLocale = (locale === 'ar' || locale === 'en') ? locale : 'en';
-  const phase = await getPhaseBySlug(slug, { locale: validLocale });
+  
+  try {
+    const phase = await getPhaseBySlug(slug, { locale: validLocale });
 
-  if (!phase) {
+    if (!phase) {
+      return {
+        title: 'Phase Not Found',
+      };
+    }
+
+    const description = phase.attributes.description.replace(/<[^>]*>/g, '').substring(0, 160);
+
     return {
-      title: 'Phase Not Found',
+      title: `${phase.attributes.title} | FiftyFifty ToolKit`,
+      description,
+      alternates: {
+        canonical: `/${validLocale}/phase/${slug}`,
+        languages: {
+          en: `/en/phase/${slug}`,
+          ar: `/ar/phase/${slug}`,
+        },
+      },
+      openGraph: {
+        title: `${phase.attributes.title} | FiftyFifty ToolKit`,
+        description,
+        url: `${process.env.NEXT_PUBLIC_SITE_URL}/${validLocale}/phase/${slug}`,
+        siteName: 'FiftyFifty ToolKit',
+        locale: validLocale === 'ar' ? 'ar_SA' : 'en_US',
+        type: 'website',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: `${phase.attributes.title} | FiftyFifty ToolKit`,
+        description,
+      },
+    };
+  } catch (error) {
+    console.warn(`Failed to generate metadata for phase ${slug}:`, error);
+    return {
+      title: 'FiftyFifty ToolKit',
+      description: 'Educational toolkit for sustainable development',
     };
   }
-
-  const description = phase.attributes.description.replace(/<[^>]*>/g, '').substring(0, 160);
-
-  return {
-    title: `${phase.attributes.title} | FiftyFifty ToolKit`,
-    description,
-    alternates: {
-      canonical: `/${validLocale}/phase/${slug}`,
-      languages: {
-        en: `/en/phase/${slug}`,
-        ar: `/ar/phase/${slug}`,
-      },
-    },
-    openGraph: {
-      title: `${phase.attributes.title} | FiftyFifty ToolKit`,
-      description,
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}/${validLocale}/phase/${slug}`,
-      siteName: 'FiftyFifty ToolKit',
-      locale: validLocale === 'ar' ? 'ar_SA' : 'en_US',
-      type: 'website',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: `${phase.attributes.title} | FiftyFifty ToolKit`,
-      description,
-    },
-  };
 }
 
 // Enable ISR with 60-second revalidation

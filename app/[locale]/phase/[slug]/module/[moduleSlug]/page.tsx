@@ -29,18 +29,29 @@ export async function generateStaticParams() {
   const locales = ['en', 'ar'];
   const allParams = [];
 
-  for (const locale of locales) {
-    const modules = await getModulesByPhase('', { locale: locale as 'en' | 'ar' });
-    
-    for (const moduleItem of modules) {
-      if (moduleItem.attributes.phase?.data) {
-        allParams.push({
-          locale,
-          slug: moduleItem.attributes.phase.data.attributes.slug,
-          moduleSlug: moduleItem.attributes.slug,
-        });
+  try {
+    for (const locale of locales) {
+      try {
+        const modules = await getModulesByPhase('', { locale: locale as 'en' | 'ar' });
+        
+        for (const moduleItem of modules) {
+          if (moduleItem.attributes.phase?.data) {
+            allParams.push({
+              locale,
+              slug: moduleItem.attributes.phase.data.attributes.slug,
+              moduleSlug: moduleItem.attributes.slug,
+            });
+          }
+        }
+      } catch (error) {
+        console.warn(`Failed to fetch modules for locale ${locale}:`, error);
+        // Continue with other locales even if one fails
       }
     }
+  } catch (error) {
+    console.warn('Failed to generate static params for modules:', error);
+    // Return empty array to prevent build failure
+    return [];
   }
 
   return allParams;
@@ -51,25 +62,34 @@ export async function generateMetadata({
   params: { locale, moduleSlug },
 }: ModulePageProps): Promise<Metadata> {
   const validLocale = (locale === 'ar' || locale === 'en') ? locale : 'en';
-  const moduleData = await getModuleBySlug(moduleSlug, { locale: validLocale });
+  
+  try {
+    const moduleData = await getModuleBySlug(moduleSlug, { locale: validLocale });
 
-  if (!moduleData) {
+    if (!moduleData) {
+      return {
+        title: 'Module Not Found',
+      };
+    }
+
     return {
-      title: 'Module Not Found',
+      title: `${moduleData.attributes.title} | FiftyFifty ToolKit`,
+      description: moduleData.attributes.summary.substring(0, 160),
+      alternates: {
+        canonical: `/${validLocale}/phase/${moduleData.attributes.phase?.data?.attributes.slug}/module/${moduleSlug}`,
+        languages: {
+          en: `/en/phase/${moduleData.attributes.phase?.data?.attributes.slug}/module/${moduleSlug}`,
+          ar: `/ar/phase/${moduleData.attributes.phase?.data?.attributes.slug}/module/${moduleSlug}`,
+        },
+      },
+    };
+  } catch (error) {
+    console.warn(`Failed to generate metadata for module ${moduleSlug}:`, error);
+    return {
+      title: 'FiftyFifty ToolKit',
+      description: 'Educational toolkit for sustainable development',
     };
   }
-
-  return {
-    title: `${moduleData.attributes.title} | FiftyFifty ToolKit`,
-    description: moduleData.attributes.summary.substring(0, 160),
-    alternates: {
-      canonical: `/${validLocale}/phase/${moduleData.attributes.phase?.data?.attributes.slug}/module/${moduleSlug}`,
-      languages: {
-        en: `/en/phase/${moduleData.attributes.phase?.data?.attributes.slug}/module/${moduleSlug}`,
-        ar: `/ar/phase/${moduleData.attributes.phase?.data?.attributes.slug}/module/${moduleSlug}`,
-      },
-    },
-  };
 }
 
 // Enable ISR with 60-second revalidation
