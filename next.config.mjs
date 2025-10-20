@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 import createNextIntlPlugin from 'next-intl/plugin';
+import path from 'path';
 
 const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 
@@ -115,7 +116,17 @@ const nextConfig = {
   
   // Webpack configuration
   webpack: (config, { isServer }) => {
-    // Add custom webpack config here if needed
+    // Ensure alias resolution for '@/...' paths in all environments
+    config.resolve = config.resolve || {};
+    config.resolve.alias = {
+      ...(config.resolve.alias || {}),
+      '@': path.resolve(process.cwd(), '.'),
+      '@/app': path.resolve(process.cwd(), 'app'),
+      '@/components': path.resolve(process.cwd(), 'components'),
+      '@/lib': path.resolve(process.cwd(), 'lib'),
+      '@/styles': path.resolve(process.cwd(), 'styles'),
+      '@/public': path.resolve(process.cwd(), 'public'),
+    };
     return config;
   },
 };
