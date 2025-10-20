@@ -32,12 +32,12 @@ export async function generateStaticParams() {
   for (const locale of locales) {
     const modules = await getModulesByPhase('', { locale: locale as 'en' | 'ar' });
     
-    for (const module of modules) {
-      if (module.attributes.phase?.data) {
+    for (const moduleItem of modules) {
+      if (moduleItem.attributes.phase?.data) {
         allParams.push({
           locale,
-          slug: module.attributes.phase.data.attributes.slug,
-          moduleSlug: module.attributes.slug,
+          slug: moduleItem.attributes.phase.data.attributes.slug,
+          moduleSlug: moduleItem.attributes.slug,
         });
       }
     }
@@ -51,22 +51,22 @@ export async function generateMetadata({
   params: { locale, moduleSlug },
 }: ModulePageProps): Promise<Metadata> {
   const validLocale = (locale === 'ar' || locale === 'en') ? locale : 'en';
-  const module = await getModuleBySlug(moduleSlug, { locale: validLocale });
+  const moduleData = await getModuleBySlug(moduleSlug, { locale: validLocale });
 
-  if (!module) {
+  if (!moduleData) {
     return {
       title: 'Module Not Found',
     };
   }
 
   return {
-    title: `${module.attributes.title} | FiftyFifty ToolKit`,
-    description: module.attributes.summary.substring(0, 160),
+    title: `${moduleData.attributes.title} | FiftyFifty ToolKit`,
+    description: moduleData.attributes.summary.substring(0, 160),
     alternates: {
-      canonical: `/${validLocale}/phase/${module.attributes.phase?.data?.attributes.slug}/module/${moduleSlug}`,
+      canonical: `/${validLocale}/phase/${moduleData.attributes.phase?.data?.attributes.slug}/module/${moduleSlug}`,
       languages: {
-        en: `/en/phase/${module.attributes.phase?.data?.attributes.slug}/module/${moduleSlug}`,
-        ar: `/ar/phase/${module.attributes.phase?.data?.attributes.slug}/module/${moduleSlug}`,
+        en: `/en/phase/${moduleData.attributes.phase?.data?.attributes.slug}/module/${moduleSlug}`,
+        ar: `/ar/phase/${moduleData.attributes.phase?.data?.attributes.slug}/module/${moduleSlug}`,
       },
     },
   };
@@ -84,13 +84,13 @@ export default async function ModulePage({ params: { locale, slug, moduleSlug } 
   const isRTL = validLocale === 'ar';
 
   // Fetch module data
-  const module = await getModuleBySlug(moduleSlug, { locale: validLocale });
+  const moduleData = await getModuleBySlug(moduleSlug, { locale: validLocale });
 
-  if (!module) {
+  if (!moduleData) {
     notFound();
   }
 
-  const phase = module.attributes.phase?.data;
+  const phase = moduleData.attributes.phase?.data;
   
   if (!phase) {
     notFound();
@@ -98,7 +98,7 @@ export default async function ModulePage({ params: { locale, slug, moduleSlug } 
 
   // Fetch all modules in this phase for prev/next navigation
   const allModules = await getModulesByPhase(slug, { locale: validLocale });
-  const currentIndex = allModules.findIndex(m => m.id === module.id);
+  const currentIndex = allModules.findIndex(m => m.id === moduleData.id);
   const prevModule = currentIndex > 0 ? allModules[currentIndex - 1] : null;
   const nextModule = currentIndex < allModules.length - 1 ? allModules[currentIndex + 1] : null;
 
@@ -109,9 +109,9 @@ export default async function ModulePage({ params: { locale, slug, moduleSlug } 
     video_subtitle_url_en,
     video_subtitle_url_ar,
     key_takeaways,
-  } = module.attributes;
+  } = moduleData.attributes;
 
-  const resources = module.attributes.resources?.data || [];
+  const resources = moduleData.attributes.resources?.data || [];
 
   return (
     <main className="min-h-screen bg-gray-50">

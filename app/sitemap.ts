@@ -78,16 +78,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   for (const phase of phasesEn) {
     const modules = phase.attributes.modules?.data || [];
-    for (const module of modules) {
+    for (const moduleItem of modules) {
       moduleRoutesEn.push({
-        url: `${baseUrl}/en/phase/${phase.attributes.slug}/module/${module.attributes.slug}`,
-        lastModified: new Date(module.attributes.updatedAt || module.attributes.publishedAt),
+        url: `${baseUrl}/en/phase/${phase.attributes.slug}/module/${moduleItem.attributes.slug}`,
+        lastModified: new Date(moduleItem.attributes.updatedAt || moduleItem.attributes.publishedAt),
         changeFrequency: 'weekly' as const,
         priority: 0.7,
         alternates: {
           languages: {
-            en: `${baseUrl}/en/phase/${phase.attributes.slug}/module/${module.attributes.slug}`,
-            ar: `${baseUrl}/ar/phase/${phase.attributes.slug}/module/${module.attributes.slug}`,
+            en: `${baseUrl}/en/phase/${phase.attributes.slug}/module/${moduleItem.attributes.slug}`,
+            ar: `${baseUrl}/ar/phase/${phase.attributes.slug}/module/${moduleItem.attributes.slug}`,
           },
         },
       });
@@ -96,16 +96,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   for (const phase of phasesAr) {
     const modules = phase.attributes.modules?.data || [];
-    for (const module of modules) {
+    for (const moduleItem of modules) {
       moduleRoutesAr.push({
-        url: `${baseUrl}/ar/phase/${phase.attributes.slug}/module/${module.attributes.slug}`,
-        lastModified: new Date(module.attributes.updatedAt || module.attributes.publishedAt),
+        url: `${baseUrl}/ar/phase/${phase.attributes.slug}/module/${moduleItem.attributes.slug}`,
+        lastModified: new Date(moduleItem.attributes.updatedAt || moduleItem.attributes.publishedAt),
         changeFrequency: 'weekly' as const,
         priority: 0.7,
         alternates: {
           languages: {
-            en: `${baseUrl}/en/phase/${phase.attributes.slug}/module/${module.attributes.slug}`,
-            ar: `${baseUrl}/ar/phase/${phase.attributes.slug}/module/${module.attributes.slug}`,
+            en: `${baseUrl}/en/phase/${phase.attributes.slug}/module/${moduleItem.attributes.slug}`,
+            ar: `${baseUrl}/ar/phase/${phase.attributes.slug}/module/${moduleItem.attributes.slug}`,
           },
         },
       });

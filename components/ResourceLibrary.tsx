@@ -20,7 +20,6 @@ interface ResourceCardProps {
 
 export function ResourceCard({
   resource,
-  locale: _locale,
   onDownload,
   showContext = true,
 }: ResourceCardProps) {
@@ -164,7 +163,6 @@ export function FileTypeFilter({
   selectedType,
   onTypeChange,
   counts,
-  locale: _locale,
 }: FileTypeFilterProps) {
   const t = useTranslations('Resources');
 
@@ -247,7 +245,7 @@ interface GroupBySelectorProps {
   locale: string;
 }
 
-export function GroupBySelector({ value, onChange, locale: _locale }: GroupBySelectorProps) {
+export function GroupBySelector({ value, onChange }: GroupBySelectorProps) {
   const t = useTranslations('Resources');
 
   return (
