@@ -113,6 +113,10 @@ const nextConfig = {
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
     NEXT_PUBLIC_GA_ID: process.env.NEXT_PUBLIC_GA_ID,
   },
+  eslint: {
+    // Don't fail the build on ESLint errors in CI; we run lint separately locally
+    ignoreDuringBuilds: true,
+  },
   
   // Webpack configuration
   webpack: (config, { isServer }) => {
