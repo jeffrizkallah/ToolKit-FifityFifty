@@ -1,0 +1,101 @@
+{
+  "HomePage": {
+    "title": "فيفتي فيفتي تولكيت",
+    "welcome": "مرحباً بك في فيفتي فيفتي تولكيت",
+    "description": "بناء مجتمعات مستدامة من خلال المسؤولية الاجتماعية",
+    "hero": {
+      "startJourney": "ابدأ رحلتك",
+      "watchVideo": "شاهد الفيديو",
+      "scrollToPhases": "استكشف المراحل الستة"
+    }
+  },
+  "Navigation": {
+    "home": "الرئيسية",
+    "about": "من نحن",
+    "initiatives": "المبادرات",
+    "tools": "الأدوات",
+    "contact": "اتصل بنا",
+    "language": "اللغة"
+  },
+  "Common": {
+    "readMore": "اقرأ المزيد",
+    "learnMore": "تعرف على المزيد",
+    "getStarted": "ابدأ الآن",
+    "loading": "جاري التحميل...",
+    "error": "حدث خطأ",
+    "notFound": "الصفحة غير موجودة",
+    "backToHome": "العودة للرئيسية"
+  },
+  "CookieConsent": {
+    "title": "نحن نستخدم ملفات تعريف الارتباط",
+    "description": "نستخدم ملفات تعريف الارتباط (Cookies) وتقنيات التتبع لتحسين تجربتك وتحليل استخدام الموقع. يتم استخدام Google Analytics لجمع بيانات مجهولة المصدر حول كيفية تفاعلك مع موقعنا. لا نجمع معلومات شخصية.",
+    "privacyLink": "اقرأ سياسة الخصوصية الكاملة",
+    "accept": "✓ قبول",
+    "decline": "✕ رفض"
+  },
+  "Privacy": {
+    "title": "سياسة الخصوصية",
+    "lastUpdated": "آخر تحديث",
+    "sections": {
+      "intro": "مقدمة",
+      "dataCollection": "البيانات التي نجمعها",
+      "dataUse": "كيف نستخدم البيانات",
+      "cookies": "ملفات تعريف الارتباط والتتبع",
+      "thirdParty": "خدمات الطرف الثالث",
+      "dataProtection": "حماية البيانات",
+      "yourRights": "حقوقك",
+      "contact": "اتصل بنا"
+    }
+  },
+  "Progress": {
+    "markComplete": "وضع علامة مكتمل",
+    "markIncomplete": "إزالة علامة الإكمال",
+    "completed": "مكتمل",
+    "yourProgress": "تقدمك",
+    "completedModules": "{count} من {total} وحدات مكتملة",
+    "percentComplete": "{percent}٪ مكتمل",
+    "resumeWhere": "استئناف من حيث توقفت",
+    "resetProgress": "إعادة تعيين التقدم",
+    "resetConfirm": "هل أنت متأكد أنك تريد إعادة تعيين جميع التقدم؟",
+    "congratulations": "تهانينا!",
+    "allComplete": "لقد أكملت جميع الوحدات!"
+  },
+  "Search": {
+    "placeholder": "البحث في المراحل والوحدات...",
+    "searchLabel": "بحث",
+    "clearSearch": "مسح البحث",
+    "noResults": "لا توجد نتائج لـ \"{query}\"",
+    "noResultsHint": "جرب كلمات مفتاحية مختلفة أو تحقق من الإملاء",
+    "resultsCount": "{count, plural, =1 {نتيجة واحدة} other {# نتائج}} لـ \"{query}\"",
+    "typePhase": "مرحلة",
+    "typeModule": "وحدة",
+    "searchButton": "بحث",
+    "searching": "جاري البحث..."
+  },
+  "Filter": {
+    "filterBy": "تصفية حسب:",
+    "clearFilters": "مسح التصفية",
+    "activeFilters": "التصفيات النشطة",
+    "noItemsMatch": "لا توجد عناصر تطابق التصفيات المحددة",
+    "showingFiltered": "عرض {count, plural, =1 {عنصر واحد} other {# عناصر}}"
+  },
+  "Resources": {
+    "pageTitle": "مكتبة الموارد",
+    "pageDescription": "تصفح وتنزيل جميع الموارد من فيفتي فيفتي تولكيت",
+    "download": "تحميل",
+    "allFiles": "جميع الملفات",
+    "searchPlaceholder": "البحث في الموارد...",
+    "filterByType": "تصفية حسب نوع الملف",
+    "groupBy": "تجميع حسب",
+    "byPhase": "المرحلة",
+    "byModule": "الوحدة",
+    "byFileType": "نوع الملف",
+    "showing": "عرض",
+    "of": "من",
+    "resources": "موارد",
+    "clearAllFilters": "مسح جميع التصفيات",
+    "noResourcesMatch": "لا توجد موارد تطابق التصفيات",
+    "noResourcesAvailable": "لا توجد موارد متاحة"
+  }
+}
+

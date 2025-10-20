@@ -1,0 +1,107 @@
+schema: 1
+story: "6.5"
+story_title: "Resource Library Page"
+gate: CONCERNS
+status_reason: "Outstanding implementation with comprehensive features and excellent architecture, but lacks test coverage for complex data aggregation logic and filtering combinations. Dependency verification needed."
+reviewer: "Quinn (Test Architect)"
+updated: "2025-10-17T17:25:00Z"
+
+waiver: { active: false }
+
+top_issues:
+  - id: "TEST-010"
+    severity: high
+    finding: "No tests for resource aggregation logic from nested CMS structure"
+    suggested_action: "Add comprehensive tests for useResourceLibrary hook including aggregation and context preservation"
+    suggested_owner: "dev"
+  - id: "TEST-011"
+    severity: high
+    finding: "No tests for filtering and grouping combinations"
+    suggested_action: "Add tests for file type filtering, search filtering, and all grouping modes"
+    suggested_owner: "dev"
+  - id: "DEP-001"
+    severity: high
+    finding: "fuse.js dependency not verified in package.json"
+    suggested_action: "Verify fuse.js installed for US6.3 search functionality"
+    suggested_owner: "dev"
+  - id: "FEAT-001"
+    severity: medium
+    finding: "No error handling for failed downloads"
+    suggested_action: "Add download error handling with user feedback (toast notifications)"
+    suggested_owner: "dev"
+
+risk_summary:
+  totals:
+    critical: 0
+    high: 3
+    medium: 1
+    low: 0
+  highest: high
+  recommendations:
+    must_fix:
+      - "Add comprehensive test suite for aggregation and filtering"
+      - "Verify fuse.js dependency installed"
+      - "Test data integrity (context preservation)"
+    monitor:
+      - "Performance with growing resource count"
+      - "Download success rates"
+      - "User feedback on grouping preferences"
+
+quality_score: 75
+expires: "2025-10-31T00:00:00Z"
+
+evidence:
+  tests_reviewed: 0
+  risks_identified: 4
+  trace:
+    ac_covered: [1, 2, 3, 4, 5, 6, 7]
+    ac_gaps: []
+
+nfr_validation:
+  security:
+    status: PASS
+    notes: "Excellent security - server-side fetching, no user uploads, trusted CMS data source"
+  performance:
+    status: PASS
+    notes: "Excellent performance with SSR and client-side filtering. Scalable to ~200 resources"
+  reliability:
+    status: PASS
+    notes: "Solid error handling and defensive programming. Missing download error feedback"
+  maintainability:
+    status: PASS
+    notes: "Outstanding architecture with clean separation and extensibility"
+  usability:
+    status: PASS
+    notes: "Excellent UX with multiple views, filtering options, and visual indicators"
+  seo:
+    status: PASS
+    notes: "Optimal SEO with SSR, metadata, semantic HTML, and localizable routes"
+
+recommendations:
+  immediate:
+    - action: "Add unit tests for useResourceLibrary aggregation logic"
+      refs: ["lib/hooks/useResourceLibrary.ts:44-73"]
+    - action: "Add tests for filtering (file type + search combination)"
+      refs: ["lib/hooks/useResourceLibrary.ts:76-105"]
+    - action: "Add tests for all grouping modes (phase/module/type)"
+      refs: ["lib/hooks/useResourceLibrary.ts:108-143"]
+    - action: "Add component tests for ResourceCard"
+      refs: ["components/ResourceLibrary.tsx:23-103"]
+    - action: "Add page integration tests (server + client)"
+      refs: ["app/[locale]/resources/page.tsx"]
+    - action: "Verify fuse.js dependency installed"
+      refs: ["package.json"]
+    - action: "Add download error handling"
+      refs: ["components/ResourceLibrary.tsx:87-100"]
+  future:
+    - action: "Add pagination or virtual scrolling for 100+ resources"
+      refs: ["lib/hooks/useResourceLibrary.ts"]
+    - action: "Consider debouncing search in hook"
+      refs: ["lib/hooks/useResourceLibrary.ts:170-172"]
+    - action: "Memoize file type counts separately from filters"
+      refs: ["lib/hooks/useResourceLibrary.ts:146-163"]
+    - action: "Add bulk download functionality"
+      refs: ["app/[locale]/resources/ResourceLibraryClient.tsx"]
+    - action: "Add resource preview feature"
+      refs: ["components/ResourceLibrary.tsx"]
+

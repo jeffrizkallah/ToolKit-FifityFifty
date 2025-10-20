@@ -1,0 +1,91 @@
+[
+  {
+    "title": "Community Needs Assessment Template",
+    "title_ar": "نموذج تقييم احتياجات المجتمع",
+    "description": "A comprehensive template to help you conduct a thorough community needs assessment. Includes survey questions, interview guides, and analysis frameworks.",
+    "description_ar": "نموذج شامل لمساعدتك في إجراء تقييم شامل لاحتياجات المجتمع. يتضمن أسئلة الاستبيان وأدلة المقابلة وأطر التحليل.",
+    "file_url": "https://example.com/resources/community-needs-assessment.pdf",
+    "file_type": "PDF",
+    "file_size": "2.5 MB",
+    "order": 1,
+    "module_slug": "understanding-community-needs"
+  },
+  {
+    "title": "Needs Assessment Checklist",
+    "title_ar": "قائمة تدقيق تقييم الاحتياجات",
+    "description": "A quick-reference checklist to ensure you cover all essential aspects of community needs assessment.",
+    "description_ar": "قائمة مرجعية سريعة للتأكد من تغطية جميع الجوانب الأساسية لتقييم احتياجات المجتمع.",
+    "file_url": "https://example.com/resources/needs-assessment-checklist.pdf",
+    "file_type": "PDF",
+    "file_size": "850 KB",
+    "order": 2,
+    "module_slug": "understanding-community-needs"
+  },
+  {
+    "title": "Stakeholder Mapping Template",
+    "title_ar": "نموذج رسم خريطة أصحاب المصلحة",
+    "description": "Excel template for identifying and categorizing stakeholders based on their influence and interest levels.",
+    "description_ar": "نموذج Excel لتحديد وتصنيف أصحاب المصلحة بناءً على مستويات تأثيرهم واهتمامهم.",
+    "file_url": "https://example.com/resources/stakeholder-mapping.xlsx",
+    "file_type": "Excel",
+    "file_size": "1.2 MB",
+    "order": 1,
+    "module_slug": "stakeholder-mapping"
+  },
+  {
+    "title": "Stakeholder Communication Plan",
+    "title_ar": "خطة التواصل مع أصحاب المصلحة",
+    "description": "Word document template for creating effective communication strategies for different stakeholder groups.",
+    "description_ar": "نموذج مستند Word لإنشاء استراتيجيات اتصال فعالة لمجموعات مختلفة من أصحاب المصلحة.",
+    "file_url": "https://example.com/resources/stakeholder-communication-plan.docx",
+    "file_type": "Word",
+    "file_size": "950 KB",
+    "order": 2,
+    "module_slug": "stakeholder-mapping"
+  },
+  {
+    "title": "Research Methods Guide",
+    "title_ar": "دليل طرق البحث",
+    "description": "Comprehensive guide covering qualitative and quantitative research methodologies for community research.",
+    "description_ar": "دليل شامل يغطي منهجيات البحث النوعي والكمي لأبحاث المجتمع.",
+    "file_url": "https://example.com/resources/research-methods-guide.pdf",
+    "file_type": "PDF",
+    "file_size": "3.8 MB",
+    "order": 1,
+    "module_slug": "research-methodologies"
+  },
+  {
+    "title": "Survey Design Template",
+    "title_ar": "نموذج تصميم الاستبيان",
+    "description": "Ready-to-use survey template with best practices for question design and layout.",
+    "description_ar": "نموذج استبيان جاهز للاستخدام مع أفضل الممارسات لتصميم الأسئلة والتخطيط.",
+    "file_url": "https://example.com/resources/survey-design-template.docx",
+    "file_type": "Word",
+    "file_size": "720 KB",
+    "order": 2,
+    "module_slug": "research-methodologies"
+  },
+  {
+    "title": "Asset Mapping Worksheet",
+    "title_ar": "ورقة عمل رسم خريطة الأصول",
+    "description": "Interactive worksheet to identify and catalog community assets, skills, and resources.",
+    "description_ar": "ورقة عمل تفاعلية لتحديد وفهرسة أصول المجتمع ومهاراته وموارده.",
+    "file_url": "https://example.com/resources/asset-mapping-worksheet.xlsx",
+    "file_type": "Excel",
+    "file_size": "1.5 MB",
+    "order": 1,
+    "module_slug": "community-asset-mapping"
+  },
+  {
+    "title": "Community Resources Inventory",
+    "title_ar": "جرد موارد المجتمع",
+    "description": "Template for creating a comprehensive inventory of existing community resources and assets.",
+    "description_ar": "نموذج لإنشاء جرد شامل لموارد وأصول المجتمع الموجودة.",
+    "file_url": "https://example.com/resources/community-resources-inventory.pdf",
+    "file_type": "PDF",
+    "file_size": "1.8 MB",
+    "order": 2,
+    "module_slug": "community-asset-mapping"
+  }
+]
+

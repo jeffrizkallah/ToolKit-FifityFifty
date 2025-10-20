@@ -1,0 +1,25 @@
+# Architecture --- FiftyFifty x UN Women Campaign Toolkit
+
+## Table of Contents
+
+- [Architecture --- FiftyFifty x UN Women Campaign Toolkit](#table-of-contents)
+  - [1) Goals](./1-goals.md)
+  - [2) High-Level Design](./2-high-level-design.md)
+  - [3) Content Model (CMS)](./3-content-model-cms.md)
+  - [4) API Shape (CMS → Frontend)](./4-api-shape-cms-frontend.md)
+  - [5) Frontend Structure](./5-frontend-structure.md)
+  - [6) Internationalization + RTL](./6-internationalization-rtl.md)
+  - [7) Accessibility](./7-accessibility.md)
+  - [8) Performance](./8-performance.md)
+  - [9) Security](./9-security.md)
+  - [10) Deployment](./10-deployment.md)
+  - [11) CI/CD](./11-cicd.md)
+  - [12) Observability](./12-observability.md)
+  - [13) Data & Backup](./13-data-backup.md)
+  - [14) SEO](./14-seo.md)
+  - [15) Privacy](./15-privacy.md)
+  - [16) Risks](./16-risks.md)
+  - [17) Delivery (Tech)](./17-delivery-tech.md)
+  - [18) Env Vars](./18-env-vars.md)
+  - [19) Webhook Revalidation](./19-webhook-revalidation.md)
+  - [20) Handoff Checklist](./20-handoff-checklist.md)

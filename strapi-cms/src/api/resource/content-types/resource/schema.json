@@ -1,0 +1,72 @@
+{
+  "kind": "collectionType",
+  "collectionName": "resources",
+  "info": {
+    "singularName": "resource",
+    "pluralName": "resources",
+    "displayName": "Resource",
+    "description": "Downloadable resources (PDFs, templates, checklists) linked to modules"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "maxLength": 200,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "description": {
+      "type": "text",
+      "maxLength": 500,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "file": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["files"]
+    },
+    "file_url": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "file_type": {
+      "type": "enumeration",
+      "enum": ["PDF", "Excel", "Word", "Other"],
+      "default": "PDF"
+    },
+    "file_size": {
+      "type": "string",
+      "maxLength": 50
+    },
+    "order": {
+      "type": "integer",
+      "required": true,
+      "min": 1,
+      "max": 100,
+      "default": 1
+    },
+    "module": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::module.module",
+      "inversedBy": "resources"
+    }
+  }
+}
+
