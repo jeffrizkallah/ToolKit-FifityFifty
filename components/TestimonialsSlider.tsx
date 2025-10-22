@@ -28,7 +28,7 @@ export function TestimonialsSlider({ testimonials, locale }: TestimonialsSliderP
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { 
       loop: true,
-      align: 'start',
+      align: 'center',
       direction: isRTL ? 'rtl' : 'ltr',
     },
     [Autoplay({ delay: 5000, stopOnInteraction: false })]
@@ -64,7 +64,7 @@ export function TestimonialsSlider({ testimonials, locale }: TestimonialsSliderP
 
   return (
     <section className="py-16 bg-gray-50">
-      <div className="container">
+      <div className="container mx-auto max-w-6xl">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             {locale === 'ar' ? 'قصص النجاح' : 'Success Stories'}
@@ -87,12 +87,12 @@ export function TestimonialsSlider({ testimonials, locale }: TestimonialsSliderP
                 return (
                   <div
                     key={testimonial.id}
-                    className="flex-[0_0_100%] min-w-0 px-4 md:flex-[0_0_50%] lg:flex-[0_0_33.333%]"
+                    className="flex-[0_0_100%] min-w-0 px-4 sm:flex-[0_0_50%] lg:flex-[0_0_33.333%]"
                   >
-                    <div className="bg-white rounded-lg shadow-md p-8 h-full flex flex-col">
+                    <div className="bg-white rounded-lg shadow-md p-6 h-full flex flex-col max-h-80">
                       {/* Photo */}
                       {fullPhotoUrl && (
-                        <div className="mb-6 flex justify-center">
+                        <div className="mb-4 flex justify-center">
                           <div className="relative w-20 h-20 rounded-full overflow-hidden">
                             <Image
                               src={fullPhotoUrl}
@@ -106,7 +106,7 @@ export function TestimonialsSlider({ testimonials, locale }: TestimonialsSliderP
                       )}
 
                       {/* Quote */}
-                      <blockquote className="flex-1 mb-6">
+                      <blockquote className="flex-1 mb-4">
                         <p className="text-gray-700 text-lg leading-relaxed">
                           "{testimonial.attributes.quote}"
                         </p>
@@ -114,7 +114,7 @@ export function TestimonialsSlider({ testimonials, locale }: TestimonialsSliderP
 
                       {/* Attribution */}
                       <div className="text-center">
-                        <p className="font-semibold text-gray-900">
+                        <p className="font-semibold text-[#0063AF]">
                           {testimonial.attributes.name}
                         </p>
                         {testimonial.attributes.role && (

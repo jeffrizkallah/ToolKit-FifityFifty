@@ -21,7 +21,7 @@ export function Timeline({ phases, locale }: TimelineProps) {
           <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
             {locale === 'ar' 
               ? 'رحلة شاملة من الاكتشاف إلى الاستدامة، مصممة لتمكين المجتمعات وبناء تأثير دائم'
-              : 'A comprehensive journey from discovery to sustainability, designed to empower communities and build lasting impact'
+              : 'Step-by-step guidance for every woman ready to run for change'
             }
           </p>
         </div>

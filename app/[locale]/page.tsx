@@ -107,11 +107,11 @@ export default async function HomePage({ params: { locale } }: { params: { local
   // Get hero content with fallbacks
   const headline = validLocale === 'ar'
     ? settings?.attributes?.hero_headline_ar || 'مكّن مجتمعك، ابنِ تغييراً دائماً'
-    : settings?.attributes?.hero_headline || 'Empower Your Community, Build Lasting Change';
+    : settings?.attributes?.hero_headline || 'Run for Change, Lead with Confidence';
 
   const description = validLocale === 'ar'
     ? settings?.attributes?.hero_description_ar || 'منهجية شاملة ومنصة تعليمية لرواد الأعمال الاجتماعيين وقادة المجتمع في العالم العربي.'
-    : settings?.attributes?.hero_description || 'A comprehensive methodology and learning platform for social entrepreneurs and community leaders in the Arab world.';
+    : settings?.attributes?.hero_description || 'A practical toolkit designed to help women run effective election campaigns. Explore the 6 key phases, from taking the decision to run, to Election Day and beyond, with step-by-step guidance, short videos, and ready-to-use resources.';
 
   const heroVideoUrl = settings?.attributes?.hero_video_url;
 

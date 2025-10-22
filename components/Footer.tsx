@@ -39,7 +39,7 @@ export function Footer({ locale }: FooterProps) {
 
   return (
     <footer className="bg-gray-900 text-white" role="contentinfo">
-      <div className="container py-12">
+      <div className="container py-12 mx-auto max-w-6xl">
         {/* Top Section: Logos and Navigation */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {/* Logo Section */}

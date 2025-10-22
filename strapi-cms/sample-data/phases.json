@@ -1,9 +1,9 @@
 {
   "phases": [
     {
-      "title": "Discovery",
+      "title": "Deciding to run",
       "slug": "discovery",
-      "description": "<p>The Discovery phase is the foundation of the FiftyFifty methodology. In this phase, participants learn to identify community needs, understand stakeholder perspectives, and gather essential information through various research methods.</p>\n\n<h3>Key Learning Outcomes</h3>\n<ul>\n<li>Understanding community needs assessment</li>\n<li>Stakeholder identification and mapping</li>\n<li>Basic research methodologies</li>\n<li>Data collection techniques</li>\n</ul>",
+      "description": "<p>The Deciding to run phase is the foundation of your campaign journey. In this phase, participants learn to assess their readiness, understand community needs, and make the crucial decision to run for office.</p>\n\n<h3>Key Learning Outcomes</h3>\n<ul>\n<li>Personal readiness assessment</li>\n<li>Community needs identification</li>\n<li>Decision-making frameworks</li>\n<li>Initial campaign planning</li>\n</ul>",
       "order": 1,
       "phase_number": 1,
       "header_video_url": "https://www.youtube.com/watch?v=example1",
@@ -15,9 +15,9 @@
       }
     },
     {
-      "title": "Strategy",
+      "title": "Pre-campaign",
       "slug": "strategy",
-      "description": "<p>The Strategy phase focuses on transforming insights from the Discovery phase into actionable plans. Participants learn strategic planning, goal setting, and resource allocation.</p>\n\n<h3>Key Learning Outcomes</h3>\n<ul>\n<li>Strategic planning frameworks</li>\n<li>SMART goal setting</li>\n<li>Resource mapping and allocation</li>\n<li>Theory of Change development</li>\n</ul>",
+      "description": "<p>The Pre-campaign phase focuses on building your campaign foundation before officially launching. Participants learn to develop their platform, build support networks, and prepare for the campaign ahead.</p>\n\n<h3>Key Learning Outcomes</h3>\n<ul>\n<li>Platform development</li>\n<li>Support network building</li>\n<li>Campaign team assembly</li>\n<li>Pre-launch preparation</li>\n</ul>",
       "order": 2,
       "phase_number": 2,
       "header_video_url": "https://www.youtube.com/watch?v=example2",
@@ -29,9 +29,9 @@
       }
     },
     {
-      "title": "Design",
+      "title": "Campaign",
       "slug": "design",
-      "description": "<p>The Design phase emphasizes creative problem-solving and solution development. Participants learn design thinking methodologies and how to create innovative, user-centered solutions.</p>\n\n<h3>Key Learning Outcomes</h3>\n<ul>\n<li>Design thinking principles</li>\n<li>User-centered design</li>\n<li>Prototyping and iteration</li>\n<li>Innovation frameworks</li>\n</ul>",
+      "description": "<p>The Campaign phase is the heart of your election journey. Participants learn to execute their campaign strategy, engage with voters, and build momentum through effective campaigning.</p>\n\n<h3>Key Learning Outcomes</h3>\n<ul>\n<li>Campaign execution strategies</li>\n<li>Voter engagement techniques</li>\n<li>Public speaking and communication</li>\n<li>Momentum building</li>\n</ul>",
       "order": 3,
       "phase_number": 3,
       "header_video_url": "https://www.youtube.com/watch?v=example3",
@@ -43,9 +43,9 @@
       }
     },
     {
-      "title": "Implementation",
+      "title": "Pre-election",
       "slug": "implementation",
-      "description": "<p>The Implementation phase brings plans to life. Participants learn project management, team coordination, and execution strategies to successfully implement their initiatives.</p>\n\n<h3>Key Learning Outcomes</h3>\n<ul>\n<li>Project management fundamentals</li>\n<li>Team building and coordination</li>\n<li>Risk management</li>\n<li>Budget management</li>\n</ul>",
+      "description": "<p>The Pre-election phase focuses on final preparations before election day. Participants learn to mobilize supporters, finalize campaign strategies, and prepare for the crucial voting day.</p>\n\n<h3>Key Learning Outcomes</h3>\n<ul>\n<li>Final campaign mobilization</li>\n<li>Voter turnout strategies</li>\n<li>Election day preparation</li>\n<li>Last-minute campaigning</li>\n</ul>",
       "order": 4,
       "phase_number": 4,
       "header_video_url": "https://www.youtube.com/watch?v=example4",
@@ -57,9 +57,9 @@
       }
     },
     {
-      "title": "Monitoring & Evaluation",
+      "title": "Election day",
       "slug": "monitoring-evaluation",
-      "description": "<p>The Monitoring & Evaluation phase focuses on measuring impact and learning from outcomes. Participants learn to track progress, analyze results, and adapt their approach based on evidence.</p>\n\n<h3>Key Learning Outcomes</h3>\n<ul>\n<li>M&E framework development</li>\n<li>Indicator selection and tracking</li>\n<li>Data analysis and interpretation</li>\n<li>Impact assessment</li>\n</ul>",
+      "description": "<p>The Election day phase is the culmination of your campaign journey. Participants learn to execute their election day strategy, manage volunteers, and ensure maximum voter turnout.</p>\n\n<h3>Key Learning Outcomes</h3>\n<ul>\n<li>Election day execution</li>\n<li>Volunteer coordination</li>\n<li>Voter turnout maximization</li>\n<li>Results monitoring</li>\n</ul>",
       "order": 5,
       "phase_number": 5,
       "header_video_url": "https://www.youtube.com/watch?v=example5",
@@ -71,9 +71,9 @@
       }
     },
     {
-      "title": "Sustainability",
+      "title": "Post-election",
       "slug": "sustainability",
-      "description": "<p>The Sustainability phase ensures long-term impact and continuity. Participants learn to build sustainable models, secure ongoing support, and create lasting change in their communities.</p>\n\n<h3>Key Learning Outcomes</h3>\n<ul>\n<li>Sustainability planning</li>\n<li>Partnership development</li>\n<li>Funding diversification</li>\n<li>Knowledge transfer and capacity building</li>\n</ul>",
+      "description": "<p>The Post-election phase focuses on transitioning from campaign to governance. Participants learn to handle election results, transition to office, and begin their journey as elected officials.</p>\n\n<h3>Key Learning Outcomes</h3>\n<ul>\n<li>Election results handling</li>\n<li>Transition to governance</li>\n<li>Office preparation</li>\n<li>Continued community engagement</li>\n</ul>",
       "order": 6,
       "phase_number": 6,
       "header_video_url": "https://www.youtube.com/watch?v=example6",

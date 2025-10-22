@@ -21,7 +21,7 @@ export function HeroSection({ headline, description, onWatchVideo }: HeroSection
   };
 
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900">
+    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#0063AF] via-[#004a8a] to-[#003d73] rounded-3xl mx-4 my-8">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
@@ -62,7 +62,7 @@ export function HeroSection({ headline, description, onWatchVideo }: HeroSection
           <Button
             size="lg"
             onClick={handleScrollToPhases}
-            className="bg-white text-purple-900 hover:bg-purple-50 px-8 py-6 text-lg font-semibold shadow-lg transition-all hover:scale-105"
+            className="bg-white text-red-600 hover:bg-red-50 px-8 py-6 text-lg font-semibold shadow-lg transition-all hover:scale-105"
           >
             {t('startJourney')}
           </Button>
@@ -101,6 +101,18 @@ export function HeroSection({ headline, description, onWatchVideo }: HeroSection
               <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
             </svg>
           </motion.div>
+        </motion.div>
+
+        {/* Partnership Tagline */}
+        <motion.div
+          className="mt-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 1.2, ease: 'easeOut' }}
+        >
+          <p className="text-sm text-blue-100 text-center">
+            Created by FiftyFifty and UN Women to make political participation more accessible, practical, and achievable for every woman.
+          </p>
         </motion.div>
       </div>
     </section>

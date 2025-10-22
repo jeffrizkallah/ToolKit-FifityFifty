@@ -33,15 +33,15 @@ export function PhaseCard({ phaseNumber, title, description, slug, locale, index
       transition={{ duration: 0.5, delay: index * 0.1 }}
     >
       <Link href={`/${locale}/phase/${slug}`} onClick={handlePhaseClick}>
-        <Card className="group relative h-full p-6 hover:shadow-2xl transition-all duration-300 cursor-pointer border-2 hover:border-purple-500 bg-white overflow-hidden">
+        <Card className="group relative h-full p-6 hover:shadow-2xl transition-all duration-300 cursor-pointer border-2 hover:border-red-500 bg-white overflow-hidden">
           {/* Phase Number Badge */}
-          <div className="absolute top-0 right-0 bg-gradient-to-br from-purple-600 to-indigo-600 text-white w-16 h-16 flex items-center justify-center font-bold text-2xl rounded-bl-3xl">
+          <div className="absolute top-0 right-0 bg-gradient-to-br from-red-300 to-[#EC1C24] text-white w-16 h-16 flex items-center justify-center font-bold text-2xl rounded-bl-3xl">
             {phaseNumber}
           </div>
 
           {/* Card Content */}
           <div className="relative z-10">
-            <h3 className="text-2xl font-bold mb-3 text-gray-900 group-hover:text-purple-700 transition-colors pr-16">
+            <h3 className="text-2xl font-bold mb-3 text-gray-900 group-hover:text-red-700 transition-colors pr-16">
               {title}
             </h3>
             <p className="text-gray-600 line-clamp-4">
@@ -51,12 +51,12 @@ export function PhaseCard({ phaseNumber, title, description, slug, locale, index
 
           {/* Hover Effect Overlay */}
           <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-purple-50 to-indigo-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"
+            className="absolute inset-0 bg-gradient-to-r from-red-50 to-red-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"
             initial={false}
           />
 
           {/* Arrow Icon */}
-          <div className="mt-4 flex items-center text-purple-600 font-semibold group-hover:translate-x-2 transition-transform duration-300">
+          <div className="mt-4 flex items-center text-red-600 font-semibold group-hover:translate-x-2 transition-transform duration-300">
             <span className="text-sm">
               {locale === 'ar' ? 'استكشف المزيد' : 'Explore More'}
             </span>
