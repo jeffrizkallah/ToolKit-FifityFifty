@@ -28,7 +28,12 @@ export default async function ResourcesPage({ params: { locale } }: ResourcesPag
   setRequestLocale(locale);
 
   // Fetch all phases with modules and resources
-  const phases = await fetchPhases(locale as 'en' | 'ar');
+  let phases: Awaited<ReturnType<typeof fetchPhases>> = [];
+  try {
+    phases = await fetchPhases(locale as 'en' | 'ar');
+  } catch (error) {
+    console.warn('Failed to fetch phases for resources page:', error);
+  }
 
   const t = await getTranslations('Resources');
 

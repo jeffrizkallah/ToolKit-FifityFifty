@@ -104,20 +104,31 @@ export default async function ModulePage({ params: { locale, slug, moduleSlug } 
   const isRTL = validLocale === 'ar';
 
   // Fetch module data
-  const moduleData = await getModuleBySlug(moduleSlug, { locale: validLocale });
+  let moduleData;
+  try {
+    moduleData = await getModuleBySlug(moduleSlug, { locale: validLocale });
+  } catch (error) {
+    console.error(`Failed to fetch module ${moduleSlug}:`, error);
+    notFound();
+  }
 
   if (!moduleData) {
     notFound();
   }
 
   const phase = moduleData.attributes.phase?.data;
-  
+
   if (!phase) {
     notFound();
   }
 
   // Fetch all modules in this phase for prev/next navigation
-  const allModules = await getModulesByPhase(slug, { locale: validLocale });
+  let allModules: Awaited<ReturnType<typeof getModulesByPhase>> = [];
+  try {
+    allModules = await getModulesByPhase(slug, { locale: validLocale });
+  } catch (error) {
+    console.warn(`Failed to fetch modules for phase ${slug}:`, error);
+  }
   const currentIndex = allModules.findIndex(m => m.id === moduleData.id);
   const prevModule = currentIndex > 0 ? allModules[currentIndex - 1] : null;
   const nextModule = currentIndex < allModules.length - 1 ? allModules[currentIndex + 1] : null;
