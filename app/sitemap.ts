@@ -10,12 +10,19 @@ import { getPhases } from '@/lib/cms-client';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://toolkit.fiftyfifty.org';
-  
+
   // Get all phases and modules for both locales
-  const [phasesEn, phasesAr] = await Promise.all([
-    getPhases({ locale: 'en' }),
-    getPhases({ locale: 'ar' }),
-  ]);
+  let phasesEn: Awaited<ReturnType<typeof getPhases>> = [];
+  let phasesAr: Awaited<ReturnType<typeof getPhases>> = [];
+
+  try {
+    [phasesEn, phasesAr] = await Promise.all([
+      getPhases({ locale: 'en' }).catch(() => []),
+      getPhases({ locale: 'ar' }).catch(() => []),
+    ]);
+  } catch (error) {
+    console.warn('Failed to fetch phases for sitemap, returning static routes only:', error);
+  }
 
   // Static routes
   const staticRoutes: MetadataRoute.Sitemap = [

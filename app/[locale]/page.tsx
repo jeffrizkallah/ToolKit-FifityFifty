@@ -35,14 +35,20 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   // Validate and cast locale
   const validLocale = (locale === 'ar' || locale === 'en') ? locale : 'en';
-  
+
   // Fetch settings for SEO
-  const settings = await getSettings({ locale: validLocale });
-  
-  const title = validLocale === 'ar' 
+  let settings;
+  try {
+    settings = await getSettings({ locale: validLocale });
+  } catch (error) {
+    console.warn('Failed to fetch settings for metadata:', error);
+    settings = null;
+  }
+
+  const title = validLocale === 'ar'
     ? settings?.attributes?.site_title_ar || 'أدوات FiftyFifty'
     : settings?.attributes?.site_title || 'FiftyFifty ToolKit';
-  
+
   const description = validLocale === 'ar'
     ? settings?.attributes?.hero_description_ar || 'منهجية شاملة ومنصة تعليمية لرواد الأعمال الاجتماعيين'
     : settings?.attributes?.hero_description || 'A comprehensive methodology and learning platform for social entrepreneurs';
@@ -88,15 +94,21 @@ export default async function HomePage({ params: { locale } }: { params: { local
   
   // Validate and cast locale
   const validLocale = (locale === 'ar' || locale === 'en') ? locale : 'en';
-  
+
   // Fetch CMS settings
-  const settings = await getSettings({ locale: validLocale });
-  
+  let settings;
+  try {
+    settings = await getSettings({ locale: validLocale });
+  } catch (error) {
+    console.warn('Failed to fetch settings for home page:', error);
+    settings = null;
+  }
+
   // Get hero content with fallbacks
   const headline = validLocale === 'ar'
     ? settings?.attributes?.hero_headline_ar || 'مكّن مجتمعك، ابنِ تغييراً دائماً'
     : settings?.attributes?.hero_headline || 'Empower Your Community, Build Lasting Change';
-  
+
   const description = validLocale === 'ar'
     ? settings?.attributes?.hero_description_ar || 'منهجية شاملة ومنصة تعليمية لرواد الأعمال الاجتماعيين وقادة المجتمع في العالم العربي.'
     : settings?.attributes?.hero_description || 'A comprehensive methodology and learning platform for social entrepreneurs and community leaders in the Arab world.';
@@ -104,10 +116,20 @@ export default async function HomePage({ params: { locale } }: { params: { local
   const heroVideoUrl = settings?.attributes?.hero_video_url;
 
   // Fetch phases for timeline
-  const phases = await getPhases({ locale: validLocale });
+  let phases: Awaited<ReturnType<typeof getPhases>> = [];
+  try {
+    phases = await getPhases({ locale: validLocale });
+  } catch (error) {
+    console.warn('Failed to fetch phases for home page:', error);
+  }
 
   // Fetch testimonials
-  const testimonials = await getTestimonials({ locale: validLocale });
+  let testimonials: Awaited<ReturnType<typeof getTestimonials>> = [];
+  try {
+    testimonials = await getTestimonials({ locale: validLocale });
+  } catch (error) {
+    console.warn('Failed to fetch testimonials for home page:', error);
+  }
 
   return (
     <main className="min-h-screen">

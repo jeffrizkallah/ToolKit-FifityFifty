@@ -116,17 +116,33 @@ export default async function PhasePage({ params: { locale, slug } }: PhasePageP
   const isRTL = validLocale === 'ar';
 
   // Fetch phase data
-  const phase = await getPhaseBySlug(slug, { locale: validLocale });
+  let phase;
+  try {
+    phase = await getPhaseBySlug(slug, { locale: validLocale });
+  } catch (error) {
+    console.error(`Failed to fetch phase ${slug}:`, error);
+    notFound();
+  }
 
   if (!phase) {
     notFound();
   }
 
   // Fetch modules for this phase
-  const modules = await getModulesByPhase(slug, { locale: validLocale });
+  let modules: Awaited<ReturnType<typeof getModulesByPhase>> = [];
+  try {
+    modules = await getModulesByPhase(slug, { locale: validLocale });
+  } catch (error) {
+    console.warn(`Failed to fetch modules for phase ${slug}:`, error);
+  }
 
   // Fetch all phases to determine next phase
-  const allPhases = await getPhases({ locale: validLocale });
+  let allPhases: Awaited<ReturnType<typeof getPhases>> = [];
+  try {
+    allPhases = await getPhases({ locale: validLocale });
+  } catch (error) {
+    console.warn('Failed to fetch all phases:', error);
+  }
   const currentPhaseIndex = allPhases.findIndex(p => p.id === phase.id);
   const nextPhase = currentPhaseIndex < allPhases.length - 1 ? allPhases[currentPhaseIndex + 1] : null;
   const totalPhases = allPhases.length;
