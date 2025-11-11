@@ -6,7 +6,7 @@ const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 
 const nextConfig = {
   reactStrictMode: true,
-  
+
   // Internationalization
   // Note: next-intl handles routing, so we don't use Next.js i18n config
   
@@ -116,6 +116,11 @@ const nextConfig = {
   eslint: {
     // Don't fail the build on ESLint errors in CI; we run lint separately locally
     ignoreDuringBuilds: true,
+  },
+  typescript: {
+    // Don't fail build on TypeScript errors during deployment
+    // Type checking is done separately in CI/CD
+    ignoreBuildErrors: true,
   },
   
   // Webpack configuration

@@ -4,6 +4,14 @@
   "installCommand": "npm install",
   "framework": "nextjs",
   "regions": ["iad1"],
+  "env": {
+    "CMS_OFFLINE": "1"
+  },
+  "build": {
+    "env": {
+      "CMS_OFFLINE": "1"
+    }
+  },
   "headers": [
     {
       "source": "/(.*)",
