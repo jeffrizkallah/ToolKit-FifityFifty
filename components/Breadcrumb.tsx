@@ -28,7 +28,7 @@ export function Breadcrumb({ items, locale }: BreadcrumbProps) {
 
   return (
     <nav 
-      className="flex items-center gap-2 text-sm"
+      className="flex items-center gap-2.5 text-sm font-medium"
       aria-label={isRTL ? 'مسار التنقل' : 'Breadcrumb navigation'}
     >
       {items.map((item, index) => {
@@ -36,11 +36,11 @@ export function Breadcrumb({ items, locale }: BreadcrumbProps) {
         const isCurrent = item.isCurrentPage || isLast;
 
         return (
-          <div key={index} className="flex items-center gap-2">
+          <div key={index} className="flex items-center gap-2.5">
             {/* Breadcrumb Item */}
             {isCurrent ? (
               <span 
-                className="text-gray-900 font-medium"
+                className="text-[#0041A8] font-semibold"
                 aria-current="page"
               >
                 {item.label}
@@ -48,18 +48,18 @@ export function Breadcrumb({ items, locale }: BreadcrumbProps) {
             ) : item.href ? (
               <Link 
                 href={item.href}
-                className="text-gray-600 hover:text-[#0063AF] transition-colors"
+                className="text-neutral-600 hover:text-[#0041A8] transition-colors duration-200"
               >
                 {item.label}
               </Link>
             ) : (
-              <span className="text-gray-600">{item.label}</span>
+              <span className="text-neutral-600">{item.label}</span>
             )}
 
             {/* Separator */}
             {!isLast && (
               <ChevronIcon 
-                className="h-4 w-4 text-gray-400" 
+                className="h-4 w-4 text-neutral-400" 
                 aria-hidden="true"
               />
             )}

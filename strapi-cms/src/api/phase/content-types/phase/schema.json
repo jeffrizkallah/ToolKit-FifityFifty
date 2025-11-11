@@ -16,7 +16,7 @@
     }
   },
   "attributes": {
-    "title": {
+    "Test": {
       "type": "string",
       "required": true,
       "maxLength": 100,
@@ -28,7 +28,6 @@
     },
     "slug": {
       "type": "uid",
-      "targetField": "title",
       "required": true
     },
     "description": {
@@ -66,4 +65,3 @@
     }
   }
 }
-

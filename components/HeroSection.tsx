@@ -21,7 +21,27 @@ export function HeroSection({ headline, description, onWatchVideo }: HeroSection
   };
 
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#0063AF] via-[#004a8a] to-[#003d73] rounded-3xl mx-4 my-8">
+    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#0041A8] via-[#0063AF] to-[#007BFF] rounded-2xl mx-4 my-8">
+      {/* Animated Gradient Overlay */}
+      <motion.div 
+        className="absolute inset-0 opacity-30"
+        animate={{
+          background: [
+            'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%)',
+            'radial-gradient(circle at 80% 50%, rgba(255,255,255,0.1) 0%, transparent 50%)',
+            'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%)',
+          ],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: 'easeInOut',
+        }}
+      />
+      
+      {/* Glass Blur Overlay */}
+      <div className="absolute inset-0 backdrop-blur-[1px] bg-white/5" />
+      
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
@@ -30,11 +50,45 @@ export function HeroSection({ headline, description, onWatchVideo }: HeroSection
         }} />
       </div>
 
+      {/* Animated Dots/Waves Pattern */}
+      <div className="absolute inset-0 overflow-hidden">
+        {Array.from({ length: 20 }, (_, i) => {
+          const positions = [
+            { left: 10, top: 20 }, { left: 85, top: 15 }, { left: 25, top: 60 },
+            { left: 70, top: 55 }, { left: 15, top: 80 }, { left: 90, top: 75 },
+            { left: 50, top: 40 }, { left: 35, top: 35 }, { left: 65, top: 25 },
+            { left: 20, top: 45 }, { left: 80, top: 50 }, { left: 40, top: 70 },
+            { left: 75, top: 65 }, { left: 30, top: 10 }, { left: 60, top: 85 },
+            { left: 5, top: 30 }, { left: 95, top: 40 }, { left: 45, top: 15 },
+            { left: 55, top: 90 }, { left: 12, top: 65 }
+          ];
+          return (
+            <motion.div
+              key={i}
+              className="absolute w-2 h-2 bg-white/20 rounded-full"
+              style={{
+                left: `${positions[i]?.left || 50}%`,
+                top: `${positions[i]?.top || 50}%`,
+              }}
+              animate={{
+                y: [0, -30, 0],
+                opacity: [0.2, 0.5, 0.2],
+              }}
+              transition={{
+                duration: 3 + (i % 3),
+                repeat: Infinity,
+                delay: (i * 0.2) % 4,
+              }}
+            />
+          );
+        })}
+      </div>
+
       {/* Content Container */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 py-20 text-center">
         {/* Hero Headline */}
         <motion.h1
-          className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6"
+          className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white mb-4 tracking-tight"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
@@ -44,7 +98,7 @@ export function HeroSection({ headline, description, onWatchVideo }: HeroSection
 
         {/* Hero Description */}
         <motion.p
-          className="text-lg md:text-xl lg:text-2xl text-purple-100 mb-12 max-w-4xl mx-auto leading-relaxed"
+          className="text-lg md:text-xl lg:text-xl text-white/90 mb-10 max-w-[600px] mx-auto leading-relaxed font-normal"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
@@ -52,9 +106,9 @@ export function HeroSection({ headline, description, onWatchVideo }: HeroSection
           {description}
         </motion.p>
 
-        {/* CTA Buttons */}
+        {/* Single Primary CTA */}
         <motion.div
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+          className="flex flex-col items-center gap-6"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4, ease: 'easeOut' }}
@@ -62,18 +116,17 @@ export function HeroSection({ headline, description, onWatchVideo }: HeroSection
           <Button
             size="lg"
             onClick={handleScrollToPhases}
-            className="bg-white text-red-600 hover:bg-red-50 px-8 py-6 text-lg font-semibold shadow-lg transition-all hover:scale-105"
+            className="px-10 py-6 text-lg font-extrabold shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 rounded-full tracking-wide"
           >
             {t('startJourney')}
           </Button>
-          <Button
-            size="lg"
-            variant="outline"
+          {/* Watch Video as Link Below */}
+          <button
             onClick={onWatchVideo}
-            className="border-2 border-white text-white hover:bg-white hover:text-purple-900 px-8 py-6 text-lg font-semibold transition-all hover:scale-105"
+            className="text-white/80 hover:text-white text-sm font-medium underline-offset-4 hover:underline transition-all"
           >
             {t('watchVideo')}
-          </Button>
+          </button>
         </motion.div>
 
         {/* Scroll Indicator */}

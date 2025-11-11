@@ -1,5 +1,7 @@
+'use client';
+
 import { Phase } from '@/lib/types/cms';
-import { PhaseCard } from './PhaseCard';
+import { HoverEffect } from './ui/card-hover-effect';
 
 interface TimelineProps {
   phases: Phase[];
@@ -10,15 +12,28 @@ export function Timeline({ phases, locale }: TimelineProps) {
   // Sort phases by order
   const sortedPhases = [...phases].sort((a, b) => a.attributes.order - b.attributes.order);
 
+  // Strip HTML tags from description
+  const stripHtml = (html: string) => {
+    return html.replace(/<[^>]*>/g, '').substring(0, 150) + '...';
+  };
+
+  // Transform phases to HoverEffect items
+  const hoverEffectItems = sortedPhases.map((phase) => ({
+    title: phase.attributes.title,
+    description: stripHtml(phase.attributes.description),
+    link: `/${locale}/phase/${phase.attributes.slug}`,
+    phaseNumber: phase.attributes.phase_number,
+  }));
+
   return (
-    <section className="py-20 px-6 bg-gray-50">
+    <section className="py-20 px-6">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl md:text-5xl font-extrabold text-[#0041A8] mb-3 tracking-tight">
             {locale === 'ar' ? 'المراحل الستة' : 'The Six Phases'}
           </h2>
-          <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto font-normal leading-relaxed">
             {locale === 'ar' 
               ? 'رحلة شاملة من الاكتشاف إلى الاستدامة، مصممة لتمكين المجتمعات وبناء تأثير دائم'
               : 'Step-by-step guidance for every woman ready to run for change'
@@ -26,20 +41,8 @@ export function Timeline({ phases, locale }: TimelineProps) {
           </p>
         </div>
 
-        {/* Timeline Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {sortedPhases.map((phase, index) => (
-            <PhaseCard
-              key={phase.id}
-              phaseNumber={phase.attributes.phase_number}
-              title={phase.attributes.title}
-              description={phase.attributes.description}
-              slug={phase.attributes.slug}
-              locale={locale}
-              index={index}
-            />
-          ))}
-        </div>
+        {/* Hover Effect Cards */}
+        <HoverEffect items={hoverEffectItems} className="gap-8" />
 
         {/* Journey Callout */}
         <div className="mt-16 text-center">

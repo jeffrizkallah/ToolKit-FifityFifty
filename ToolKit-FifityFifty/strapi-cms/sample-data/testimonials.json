@@ -1,0 +1,48 @@
+[
+  {
+    "name": "Fatima Al-Hassan",
+    "name_ar": "فاطمة الحسن",
+    "quote": "The FiftyFifty ToolKit transformed how we approach community development. The structured phases helped us go from a vague idea to a thriving youth program in just 6 months.",
+    "quote_ar": "حولت مجموعة أدوات FiftyFifty الطريقة التي نتعامل بها مع تنمية المجتمع. ساعدتنا المراحل المنظمة في الانتقال من فكرة غامضة إلى برنامج شبابي مزدهر في 6 أشهر فقط.",
+    "role": "Community Development Director, Cairo",
+    "role_ar": "مدير تنمية المجتمع، القاهرة",
+    "order": 1
+  },
+  {
+    "name": "Ahmed Khalil",
+    "name_ar": "أحمد خليل",
+    "quote": "As a first-time social entrepreneur, I was overwhelmed. This toolkit gave me the confidence and practical tools to turn my passion for education into a sustainable nonprofit.",
+    "quote_ar": "كرجل أعمال اجتماعي لأول مرة، كنت مرتبكاً. أعطتني مجموعة الأدوات هذه الثقة والأدوات العملية لتحويل شغفي بالتعليم إلى منظمة غير ربحية مستدامة.",
+    "role": "Founder, Learn Together Initiative",
+    "role_ar": "المؤسس، مبادرة التعلم معاً",
+    "order": 2
+  },
+  {
+    "name": "Layla Mansour",
+    "name_ar": "ليلى منصور",
+    "quote": "The video modules are perfectly designed - short, practical, and culturally relevant. I could learn during my commute and immediately apply the concepts to my women's empowerment project.",
+    "quote_ar": "تم تصميم وحدات الفيديو بشكل مثالي - قصيرة وعملية وذات صلة ثقافية. كان بإمكاني التعلم أثناء تنقلاتي وتطبيق المفاهيم فوراً على مشروع تمكين المرأة.",
+    "role": "Project Manager, Women's Rights NGO",
+    "role_ar": "مدير المشروع، منظمة حقوق المرأة",
+    "order": 3
+  },
+  {
+    "name": "Omar Saeed",
+    "name_ar": "عمر سعيد",
+    "quote": "What I appreciate most is the focus on sustainability from day one. Too many programs fail after initial funding ends, but this toolkit helped us build a model that lasts.",
+    "quote_ar": "ما أقدره أكثر هو التركيز على الاستدامة منذ اليوم الأول. تفشل العديد من البرامج بعد انتهاء التمويل الأولي، لكن مجموعة الأدوات هذه ساعدتنا في بناء نموذج دائم.",
+    "role": "Executive Director, Environmental Action Group",
+    "role_ar": "المدير التنفيذي، مجموعة العمل البيئي",
+    "order": 4
+  },
+  {
+    "name": "Nour Ibrahim",
+    "name_ar": "نور إبراهيم",
+    "quote": "The bilingual resources were a game-changer for our team. We could work in Arabic while accessing international best practices. The templates saved us countless hours.",
+    "quote_ar": "كانت الموارد ثنائية اللغة بمثابة تغيير جذري لفريقنا. كان بإمكاننا العمل باللغة العربية مع الوصول إلى أفضل الممارسات الدولية. وفرت لنا القوالب ساعات لا تحصى.",
+    "role": "Program Coordinator, Health Awareness Campaign",
+    "role_ar": "منسق البرنامج، حملة التوعية الصحية",
+    "order": 5
+  }
+]
+

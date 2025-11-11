@@ -38,8 +38,10 @@ export function Footer({ locale }: FooterProps) {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gray-900 text-white" role="contentinfo">
-      <div className="container py-12 mx-auto max-w-6xl">
+    <footer className="bg-gradient-to-br from-gray-800 via-gray-800 to-gray-900 text-white relative overflow-hidden" role="contentinfo">
+      {/* Subtle Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-gray-900/50 to-transparent pointer-events-none" />
+      <div className="container py-12 mx-auto max-w-6xl relative z-10">
         {/* Top Section: Logos and Navigation */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {/* Logo Section */}
@@ -110,23 +112,34 @@ export function Footer({ locale }: FooterProps) {
         {/* Bottom Section: Social Media, Language Toggle, and Copyright */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           {/* Social Media Links */}
-          <nav className="flex items-center gap-4" aria-label="Social media links">
+          <nav className="flex items-center gap-3" aria-label="Social media links">
             {socialLinks.map((social) => {
               const Icon = social.icon;
               return (
                 <a
                   key={social.name}
                   href={social.href}
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-400 hover:text-white transition-all duration-300 hover:scale-110 rounded-full p-2 hover:bg-white/10"
                   aria-label={`${social.name} ${locale === 'ar' ? '(يفتح في نافذة جديدة)' : '(opens in new window)'}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Icon className="h-5 w-5" />
+                  <Icon className="h-4 w-4" />
                 </a>
               );
             })}
           </nav>
+          
+          {/* Back to Top Button */}
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="text-gray-400 hover:text-white transition-all duration-300 hover:scale-110 rounded-full p-2 hover:bg-white/10"
+            aria-label={locale === 'ar' ? 'العودة إلى الأعلى' : 'Back to top'}
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+          </button>
 
           {/* Copyright */}
           <div className="text-gray-400 text-sm text-center">

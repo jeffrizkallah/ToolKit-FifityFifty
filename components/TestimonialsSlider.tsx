@@ -63,13 +63,13 @@ export function TestimonialsSlider({ testimonials, locale }: TestimonialsSliderP
   }
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16">
       <div className="container mx-auto max-w-6xl">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-[#0041A8] mb-3 tracking-tight">
             {locale === 'ar' ? 'قصص النجاح' : 'Success Stories'}
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-gray-600 max-w-2xl mx-auto font-normal">
             {locale === 'ar' 
               ? 'اكتشف كيف أحدث قادة المجتمع تغييراً إيجابياً في مجتمعاتهم'
               : 'Discover how community leaders have made a positive impact in their communities'}
@@ -78,8 +78,8 @@ export function TestimonialsSlider({ testimonials, locale }: TestimonialsSliderP
 
         <div className="relative">
           {/* Carousel */}
-          <div className="overflow-hidden" ref={emblaRef}>
-            <div className="flex">
+        <div className="overflow-hidden py-6" ref={emblaRef}>
+          <div className="flex">
               {testimonials.map((testimonial) => {
                 const photoUrl = testimonial.attributes.photo?.data?.attributes?.url;
                 const fullPhotoUrl = photoUrl ? getMediaUrl(photoUrl) : null;
@@ -87,41 +87,45 @@ export function TestimonialsSlider({ testimonials, locale }: TestimonialsSliderP
                 return (
                   <div
                     key={testimonial.id}
-                    className="flex-[0_0_100%] min-w-0 px-4 sm:flex-[0_0_50%] lg:flex-[0_0_33.333%]"
-                  >
-                    <div className="bg-white rounded-lg shadow-md p-6 h-full flex flex-col max-h-80">
-                      {/* Photo */}
-                      {fullPhotoUrl && (
-                        <div className="mb-4 flex justify-center">
-                          <div className="relative w-20 h-20 rounded-full overflow-hidden">
+                    className="flex-[0_0_100%] min-w-0 px-3 sm:px-4 lg:px-5 sm:flex-[0_0_50%] lg:flex-[0_0_33.333%]">
+                    <div className="glass-component glass-layered bg-white rounded-2xl shadow-soft hover:shadow-elevated p-8 h-full flex flex-col transition-all duration-300 border border-neutral-100 hover:border-[#0063AF]/40">
+                      {/* Quote Icon */}
+                      <div className="mb-4 flex items-start">
+                        <svg className="w-8 h-8 text-[#0063AF]/30" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.996 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.984zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                        </svg>
+                      </div>
+                      
+                      {/* Quote */}
+                      <blockquote className="flex-1 mb-6">
+                        <p className="text-gray-700 text-base leading-relaxed font-normal">
+                          "{testimonial.attributes.quote}"
+                        </p>
+                      </blockquote>
+
+                      {/* Photo and Attribution */}
+                      <div className="flex items-center gap-4 pt-4 border-t border-neutral-200">
+                        {fullPhotoUrl && (
+                          <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border-2 border-[#0063AF]/20">
                             <Image
                               src={fullPhotoUrl}
                               alt={testimonial.attributes.name}
                               fill
                               className="object-cover"
-                              sizes="80px"
+                              sizes="48px"
                             />
                           </div>
-                        </div>
-                      )}
-
-                      {/* Quote */}
-                      <blockquote className="flex-1 mb-4">
-                        <p className="text-gray-700 text-lg leading-relaxed">
-                          "{testimonial.attributes.quote}"
-                        </p>
-                      </blockquote>
-
-                      {/* Attribution */}
-                      <div className="text-center">
-                        <p className="font-semibold text-[#0063AF]">
-                          {testimonial.attributes.name}
-                        </p>
-                        {testimonial.attributes.role && (
-                          <p className="text-sm text-gray-600">
-                            {testimonial.attributes.role}
-                          </p>
                         )}
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold text-[#0041A8] text-sm">
+                            {testimonial.attributes.name}
+                          </p>
+                          {testimonial.attributes.role && (
+                            <p className="text-xs text-gray-600 mt-0.5">
+                              {testimonial.attributes.role}
+                            </p>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>

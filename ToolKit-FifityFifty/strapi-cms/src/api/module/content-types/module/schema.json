@@ -1,0 +1,86 @@
+{
+  "kind": "collectionType",
+  "collectionName": "modules",
+  "info": {
+    "singularName": "module",
+    "pluralName": "modules",
+    "displayName": "Module",
+    "description": "Educational modules/topics within each phase (2-minute learning topics)"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "maxLength": 200,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "summary": {
+      "type": "text",
+      "required": true,
+      "maxLength": 500,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "video_url": {
+      "type": "string",
+      "maxLength": 500,
+      "regex": "^(https?:\\/\\/)?(www\\.)?(youtube\\.com|youtu\\.be|vimeo\\.com)\\/.+$"
+    },
+    "video_subtitle_url_en": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "video_subtitle_url_ar": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "key_takeaways": {
+      "type": "richtext",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "order": {
+      "type": "integer",
+      "required": true,
+      "min": 1,
+      "max": 100,
+      "default": 1
+    },
+    "phase": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::phase.phase",
+      "inversedBy": "modules"
+    },
+    "resources": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::resource.resource",
+      "mappedBy": "module"
+    }
+  }
+}
+

@@ -1,0 +1,89 @@
+{
+  "phases": [
+    {
+      "title": "Discovery",
+      "slug": "discovery",
+      "description": "<p>The Discovery phase is the foundation of the FiftyFifty methodology. In this phase, participants learn to identify community needs, understand stakeholder perspectives, and gather essential information through various research methods.</p>\n\n<h3>Key Learning Outcomes</h3>\n<ul>\n<li>Understanding community needs assessment</li>\n<li>Stakeholder identification and mapping</li>\n<li>Basic research methodologies</li>\n<li>Data collection techniques</li>\n</ul>",
+      "order": 1,
+      "phase_number": 1,
+      "header_video_url": "https://www.youtube.com/watch?v=example1",
+      "localizations": {
+        "ar": {
+          "title": "الاكتشاف",
+          "description": "<p>مرحلة الاكتشاف هي أساس منهجية فيفتي فيفتي. في هذه المرحلة، يتعلم المشاركون كيفية تحديد احتياجات المجتمع، وفهم وجهات نظر أصحاب المصلحة، وجمع المعلومات الأساسية من خلال أساليب البحث المختلفة.</p>\n\n<h3>نتائج التعلم الرئيسية</h3>\n<ul>\n<li>فهم تقييم احتياجات المجتمع</li>\n<li>تحديد ورسم خريطة أصحاب المصلحة</li>\n<li>منهجيات البحث الأساسية</li>\n<li>تقنيات جمع البيانات</li>\n</ul>"
+        }
+      }
+    },
+    {
+      "title": "Strategy",
+      "slug": "strategy",
+      "description": "<p>The Strategy phase focuses on transforming insights from the Discovery phase into actionable plans. Participants learn strategic planning, goal setting, and resource allocation.</p>\n\n<h3>Key Learning Outcomes</h3>\n<ul>\n<li>Strategic planning frameworks</li>\n<li>SMART goal setting</li>\n<li>Resource mapping and allocation</li>\n<li>Theory of Change development</li>\n</ul>",
+      "order": 2,
+      "phase_number": 2,
+      "header_video_url": "https://www.youtube.com/watch?v=example2",
+      "localizations": {
+        "ar": {
+          "title": "الاستراتيجية",
+          "description": "<p>تركز مرحلة الاستراتيجية على تحويل الرؤى من مرحلة الاكتشاف إلى خطط قابلة للتنفيذ. يتعلم المشاركون التخطيط الاستراتيجي، وتحديد الأهداف، وتخصيص الموارد.</p>\n\n<h3>نتائج التعلم الرئيسية</h3>\n<ul>\n<li>أطر التخطيط الاستراتيجي</li>\n<li>تحديد الأهداف الذكية (SMART)</li>\n<li>رسم خريطة الموارد وتخصيصها</li>\n<li>تطوير نظرية التغيير</li>\n</ul>"
+        }
+      }
+    },
+    {
+      "title": "Design",
+      "slug": "design",
+      "description": "<p>The Design phase emphasizes creative problem-solving and solution development. Participants learn design thinking methodologies and how to create innovative, user-centered solutions.</p>\n\n<h3>Key Learning Outcomes</h3>\n<ul>\n<li>Design thinking principles</li>\n<li>User-centered design</li>\n<li>Prototyping and iteration</li>\n<li>Innovation frameworks</li>\n</ul>",
+      "order": 3,
+      "phase_number": 3,
+      "header_video_url": "https://www.youtube.com/watch?v=example3",
+      "localizations": {
+        "ar": {
+          "title": "التصميم",
+          "description": "<p>تؤكد مرحلة التصميم على حل المشكلات الإبداعي وتطوير الحلول. يتعلم المشاركون منهجيات التفكير التصميمي وكيفية إنشاء حلول مبتكرة تركز على المستخدم.</p>\n\n<h3>نتائج التعلم الرئيسية</h3>\n<ul>\n<li>مبادئ التفكير التصميمي</li>\n<li>التصميم المرتكز على المستخدم</li>\n<li>النماذج الأولية والتكرار</li>\n<li>أطر الابتكار</li>\n</ul>"
+        }
+      }
+    },
+    {
+      "title": "Implementation",
+      "slug": "implementation",
+      "description": "<p>The Implementation phase brings plans to life. Participants learn project management, team coordination, and execution strategies to successfully implement their initiatives.</p>\n\n<h3>Key Learning Outcomes</h3>\n<ul>\n<li>Project management fundamentals</li>\n<li>Team building and coordination</li>\n<li>Risk management</li>\n<li>Budget management</li>\n</ul>",
+      "order": 4,
+      "phase_number": 4,
+      "header_video_url": "https://www.youtube.com/watch?v=example4",
+      "localizations": {
+        "ar": {
+          "title": "التنفيذ",
+          "description": "<p>تحيي مرحلة التنفيذ الخطط. يتعلم المشاركون إدارة المشاريع، وتنسيق الفرق، واستراتيجيات التنفيذ لتنفيذ مبادراتهم بنجاح.</p>\n\n<h3>نتائج التعلم الرئيسية</h3>\n<ul>\n<li>أساسيات إدارة المشاريع</li>\n<li>بناء الفريق والتنسيق</li>\n<li>إدارة المخاطر</li>\n<li>إدارة الميزانية</li>\n</ul>"
+        }
+      }
+    },
+    {
+      "title": "Monitoring & Evaluation",
+      "slug": "monitoring-evaluation",
+      "description": "<p>The Monitoring & Evaluation phase focuses on measuring impact and learning from outcomes. Participants learn to track progress, analyze results, and adapt their approach based on evidence.</p>\n\n<h3>Key Learning Outcomes</h3>\n<ul>\n<li>M&E framework development</li>\n<li>Indicator selection and tracking</li>\n<li>Data analysis and interpretation</li>\n<li>Impact assessment</li>\n</ul>",
+      "order": 5,
+      "phase_number": 5,
+      "header_video_url": "https://www.youtube.com/watch?v=example5",
+      "localizations": {
+        "ar": {
+          "title": "المراقبة والتقييم",
+          "description": "<p>تركز مرحلة المراقبة والتقييم على قياس التأثير والتعلم من النتائج. يتعلم المشاركون تتبع التقدم، وتحليل النتائج، وتكييف نهجهم بناءً على الأدلة.</p>\n\n<h3>نتائج التعلم الرئيسية</h3>\n<ul>\n<li>تطوير إطار المراقبة والتقييم</li>\n<li>اختيار المؤشرات وتتبعها</li>\n<li>تحليل البيانات وتفسيرها</li>\n<li>تقييم الأثر</li>\n</ul>"
+        }
+      }
+    },
+    {
+      "title": "Sustainability",
+      "slug": "sustainability",
+      "description": "<p>The Sustainability phase ensures long-term impact and continuity. Participants learn to build sustainable models, secure ongoing support, and create lasting change in their communities.</p>\n\n<h3>Key Learning Outcomes</h3>\n<ul>\n<li>Sustainability planning</li>\n<li>Partnership development</li>\n<li>Funding diversification</li>\n<li>Knowledge transfer and capacity building</li>\n</ul>",
+      "order": 6,
+      "phase_number": 6,
+      "header_video_url": "https://www.youtube.com/watch?v=example6",
+      "localizations": {
+        "ar": {
+          "title": "الاستدامة",
+          "description": "<p>تضمن مرحلة الاستدامة التأثير طويل الأجل والاستمرارية. يتعلم المشاركون بناء نماذج مستدامة، وتأمين الدعم المستمر، وخلق تغيير دائم في مجتمعاتهم.</p>\n\n<h3>نتائج التعلم الرئيسية</h3>\n<ul>\n<li>تخطيط الاستدامة</li>\n<li>تطوير الشراكات</li>\n<li>تنويع التمويل</li>\n<li>نقل المعرفة وبناء القدرات</li>\n</ul>"
+        }
+      }
+    }
+  ]
+}
+

@@ -1,0 +1,126 @@
+# =============================================================================
+# FIFTYFIFTY TOOLKIT - CODE OWNERS
+# =============================================================================
+#
+# This file defines code ownership for automated review assignments.
+# Learn more: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+#
+# Format: path/pattern @github-username @github-team
+# The last matching pattern takes precedence.
+#
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Default Owners (fallback for all files)
+# -----------------------------------------------------------------------------
+# These users/teams will be requested for review if no other rule matches
+*                           @fiftyfifty-team/core-team
+
+# -----------------------------------------------------------------------------
+# Frontend Code
+# -----------------------------------------------------------------------------
+# Next.js app code, components, and UI
+/app/**                     @fiftyfifty-team/frontend
+/components/**              @fiftyfifty-team/frontend
+/styles/**                  @fiftyfifty-team/frontend
+/public/**                  @fiftyfifty-team/frontend
+
+# shadcn/ui components (requires design review)
+/components/ui/**           @fiftyfifty-team/frontend @fiftyfifty-team/design
+
+# -----------------------------------------------------------------------------
+# Backend & API
+# -----------------------------------------------------------------------------
+/app/api/**                 @fiftyfifty-team/backend
+
+# -----------------------------------------------------------------------------
+# Libraries & Utilities
+# -----------------------------------------------------------------------------
+/lib/**                     @fiftyfifty-team/backend @fiftyfifty-team/frontend
+
+# CMS integration
+/lib/cms/**                 @fiftyfifty-team/backend
+
+# -----------------------------------------------------------------------------
+# Internationalization
+# -----------------------------------------------------------------------------
+/messages/**                @fiftyfifty-team/i18n
+/i18n.ts                    @fiftyfifty-team/i18n
+/middleware.ts              @fiftyfifty-team/backend @fiftyfifty-team/i18n
+
+# -----------------------------------------------------------------------------
+# Configuration Files
+# -----------------------------------------------------------------------------
+# Critical config files require senior review
+/package.json               @fiftyfifty-team/core-team
+/package-lock.json          @fiftyfifty-team/core-team
+/tsconfig.json              @fiftyfifty-team/core-team
+/next.config.mjs            @fiftyfifty-team/core-team
+/tailwind.config.ts         @fiftyfifty-team/frontend @fiftyfifty-team/design
+/postcss.config.mjs         @fiftyfifty-team/frontend
+/components.json            @fiftyfifty-team/frontend
+
+# -----------------------------------------------------------------------------
+# DevOps & Infrastructure
+# -----------------------------------------------------------------------------
+/.github/**                 @fiftyfifty-team/devops
+/.github/workflows/**       @fiftyfifty-team/devops
+/vercel.json                @fiftyfifty-team/devops
+/.gitignore                 @fiftyfifty-team/devops
+
+# Environment variables (critical security)
+/env.example                @fiftyfifty-team/devops @fiftyfifty-team/core-team
+
+# -----------------------------------------------------------------------------
+# Documentation
+# -----------------------------------------------------------------------------
+/docs/**                    @fiftyfifty-team/tech-lead
+/README.md                  @fiftyfifty-team/tech-lead
+/BRANCHING_STRATEGY.md      @fiftyfifty-team/tech-lead
+
+# User stories and epics
+/docs/stories/**            @fiftyfifty-team/product @fiftyfifty-team/tech-lead
+/docs/epics/**              @fiftyfifty-team/product @fiftyfifty-team/tech-lead
+
+# Architecture documentation (requires architect review)
+/docs/architecture/**       @fiftyfifty-team/architects @fiftyfifty-team/tech-lead
+
+# -----------------------------------------------------------------------------
+# Testing & QA
+# -----------------------------------------------------------------------------
+/tests/**                   @fiftyfifty-team/qa
+/e2e/**                     @fiftyfifty-team/qa
+/cypress/**                 @fiftyfifty-team/qa
+/playwright/**              @fiftyfifty-team/qa
+
+# -----------------------------------------------------------------------------
+# Design System
+# -----------------------------------------------------------------------------
+/styles/design-tokens.md    @fiftyfifty-team/design @fiftyfifty-team/frontend
+
+# =============================================================================
+# Team Structure Reference
+# =============================================================================
+#
+# @fiftyfifty-team/core-team       - Core team members (all senior developers)
+# @fiftyfifty-team/frontend        - Frontend developers
+# @fiftyfifty-team/backend         - Backend developers
+# @fiftyfifty-team/design          - UI/UX designers
+# @fiftyfifty-team/devops          - DevOps engineers
+# @fiftyfifty-team/qa              - QA engineers
+# @fiftyfifty-team/i18n            - Internationalization specialists
+# @fiftyfifty-team/product         - Product owners
+# @fiftyfifty-team/tech-lead       - Technical leads
+# @fiftyfifty-team/architects      - Solution architects
+#
+# =============================================================================
+# Notes for Maintainers
+# =============================================================================
+#
+# - Teams should be created in GitHub organization settings
+# - Individual users can be added using @username syntax
+# - Glob patterns are supported (*, **, ?)
+# - More specific patterns override general ones
+# - Review this file when team structure changes
+#
+# =============================================================================

@@ -1,0 +1,101 @@
+{
+  "HomePage": {
+    "title": "FiftyFifty ToolKit",
+    "welcome": "Welcome to FiftyFifty ToolKit",
+    "description": "Building sustainable communities through social responsibility",
+    "hero": {
+      "startJourney": "Start Your Journey",
+      "watchVideo": "Watch Video",
+      "scrollToPhases": "Explore the 6 Phases"
+    }
+  },
+  "Navigation": {
+    "home": "Home",
+    "about": "About",
+    "initiatives": "Initiatives",
+    "tools": "Tools",
+    "contact": "Contact",
+    "language": "Language"
+  },
+  "Common": {
+    "readMore": "Read More",
+    "learnMore": "Learn More",
+    "getStarted": "Get Started",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "notFound": "Page not found",
+    "backToHome": "Back to Home"
+  },
+  "CookieConsent": {
+    "title": "We use cookies",
+    "description": "We use cookies and tracking technologies to improve your experience and analyze site usage. We use Google Analytics to collect anonymized data about how you interact with our site. We do not collect personal information.",
+    "privacyLink": "Read our full Privacy Policy",
+    "accept": "✓ Accept",
+    "decline": "✕ Decline"
+  },
+  "Privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last Updated",
+    "sections": {
+      "intro": "Introduction",
+      "dataCollection": "Data We Collect",
+      "dataUse": "How We Use Data",
+      "cookies": "Cookies and Tracking",
+      "thirdParty": "Third-Party Services",
+      "dataProtection": "Data Protection",
+      "yourRights": "Your Rights",
+      "contact": "Contact Us"
+    }
+  },
+  "Progress": {
+    "markComplete": "Mark as Complete",
+    "markIncomplete": "Mark as Incomplete",
+    "completed": "Completed",
+    "yourProgress": "Your Progress",
+    "completedModules": "{count} of {total} modules completed",
+    "percentComplete": "{percent}% Complete",
+    "resumeWhere": "Resume where you left off",
+    "resetProgress": "Reset Progress",
+    "resetConfirm": "Are you sure you want to reset all progress?",
+    "congratulations": "Congratulations!",
+    "allComplete": "You've completed all modules!"
+  },
+  "Search": {
+    "placeholder": "Search phases and modules...",
+    "searchLabel": "Search",
+    "clearSearch": "Clear search",
+    "noResults": "No results found for \"{query}\"",
+    "noResultsHint": "Try different keywords or check your spelling",
+    "resultsCount": "{count, plural, =1 {1 result} other {# results}} found for \"{query}\"",
+    "typePhase": "Phase",
+    "typeModule": "Module",
+    "searchButton": "Search",
+    "searching": "Searching..."
+  },
+  "Filter": {
+    "filterBy": "Filter by:",
+    "clearFilters": "Clear Filters",
+    "activeFilters": "Active filters",
+    "noItemsMatch": "No items match the selected filters",
+    "showingFiltered": "Showing {count, plural, =1 {1 item} other {# items}}"
+  },
+  "Resources": {
+    "pageTitle": "Resource Library",
+    "pageDescription": "Browse and download all resources from the FiftyFifty ToolKit",
+    "download": "Download",
+    "allFiles": "All Files",
+    "searchPlaceholder": "Search resources...",
+    "filterByType": "Filter by file type",
+    "groupBy": "Group by",
+    "byPhase": "Phase",
+    "byModule": "Module",
+    "byFileType": "File Type",
+    "showing": "Showing",
+    "of": "of",
+    "resources": "resources",
+    "clearAllFilters": "Clear all filters",
+    "noResourcesMatch": "No resources match your filters",
+    "noResourcesAvailable": "No resources available"
+  }
+}
+

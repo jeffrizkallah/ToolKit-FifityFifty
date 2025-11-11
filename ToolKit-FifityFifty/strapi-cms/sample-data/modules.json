@@ -1,0 +1,63 @@
+[
+  {
+    "title": "Understanding Community Needs",
+    "title_ar": "فهم احتياجات المجتمع",
+    "slug": "understanding-community-needs",
+    "summary": "Learn how to identify and assess the real needs of your community through effective listening and observation techniques.",
+    "summary_ar": "تعلم كيفية تحديد وتقييم الاحتياجات الحقيقية لمجتمعك من خلال تقنيات الاستماع والملاحظة الفعالة.",
+    "video_url": "https://www.youtube.com/watch?v=sample-video-1",
+    "video_subtitle_url_en": "https://example.com/subtitles/module1-en.vtt",
+    "video_subtitle_url_ar": "https://example.com/subtitles/module1-ar.vtt",
+    "key_takeaways": "<ul><li>Active listening is crucial for understanding community needs</li><li>Use surveys and interviews to gather data</li><li>Observe community behavior and patterns</li><li>Prioritize needs based on urgency and impact</li></ul>",
+    "key_takeaways_ar": "<ul><li>الاستماع الفعال ضروري لفهم احتياجات المجتمع</li><li>استخدم الاستبيانات والمقابلات لجمع البيانات</li><li>راقب سلوك المجتمع وأنماطه</li><li>حدد أولويات الاحتياجات بناءً على الإلحاح والتأثير</li></ul>",
+    "order": 1,
+    "phase_slug": "discovery",
+    "phase_number": 1
+  },
+  {
+    "title": "Stakeholder Mapping",
+    "title_ar": "رسم خريطة أصحاب المصلحة",
+    "slug": "stakeholder-mapping",
+    "summary": "Identify and analyze key stakeholders who can influence or be affected by your community initiative.",
+    "summary_ar": "حدد وقم بتحليل أصحاب المصلحة الرئيسيين الذين يمكن أن يؤثروا أو يتأثروا بمبادرتك المجتمعية.",
+    "video_url": "https://www.youtube.com/watch?v=sample-video-2",
+    "video_subtitle_url_en": "https://example.com/subtitles/module2-en.vtt",
+    "video_subtitle_url_ar": "https://example.com/subtitles/module2-ar.vtt",
+    "key_takeaways": "<ul><li>Identify all potential stakeholders early</li><li>Categorize stakeholders by influence and interest</li><li>Build relationships with key stakeholders</li><li>Create communication plans for each stakeholder group</li></ul>",
+    "key_takeaways_ar": "<ul><li>حدد جميع أصحاب المصلحة المحتملين مبكراً</li><li>صنف أصحاب المصلحة حسب التأثير والاهتمام</li><li>ابني علاقات مع أصحاب المصلحة الرئيسيين</li><li>أنشئ خطط اتصال لكل مجموعة من أصحاب المصلحة</li></ul>",
+    "order": 2,
+    "phase_slug": "discovery",
+    "phase_number": 1
+  },
+  {
+    "title": "Research Methodologies",
+    "title_ar": "منهجيات البحث",
+    "slug": "research-methodologies",
+    "summary": "Explore different research methods to gather reliable data about your community and their needs.",
+    "summary_ar": "استكشف طرق البحث المختلفة لجمع بيانات موثوقة عن مجتمعك واحتياجاتهم.",
+    "video_url": "https://www.youtube.com/watch?v=sample-video-3",
+    "video_subtitle_url_en": "https://example.com/subtitles/module3-en.vtt",
+    "video_subtitle_url_ar": "https://example.com/subtitles/module3-ar.vtt",
+    "key_takeaways": "<ul><li>Qualitative vs quantitative research methods</li><li>Design effective surveys and questionnaires</li><li>Conduct meaningful interviews and focus groups</li><li>Analyze and interpret research data</li></ul>",
+    "key_takeaways_ar": "<ul><li>طرق البحث النوعي مقابل الكمي</li><li>صمم استبيانات واستبيانات فعالة</li><li>أجر مقابلات ومجموعات تركيز ذات مغزى</li><li>حلل وفسر بيانات البحث</li></ul>",
+    "order": 3,
+    "phase_slug": "discovery",
+    "phase_number": 1
+  },
+  {
+    "title": "Community Asset Mapping",
+    "title_ar": "رسم خريطة أصول المجتمع",
+    "slug": "community-asset-mapping",
+    "summary": "Discover the existing strengths, resources, and assets within your community that can support your initiative.",
+    "summary_ar": "اكتشف نقاط القوة والموارد والأصول الموجودة في مجتمعك والتي يمكن أن تدعم مبادرتك.",
+    "video_url": "https://www.youtube.com/watch?v=sample-video-4",
+    "video_subtitle_url_en": "https://example.com/subtitles/module4-en.vtt",
+    "video_subtitle_url_ar": "https://example.com/subtitles/module4-ar.vtt",
+    "key_takeaways": "<ul><li>Focus on strengths, not just problems</li><li>Identify physical, social, and economic assets</li><li>Map individual skills and talents</li><li>Leverage existing community resources</li></ul>",
+    "key_takeaways_ar": "<ul><li>ركز على نقاط القوة وليس المشاكل فقط</li><li>حدد الأصول المادية والاجتماعية والاقتصادية</li><li>رسم خريطة المهارات والمواهب الفردية</li><li>استفد من الموارد المجتمعية الموجودة</li></ul>",
+    "order": 4,
+    "phase_slug": "discovery",
+    "phase_number": 1
+  }
+]
+

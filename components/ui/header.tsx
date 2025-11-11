@@ -34,11 +34,11 @@ export function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60" role="banner">
-      <div className="container flex h-16 items-center justify-between mx-4">
+    <header className="sticky top-4 z-50 mx-4 glass-component glass-layered glass-float-shadow rounded-2xl border-white/20" role="banner">
+      <div className="flex h-16 items-center justify-between max-w-6xl mx-auto px-6">
         {/* Logo / Brand */}
         <div className="flex items-center">
-          <a href="/" className="text-xl font-bold text-[#0063AF] hover:opacity-80 transition-opacity" aria-label="FiftyFifty ToolKit Home">
+          <a href="/" className="text-xl font-bold text-neutral-900 hover:text-accent-blue transition-all duration-300 ease-in-out" aria-label="FiftyFifty ToolKit Home">
             FiftyFifty ToolKit
           </a>
         </div>
@@ -49,7 +49,7 @@ export function Header() {
             <a
               key={link.key}
               href={link.href}
-              className="transition-colors hover:text-[#0063AF]"
+              className="text-neutral-800 transition-all duration-300 ease-in-out hover:text-accent-blue hover:brightness-110 font-medium"
             >
               {t(link.key)}
             </a>

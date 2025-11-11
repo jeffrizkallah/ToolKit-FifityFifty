@@ -143,9 +143,17 @@ export default async function PhasePage({ params: { locale, slug } }: PhasePageP
   } catch (error) {
     console.warn('Failed to fetch all phases:', error);
   }
-  const currentPhaseIndex = allPhases.findIndex(p => p.id === phase.id);
-  const nextPhase = currentPhaseIndex < allPhases.length - 1 ? allPhases[currentPhaseIndex + 1] : null;
-  const totalPhases = allPhases.length;
+  const sortedPhases = [...allPhases].sort(
+    (a, b) => (a.attributes.order ?? 0) - (b.attributes.order ?? 0)
+  );
+  const currentPhaseIndex = sortedPhases.findIndex((p) => p.id === phase.id);
+  const nextPhase =
+    currentPhaseIndex !== -1 && currentPhaseIndex < sortedPhases.length - 1
+      ? sortedPhases[currentPhaseIndex + 1]
+      : null;
+  const previousPhase =
+    currentPhaseIndex > 0 ? sortedPhases[currentPhaseIndex - 1] : null;
+  const totalPhases = sortedPhases.length;
 
   const {
     title,
@@ -177,8 +185,8 @@ export default async function PhasePage({ params: { locale, slug } }: PhasePageP
       
       <main className="min-h-screen">
         {/* Breadcrumb Navigation */}
-        <div className="bg-white border-b">
-          <div className="container py-4">
+        <div className="pt-6 pb-4">
+          <div className="max-w-6xl mx-auto px-6">
             <Breadcrumb
               items={[
                 {
@@ -195,13 +203,21 @@ export default async function PhasePage({ params: { locale, slug } }: PhasePageP
           </div>
         </div>
 
-      {/* Phase Header */}
-      <section className="bg-gradient-to-br from-[#0063AF] to-[#004a8a] text-white py-16">
-        <div className="container">
+      {/* Phase Header - Two Column Layout */}
+      <section className="bg-gradient-to-br from-[#0041A8] via-[#0063AF] to-[#007BFF] text-white py-20 relative overflow-hidden rounded-2xl mx-4 my-8">
+        {/* Decorative Background Elements */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0" style={{
+            backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)',
+            backgroundSize: '40px 40px'
+          }} />
+        </div>
+        
+        <div className="max-w-6xl mx-auto px-6 relative z-10">
           {/* Progress Indicator */}
-          <div className="mb-6">
-            <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm">
-              <span className="font-semibold">
+          <div className="mb-8">
+            <div className="inline-flex items-center gap-2 glass-component bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-full text-sm font-medium border border-white/20">
+              <span>
                 {validLocale === 'ar' 
                   ? `المرحلة ${phase_number} من ${totalPhases}`
                   : `Phase ${phase_number} of ${totalPhases}`}
@@ -209,45 +225,97 @@ export default async function PhasePage({ params: { locale, slug } }: PhasePageP
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            {/* Text Content */}
-            <div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            {/* Left Column: Content */}
+            <div className="space-y-6">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
                 {title}
               </h1>
+              
               <div 
-                className="text-lg text-blue-50 leading-relaxed"
+                className="text-lg text-white/90 leading-relaxed font-normal prose prose-invert max-w-none prose-headings:text-white prose-p:text-white/90 prose-strong:text-white"
                 dangerouslySetInnerHTML={{ __html: description }}
               />
               
-              {/* Video Button */}
+              {/* Key Learning Outcomes */}
+              <div className="pt-4 space-y-3">
+                <h3 className="text-sm font-semibold text-white/80 uppercase tracking-wide mb-3">
+                  {validLocale === 'ar' ? 'نتائج التعلم الرئيسية' : 'Key Learning Outcomes'}
+                </h3>
+                <ul className="space-y-2.5">
+                  {/* Extract key points from description or show placeholder */}
+                  <li className="flex items-start gap-3 text-white/90">
+                    <svg className="w-5 h-5 text-white/70 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="font-medium">
+                      {validLocale === 'ar' 
+                        ? 'فهم الأساسيات والمفاهيم الأساسية'
+                        : 'Understand fundamentals and core concepts'}
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3 text-white/90">
+                    <svg className="w-5 h-5 text-white/70 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="font-medium">
+                      {validLocale === 'ar' 
+                        ? 'تطبيق الاستراتيجيات العملية'
+                        : 'Apply practical strategies'}
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-3 text-white/90">
+                    <svg className="w-5 h-5 text-white/70 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="font-medium">
+                      {validLocale === 'ar' 
+                        ? 'بناء المهارات الأساسية'
+                        : 'Build essential skills'}
+                    </span>
+                  </li>
+                </ul>
+              </div>
+              
+              {/* Video Button - Enhanced */}
               {header_video_url && (
-                <Button
-                  asChild
-                  size="lg"
-                  className="mt-8 bg-[#EC1C24] hover:bg-[#d01820] text-white"
-                >
-                  <a 
-                    href={header_video_url} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2"
+                <div className="pt-4">
+                  <Button
+                    asChild
+                    size="lg"
+                    className="bg-white text-[#0041A8] hover:bg-white/95 px-8 py-6 text-base font-bold shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 rounded-full"
                   >
-                    <PlayCircle className="h-5 w-5" />
-                    {validLocale === 'ar' ? 'شاهد فيديو المرحلة' : 'Watch Phase Video'}
-                  </a>
-                </Button>
+                    <a 
+                      href={header_video_url} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3"
+                    >
+                      <PlayCircle className="h-6 w-6" />
+                      <span>{validLocale === 'ar' ? 'شاهد فيديو المرحلة' : 'Watch Phase Video'}</span>
+                    </a>
+                  </Button>
+                  {/* Optional: Video duration or thumbnail placeholder */}
+                  <p className="text-sm text-white/70 mt-2 ml-1">
+                    {validLocale === 'ar' ? 'مدة الفيديو: ~10 دقائق' : 'Video duration: ~10 minutes'}
+                  </p>
+                </div>
               )}
             </div>
 
-            {/* Phase Number Display */}
+            {/* Right Column: Phase Number Circle */}
             <div className="flex items-center justify-center">
               <div className="relative">
-                <div className="w-48 h-48 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center">
-                  <span className="text-8xl font-bold text-white/90">
+                <div className="relative w-64 h-64 rounded-full glass-component bg-white/10 backdrop-blur-xl border-2 border-white/20 flex items-center justify-center shadow-2xl">
+                  {/* Inner glow effect */}
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/20 to-transparent" />
+                  <span className="relative text-9xl font-extrabold text-white tracking-tight">
                     {phase_number}
                   </span>
                 </div>
+                {/* Decorative circles */}
+                <div className="absolute -top-4 -right-4 w-32 h-32 rounded-full bg-white/5 backdrop-blur-md border border-white/10" />
+                <div className="absolute -bottom-4 -left-4 w-24 h-24 rounded-full bg-white/5 backdrop-blur-md border border-white/10" />
               </div>
             </div>
           </div>
@@ -255,13 +323,13 @@ export default async function PhasePage({ params: { locale, slug } }: PhasePageP
       </section>
 
       {/* Modules Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container">
-          <div className="mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+      <section className="py-20">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="mb-12 text-center">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-[#0041A8] mb-3 tracking-tight">
               {validLocale === 'ar' ? 'الوحدات التعليمية' : 'Learning Modules'}
             </h2>
-            <p className="text-gray-600">
+            <p className="text-gray-600 text-lg font-normal max-w-2xl mx-auto">
               {validLocale === 'ar'
                 ? `استكشف ${modules.length} وحدة تعليمية في هذه المرحلة`
                 : `Explore ${modules.length} learning modules in this phase`}
@@ -282,10 +350,27 @@ export default async function PhasePage({ params: { locale, slug } }: PhasePageP
               ))}
             </div>
           ) : (
-            <div className="text-center py-12 text-gray-500">
-              {validLocale === 'ar'
-                ? 'لا توجد وحدات متاحة في هذه المرحلة حالياً'
-                : 'No modules available in this phase yet'}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Empty State with Glassmorphism Cards */}
+              {[1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className="glass-component glass-layered rounded-2xl p-8 border border-neutral-200 bg-white/50 backdrop-blur-sm"
+                >
+                  <div className="flex flex-col items-center justify-center min-h-[200px] text-center">
+                    <div className="w-16 h-16 rounded-full bg-neutral-100 flex items-center justify-center mb-4">
+                      <svg className="w-8 h-8 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                      </svg>
+                    </div>
+                    <p className="text-sm text-neutral-500 font-medium">
+                      {validLocale === 'ar'
+                        ? 'لا توجد وحدات متاحة حالياً'
+                        : 'No modules available yet'}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </div>
@@ -293,45 +378,71 @@ export default async function PhasePage({ params: { locale, slug } }: PhasePageP
 
       {/* Next Phase Navigation */}
       {nextPhase && (
-        <section className="py-12 bg-white border-t">
-          <div className="container">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-              <div>
-                <p className="text-sm text-gray-600 mb-2">
+        <section className="py-16 bg-neutral-50 border-t border-neutral-200">
+          <div className="max-w-6xl mx-auto px-6">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+              <div className="flex-1">
+                <p className="text-sm text-neutral-600 mb-2 font-medium uppercase tracking-wide">
                   {validLocale === 'ar' ? 'المرحلة التالية' : 'Next Phase'}
                 </p>
-                <h3 className="text-2xl font-bold text-gray-900">
+                <h3 className="text-2xl md:text-3xl font-extrabold text-[#0041A8] tracking-tight">
                   {nextPhase.attributes.title}
                 </h3>
               </div>
-              <Button
-                asChild
-                size="lg"
-                className="bg-[#0063AF] hover:bg-[#004a8a] text-white"
-              >
-                <Link 
-                  href={`/${validLocale}/phase/${nextPhase.attributes.slug}`}
-                  className="flex items-center gap-2"
+              <div className="flex flex-col md:flex-row items-center gap-4">
+                {previousPhase && (
+                  <Button
+                    asChild
+                    size="lg"
+                    variant="outline"
+                    className="px-8 py-6 text-base font-bold rounded-full border-neutral-200 hover:border-neutral-300 hover:bg-neutral-100 text-neutral-700"
+                  >
+                    <Link
+                      href={`/${validLocale}/phase/${previousPhase.attributes.slug}`}
+                      className="flex items-center gap-3"
+                    >
+                      {isRTL ? (
+                        <ArrowRight className="h-5 w-5" />
+                      ) : (
+                        <ArrowLeft className="h-5 w-5" />
+                      )}
+                      <span>
+                        {validLocale === 'ar'
+                          ? 'العودة إلى المرحلة السابقة'
+                          : 'Back to Previous Phase'}
+                      </span>
+                    </Link>
+                  </Button>
+                )}
+                <Button
+                  asChild
+                  size="lg"
+                  className="bg-gradient-to-r from-[#0041A8] to-[#007BFF] text-white hover:from-[#003d96] hover:to-[#0069e6] px-8 py-6 text-base font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 rounded-full"
                 >
-                  {validLocale === 'ar' ? 'المتابعة إلى المرحلة التالية' : 'Continue to Next Phase'}
-                  {isRTL ? (
-                    <ArrowLeft className="h-5 w-5" />
-                  ) : (
-                    <ArrowRight className="h-5 w-5" />
-                  )}
-                </Link>
-              </Button>
+                  <Link 
+                    href={`/${validLocale}/phase/${nextPhase.attributes.slug}`}
+                    className="flex items-center gap-3"
+                  >
+                    <span>{validLocale === 'ar' ? 'المتابعة إلى المرحلة التالية' : 'Continue to Next Phase'}</span>
+                    {isRTL ? (
+                      <ArrowLeft className="h-5 w-5" />
+                    ) : (
+                      <ArrowRight className="h-5 w-5" />
+                    )}
+                  </Link>
+                </Button>
+              </div>
             </div>
           </div>
         </section>
       )}
 
       {/* Back to Home */}
-      <section className="py-8 bg-gray-50">
-        <div className="container">
+      <section className="py-8">
+        <div className="max-w-6xl mx-auto px-6">
           <Link 
             href={`/${validLocale}`}
-            className="inline-flex items-center gap-2 text-[#0063AF] hover:underline"
+            className="inline-flex items-center gap-2 text-[#0041A8] hover:text-[#007BFF] font-medium transition-colors duration-200"
           >
             {isRTL ? (
               <ArrowRight className="h-4 w-4" />

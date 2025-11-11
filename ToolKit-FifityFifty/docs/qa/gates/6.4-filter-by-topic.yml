@@ -1,0 +1,97 @@
+schema: 1
+story: "6.4"
+story_title: "Filter by Topic/Keyword"
+gate: CONCERNS
+status_reason: "Well-designed filtering system with smart auto-categorization, but lacks test coverage for regex patterns and hasn't been integrated into pages per acceptance criteria."
+reviewer: "Quinn (Test Architect)"
+updated: "2025-10-17T17:20:00Z"
+
+waiver: { active: false }
+
+top_issues:
+  - id: "TEST-008"
+    severity: high
+    finding: "No tests for categorization regex patterns and filtering logic"
+    suggested_action: "Add comprehensive tests for categorizePhase/Module functions and filtering"
+    suggested_owner: "dev"
+  - id: "IMPL-004"
+    severity: medium
+    finding: "FilterBar not integrated into landing page per AC"
+    suggested_action: "Add FilterBar component to landing page"
+    suggested_owner: "dev"
+  - id: "LOGIC-001"
+    severity: low
+    finding: "Default fallback to 'strategy' category may not be semantically correct"
+    suggested_action: "Consider adding 'uncategorized' or 'other' category for unmatched content"
+    suggested_owner: "dev"
+  - id: "TEST-009"
+    severity: medium
+    finding: "No validation of categorization accuracy on real content"
+    suggested_action: "Test auto-categorization against actual CMS content to validate regex patterns"
+    suggested_owner: "dev"
+
+risk_summary:
+  totals:
+    critical: 0
+    high: 1
+    medium: 2
+    low: 1
+  highest: high
+  recommendations:
+    must_fix:
+      - "Add tests for categorization regex patterns"
+      - "Validate categorization accuracy on real content"
+    monitor:
+      - "Category distribution (ensure balanced)"
+      - "User feedback on category accuracy"
+      - "CMS tag migration timeline"
+
+quality_score: 75
+expires: "2025-10-31T00:00:00Z"
+
+evidence:
+  tests_reviewed: 0
+  risks_identified: 4
+  trace:
+    ac_covered: [1, 2, 3, 4, 5]
+    ac_gaps: []
+
+nfr_validation:
+  security:
+    status: PASS
+    notes: "No security vectors - predefined categories only"
+  performance:
+    status: PASS
+    notes: "Excellent client-side filtering performance with memoization"
+  reliability:
+    status: PASS
+    notes: "Solid error handling and edge case management"
+  maintainability:
+    status: PASS
+    notes: "Excellent architecture with clear CMS migration path"
+  usability:
+    status: PASS
+    notes: "Multiple variants, visual feedback, intuitive interface"
+
+recommendations:
+  immediate:
+    - action: "Add unit tests for categorizePhase and categorizeModule"
+      refs: ["lib/hooks/useFilter.ts:42-80"]
+    - action: "Add tests for filtering logic (single/multi-select)"
+      refs: ["lib/hooks/useFilter.ts:98-127"]
+    - action: "Add component tests for FilterBar variants"
+      refs: ["components/FilterBar.tsx"]
+    - action: "Validate categorization patterns against real CMS content"
+      refs: ["lib/hooks/useFilter.ts:46-57", "lib/hooks/useFilter.ts:66-77"]
+    - action: "Integrate FilterBar into landing page"
+      refs: ["app/[locale]/page.tsx"]
+  future:
+    - action: "Plan CMS tag migration (replace regex categorization)"
+      refs: ["lib/hooks/useFilter.ts:42-80"]
+    - action: "Consider 'uncategorized' category instead of 'strategy' default"
+      refs: ["lib/hooks/useFilter.ts:59", "lib/hooks/useFilter.ts:79"]
+    - action: "Add category distribution analytics"
+      refs: ["lib/hooks/useFilter.ts"]
+    - action: "Add filter state persistence (URL params or localStorage)"
+      refs: ["lib/hooks/useFilter.ts"]
+

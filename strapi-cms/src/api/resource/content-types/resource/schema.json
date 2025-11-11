@@ -39,7 +39,9 @@
       "type": "media",
       "multiple": false,
       "required": true,
-      "allowedTypes": ["files"]
+      "allowedTypes": [
+        "files"
+      ]
     },
     "file_url": {
       "type": "string",
@@ -47,7 +49,12 @@
     },
     "file_type": {
       "type": "enumeration",
-      "enum": ["PDF", "Excel", "Word", "Other"],
+      "enum": [
+        "PDF",
+        "Excel",
+        "Word",
+        "Other"
+      ],
       "default": "PDF"
     },
     "file_size": {
@@ -69,4 +76,3 @@
     }
   }
 }
-

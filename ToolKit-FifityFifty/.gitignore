@@ -1,0 +1,192 @@
+# =============================================================================
+# FIFTYFIFTY TOOLKIT - .gitignore
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Environment Variables & Secrets (CRITICAL - NEVER COMMIT)
+# -----------------------------------------------------------------------------
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
+*.env
+!env.example
+
+# Vercel CLI
+.vercel
+
+# -----------------------------------------------------------------------------
+# Dependencies
+# -----------------------------------------------------------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# -----------------------------------------------------------------------------
+# Next.js Build Output
+# -----------------------------------------------------------------------------
+.next/
+out/
+build/
+dist/
+
+# Next.js Cache
+.next/cache/
+
+# -----------------------------------------------------------------------------
+# Testing
+# -----------------------------------------------------------------------------
+coverage/
+*.coverage
+.nyc_output
+.cache
+
+# Jest
+jest-results/
+
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/
+
+# -----------------------------------------------------------------------------
+# IDEs and Editors
+# -----------------------------------------------------------------------------
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/
+
+# Cursor
+.cursor/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# -----------------------------------------------------------------------------
+# Operating System Files
+# -----------------------------------------------------------------------------
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+
+# -----------------------------------------------------------------------------
+# Logs and Debugging
+# -----------------------------------------------------------------------------
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+pnpm-debug.log*
+
+# -----------------------------------------------------------------------------
+# Temporary Files
+# -----------------------------------------------------------------------------
+tmp/
+temp/
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+
+# -----------------------------------------------------------------------------
+# TypeScript
+# -----------------------------------------------------------------------------
+*.tsbuildinfo
+next-env.d.ts
+
+# -----------------------------------------------------------------------------
+# Build Artifacts
+# -----------------------------------------------------------------------------
+*.tgz
+*.zip
+*.tar.gz
+
+# -----------------------------------------------------------------------------
+# CMS & Content (if cached locally)
+# -----------------------------------------------------------------------------
+.strapi/
+.cache/
+
+# Strapi CMS
+strapi-cms/.tmp/
+strapi-cms/build/
+strapi-cms/dist/
+strapi-cms/.cache/
+strapi-cms/public/uploads/*
+!strapi-cms/public/uploads/.gitkeep
+strapi-cms/*.db
+strapi-cms/*.sqlite
+strapi-cms/*.sqlite3
+strapi-cms/.env
+strapi-cms/.strapi-updater.json
+
+# -----------------------------------------------------------------------------
+# Analytics & Monitoring
+# -----------------------------------------------------------------------------
+.lighthouseci/
+
+# -----------------------------------------------------------------------------
+# Misc
+# -----------------------------------------------------------------------------
+.turbo
+.contentlayer
+
+# =============================================================================
+# Notes for Developers
+# =============================================================================
+# 
+# SECURITY REMINDER:
+# - NEVER commit .env files with actual values
+# - Use env.example as template
+# - Store secrets in Vercel dashboard or secure vault
+# - If you accidentally commit a secret, rotate it IMMEDIATELY
+#
+# =============================================================================
+
