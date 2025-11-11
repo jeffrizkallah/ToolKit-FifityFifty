@@ -44,6 +44,7 @@
     "node_modules",
     "cms",
     "strapi-cms",
+    "ToolKit-FifityFifty",
     "vitest.config.ts",
     "vitest.setup.ts"
   ]

@@ -1,6 +1,7 @@
 import { NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
 import { locales, localeDirections, isValidLocale } from '@/i18n';
 import { Header } from '@/components/ui/header';
 import { Footer } from '@/components/Footer';
@@ -69,7 +70,9 @@ export default async function LocaleLayout({
       <body>
         {/* Google Analytics */}
         {process.env.NEXT_PUBLIC_GA_ID && (
-          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+          <Suspense fallback={null}>
+            <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+          </Suspense>
         )}
         
         <NextIntlClientProvider locale={locale} messages={messages}>
