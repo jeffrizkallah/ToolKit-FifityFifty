@@ -8,7 +8,7 @@ import { sql } from '@vercel/postgres';
 export async function GET() {
   try {
     // Test database connection
-    const connectionTest = await sql`SELECT 1 as connected`;
+    await sql`SELECT 1 as connected`;
     
     // Get counts from all tables
     const phasesCount = await sql`SELECT COUNT(*) as count FROM phases`;
