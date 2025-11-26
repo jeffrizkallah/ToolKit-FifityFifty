@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { sql } from '@vercel/postgres';
+import { revalidateTag } from 'next/cache';
+import { CACHE_TAGS } from '@/lib/cms-client';
 
 const SESSION_COOKIE_NAME = 'admin_session';
 
@@ -206,6 +208,14 @@ export async function PUT(request: NextRequest) {
         `;
         break;
       }
+    }
+
+    // Revalidate the cache for the updated content type
+    try {
+      revalidateTag(CACHE_TAGS[type as keyof typeof CACHE_TAGS]);
+      revalidateTag(CACHE_TAGS.all);
+    } catch (revalidateError) {
+      console.error('Cache revalidation error:', revalidateError);
     }
 
     return NextResponse.json({ success: true, message: `${type} updated successfully` });

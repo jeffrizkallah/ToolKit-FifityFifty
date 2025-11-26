@@ -1,10 +1,12 @@
 /**
  * CMS API Client Library
  * 
- * Reads content from local JSON files in the /content directory.
- * Uses static imports for Next.js compatibility with both server and client components.
+ * Reads content from the Neon PostgreSQL database.
+ * Uses Next.js caching with on-demand revalidation for performance.
  */
 
+import { sql } from '@vercel/postgres';
+import { unstable_cache } from 'next/cache';
 import {
   Phase,
   Module,
@@ -14,12 +16,100 @@ import {
   CMSQueryParams,
 } from './types/cms';
 
-// Static imports of content files (works in both server and client)
-import phasesData from '../content/phases.json';
-import modulesData from '../content/modules.json';
-import resourcesData from '../content/resources.json';
-import testimonialsData from '../content/testimonials.json';
-import settingsData from '../content/settings.json';
+// Cache tags for revalidation
+export const CACHE_TAGS = {
+  phases: 'phases',
+  modules: 'modules',
+  resources: 'resources',
+  testimonials: 'testimonials',
+  settings: 'settings',
+  all: 'cms-content',
+};
+
+// ============================================================================
+// Database Fetch Functions (with caching)
+// ============================================================================
+
+async function fetchPhasesFromDB() {
+  try {
+    const { rows } = await sql`SELECT * FROM phases ORDER BY "order" ASC`;
+    return rows;
+  } catch (error) {
+    console.error('Error fetching phases from database:', error);
+    return [];
+  }
+}
+
+async function fetchModulesFromDB() {
+  try {
+    const { rows } = await sql`SELECT * FROM modules ORDER BY "order" ASC`;
+    return rows;
+  } catch (error) {
+    console.error('Error fetching modules from database:', error);
+    return [];
+  }
+}
+
+async function fetchResourcesFromDB() {
+  try {
+    const { rows } = await sql`SELECT * FROM resources ORDER BY "order" ASC`;
+    return rows;
+  } catch (error) {
+    console.error('Error fetching resources from database:', error);
+    return [];
+  }
+}
+
+async function fetchTestimonialsFromDB() {
+  try {
+    const { rows } = await sql`SELECT * FROM testimonials ORDER BY "order" ASC`;
+    return rows;
+  } catch (error) {
+    console.error('Error fetching testimonials from database:', error);
+    return [];
+  }
+}
+
+async function fetchSettingsFromDB() {
+  try {
+    const { rows } = await sql`SELECT * FROM settings LIMIT 1`;
+    return rows[0] || null;
+  } catch (error) {
+    console.error('Error fetching settings from database:', error);
+    return null;
+  }
+}
+
+// Cached versions of the fetch functions
+const getCachedPhases = unstable_cache(
+  fetchPhasesFromDB,
+  ['phases'],
+  { tags: [CACHE_TAGS.phases, CACHE_TAGS.all], revalidate: 60 }
+);
+
+const getCachedModules = unstable_cache(
+  fetchModulesFromDB,
+  ['modules'],
+  { tags: [CACHE_TAGS.modules, CACHE_TAGS.all], revalidate: 60 }
+);
+
+const getCachedResources = unstable_cache(
+  fetchResourcesFromDB,
+  ['resources'],
+  { tags: [CACHE_TAGS.resources, CACHE_TAGS.all], revalidate: 60 }
+);
+
+const getCachedTestimonials = unstable_cache(
+  fetchTestimonialsFromDB,
+  ['testimonials'],
+  { tags: [CACHE_TAGS.testimonials, CACHE_TAGS.all], revalidate: 60 }
+);
+
+const getCachedSettings = unstable_cache(
+  fetchSettingsFromDB,
+  ['settings'],
+  { tags: [CACHE_TAGS.settings, CACHE_TAGS.all], revalidate: 60 }
+);
 
 // ============================================================================
 // Helper Functions
@@ -43,7 +133,7 @@ function getLocalizedField(
 }
 
 // ============================================================================
-// Type Definitions for Raw JSON Data
+// Type Definitions for Raw Database Data
 // ============================================================================
 
 interface RawPhase {
@@ -128,8 +218,8 @@ export async function getPhases(
   params: CMSQueryParams = {}
 ): Promise<Phase[]> {
   const locale = params.locale || 'en';
-  const phases = (phasesData as { phases: RawPhase[] }).phases;
-  const modules = (modulesData as { modules: RawModule[] }).modules;
+  const phases = await getCachedPhases() as RawPhase[];
+  const modules = await getCachedModules() as RawModule[];
   
   return phases
     .sort((a, b) => a.order - b.order)
@@ -217,9 +307,9 @@ export async function getModules(
   params: CMSQueryParams = {}
 ): Promise<Module[]> {
   const locale = params.locale || 'en';
-  const modules = (modulesData as { modules: RawModule[] }).modules;
-  const phases = (phasesData as { phases: RawPhase[] }).phases;
-  const resources = (resourcesData as { resources: RawResource[] }).resources;
+  const modules = await getCachedModules() as RawModule[];
+  const phases = await getCachedPhases() as RawPhase[];
+  const resources = await getCachedResources() as RawResource[];
   
   return modules
     .sort((a, b) => a.order - b.order)
@@ -312,7 +402,7 @@ export async function getModulesByPhase(
   phaseSlug: string,
   params: CMSQueryParams = {}
 ): Promise<Module[]> {
-  const phases = (phasesData as { phases: RawPhase[] }).phases;
+  const phases = await getCachedPhases() as RawPhase[];
   const phase = phases.find(p => p.slug === phaseSlug);
   
   if (!phase) return [];
@@ -332,7 +422,7 @@ export async function getResources(
   params: CMSQueryParams = {}
 ): Promise<Resource[]> {
   const locale = params.locale || 'en';
-  const resources = (resourcesData as { resources: RawResource[] }).resources;
+  const resources = await getCachedResources() as RawResource[];
   
   return resources
     .sort((a, b) => a.order - b.order)
@@ -361,12 +451,12 @@ export async function getResourcesByModule(
   params: CMSQueryParams = {}
 ): Promise<Resource[]> {
   const locale = params.locale || 'en';
-  const modules = (modulesData as { modules: RawModule[] }).modules;
+  const modules = await getCachedModules() as RawModule[];
   const module = modules.find(m => m.slug === moduleSlug);
   
   if (!module) return [];
   
-  const resources = (resourcesData as { resources: RawResource[] }).resources;
+  const resources = await getCachedResources() as RawResource[];
   
   return resources
     .filter(r => r.module_id === module.id)
@@ -399,7 +489,7 @@ export async function getTestimonials(
   params: CMSQueryParams = {}
 ): Promise<Testimonial[]> {
   const locale = params.locale || 'en';
-  const testimonials = (testimonialsData as { testimonials: RawTestimonial[] }).testimonials;
+  const testimonials = await getCachedTestimonials() as RawTestimonial[];
   
   return testimonials
     .sort((a, b) => a.order - b.order)
@@ -429,7 +519,9 @@ export async function getSettings(
   params: CMSQueryParams = {}
 ): Promise<Settings | null> {
   const locale = params.locale || 'en';
-  const data = settingsData as RawSettings;
+  const data = await getCachedSettings() as RawSettings | null;
+  
+  if (!data) return null;
   
   return {
     id: 1,
@@ -464,17 +556,22 @@ export function getMediaUrl(url: string | undefined): string | undefined {
 }
 
 /**
- * Check if CMS is configured (always true for local JSON)
+ * Check if CMS is configured (always true for database)
  */
 export function isCMSConfigured(): boolean {
   return true;
 }
 
 /**
- * Get CMS health status (always true for local JSON)
+ * Get CMS health status
  */
 export async function getCMSHealth(): Promise<boolean> {
-  return true;
+  try {
+    await sql`SELECT 1`;
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 // ============================================================================
@@ -482,7 +579,7 @@ export async function getCMSHealth(): Promise<boolean> {
 // ============================================================================
 
 export const cmsConfig = {
-  baseUrl: 'local',
+  baseUrl: 'database',
   hasToken: true,
   offline: false,
 };
