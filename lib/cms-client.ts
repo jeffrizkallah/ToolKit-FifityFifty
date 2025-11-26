@@ -28,8 +28,8 @@ import settingsData from '../content/settings.json';
 /**
  * Get localized field value based on locale
  */
-function getLocalizedField<T extends Record<string, unknown>>(
-  item: T,
+function getLocalizedField(
+  item: Record<string, unknown>,
   field: string,
   locale: string = 'en'
 ): string {
@@ -47,6 +47,7 @@ function getLocalizedField<T extends Record<string, unknown>>(
 // ============================================================================
 
 interface RawPhase {
+  [key: string]: unknown;
   id: number;
   title: string;
   title_ar: string;
@@ -59,6 +60,7 @@ interface RawPhase {
 }
 
 interface RawModule {
+  [key: string]: unknown;
   id: number;
   title: string;
   title_ar: string;
@@ -75,6 +77,7 @@ interface RawModule {
 }
 
 interface RawResource {
+  [key: string]: unknown;
   id: number;
   title: string;
   title_ar: string;
@@ -88,6 +91,7 @@ interface RawResource {
 }
 
 interface RawTestimonial {
+  [key: string]: unknown;
   id: number;
   name: string;
   name_ar: string;
@@ -100,6 +104,7 @@ interface RawTestimonial {
 }
 
 interface RawSettings {
+  [key: string]: unknown;
   site_title: string;
   site_title_ar?: string;
   hero_headline: string;
