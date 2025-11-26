@@ -1,0 +1,71 @@
+{
+  "phases": [
+    {
+      "id": 1,
+      "title": "Deciding to run",
+      "title_ar": "قرار الترشح",
+      "slug": "deciding-to-run",
+      "description": "<p>The Deciding to run phase is the foundation of your campaign journey. In this phase, participants learn to assess their readiness, understand community needs, and make the crucial decision to run for office.</p>\n\n<h3>Key Learning Outcomes</h3>\n<ul>\n<li>Personal readiness assessment</li>\n<li>Community needs identification</li>\n<li>Decision-making frameworks</li>\n<li>Initial campaign planning</li>\n</ul>",
+      "description_ar": "<p>مرحلة قرار الترشح هي أساس رحلة حملتك الانتخابية. في هذه المرحلة، يتعلم المشاركون كيفية تقييم جاهزيتهم، وفهم احتياجات المجتمع، واتخاذ القرار الحاسم بالترشح للمنصب.</p>\n\n<h3>نتائج التعلم الرئيسية</h3>\n<ul>\n<li>تقييم الجاهزية الشخصية</li>\n<li>تحديد احتياجات المجتمع</li>\n<li>أطر اتخاذ القرار</li>\n<li>التخطيط الأولي للحملة</li>\n</ul>",
+      "order": 1,
+      "phase_number": 1,
+      "header_video_url": "https://www.youtube.com/watch?v=example1"
+    },
+    {
+      "id": 2,
+      "title": "Pre-campaign",
+      "title_ar": "ما قبل الحملة",
+      "slug": "pre-campaign",
+      "description": "<p>The Pre-campaign phase focuses on building your campaign foundation before officially launching. Participants learn to develop their platform, build support networks, and prepare for the campaign ahead.</p>\n\n<h3>Key Learning Outcomes</h3>\n<ul>\n<li>Platform development</li>\n<li>Support network building</li>\n<li>Campaign team assembly</li>\n<li>Pre-launch preparation</li>\n</ul>",
+      "description_ar": "<p>تركز مرحلة ما قبل الحملة على بناء أساس حملتك قبل الإطلاق الرسمي. يتعلم المشاركون تطوير برنامجهم، وبناء شبكات الدعم، والتحضير للحملة القادمة.</p>\n\n<h3>نتائج التعلم الرئيسية</h3>\n<ul>\n<li>تطوير البرنامج الانتخابي</li>\n<li>بناء شبكة الدعم</li>\n<li>تشكيل فريق الحملة</li>\n<li>التحضير لما قبل الإطلاق</li>\n</ul>",
+      "order": 2,
+      "phase_number": 2,
+      "header_video_url": "https://www.youtube.com/watch?v=example2"
+    },
+    {
+      "id": 3,
+      "title": "Campaign",
+      "title_ar": "الحملة",
+      "slug": "campaign",
+      "description": "<p>The Campaign phase is the heart of your election journey. Participants learn to execute their campaign strategy, engage with voters, and build momentum through effective campaigning.</p>\n\n<h3>Key Learning Outcomes</h3>\n<ul>\n<li>Campaign execution strategies</li>\n<li>Voter engagement techniques</li>\n<li>Public speaking and communication</li>\n<li>Momentum building</li>\n</ul>",
+      "description_ar": "<p>مرحلة الحملة هي قلب رحلتك الانتخابية. يتعلم المشاركون تنفيذ استراتيجية حملتهم، والتواصل مع الناخبين، وبناء الزخم من خلال الحملات الفعالة.</p>\n\n<h3>نتائج التعلم الرئيسية</h3>\n<ul>\n<li>استراتيجيات تنفيذ الحملة</li>\n<li>تقنيات التواصل مع الناخبين</li>\n<li>الخطابة والتواصل</li>\n<li>بناء الزخم</li>\n</ul>",
+      "order": 3,
+      "phase_number": 3,
+      "header_video_url": "https://www.youtube.com/watch?v=example3"
+    },
+    {
+      "id": 4,
+      "title": "Pre-election",
+      "title_ar": "ما قبل الانتخابات",
+      "slug": "pre-election",
+      "description": "<p>The Pre-election phase focuses on final preparations before election day. Participants learn to mobilize supporters, finalize campaign strategies, and prepare for the crucial voting day.</p>\n\n<h3>Key Learning Outcomes</h3>\n<ul>\n<li>Final campaign mobilization</li>\n<li>Voter turnout strategies</li>\n<li>Election day preparation</li>\n<li>Last-minute campaigning</li>\n</ul>",
+      "description_ar": "<p>تركز مرحلة ما قبل الانتخابات على الاستعدادات النهائية قبل يوم الانتخابات. يتعلم المشاركون كيفية تعبئة المؤيدين، وإنهاء استراتيجيات الحملة، والتحضير ليوم التصويت الحاسم.</p>\n\n<h3>نتائج التعلم الرئيسية</h3>\n<ul>\n<li>التعبئة النهائية للحملة</li>\n<li>استراتيجيات إقبال الناخبين</li>\n<li>التحضير ليوم الانتخابات</li>\n<li>الحملة في اللحظة الأخيرة</li>\n</ul>",
+      "order": 4,
+      "phase_number": 4,
+      "header_video_url": "https://www.youtube.com/watch?v=example4"
+    },
+    {
+      "id": 5,
+      "title": "Election day",
+      "title_ar": "يوم الانتخابات",
+      "slug": "election-day",
+      "description": "<p>The Election day phase is the culmination of your campaign journey. Participants learn to execute their election day strategy, manage volunteers, and ensure maximum voter turnout.</p>\n\n<h3>Key Learning Outcomes</h3>\n<ul>\n<li>Election day execution</li>\n<li>Volunteer coordination</li>\n<li>Voter turnout maximization</li>\n<li>Results monitoring</li>\n</ul>",
+      "description_ar": "<p>مرحلة يوم الانتخابات هي تتويج لرحلة حملتك. يتعلم المشاركون تنفيذ استراتيجية يوم الانتخابات، وإدارة المتطوعين، وضمان أقصى إقبال للناخبين.</p>\n\n<h3>نتائج التعلم الرئيسية</h3>\n<ul>\n<li>تنفيذ يوم الانتخابات</li>\n<li>تنسيق المتطوعين</li>\n<li>تعظيم إقبال الناخبين</li>\n<li>مراقبة النتائج</li>\n</ul>",
+      "order": 5,
+      "phase_number": 5,
+      "header_video_url": "https://www.youtube.com/watch?v=example5"
+    },
+    {
+      "id": 6,
+      "title": "Post-election",
+      "title_ar": "ما بعد الانتخابات",
+      "slug": "post-election",
+      "description": "<p>The Post-election phase focuses on transitioning from campaign to governance. Participants learn to handle election results, transition to office, and begin their journey as elected officials.</p>\n\n<h3>Key Learning Outcomes</h3>\n<ul>\n<li>Election results handling</li>\n<li>Transition to governance</li>\n<li>Office preparation</li>\n<li>Continued community engagement</li>\n</ul>",
+      "description_ar": "<p>تركز مرحلة ما بعد الانتخابات على الانتقال من الحملة إلى الحكم. يتعلم المشاركون كيفية التعامل مع نتائج الانتخابات، والانتقال إلى المنصب، وبدء رحلتهم كمسؤولين منتخبين.</p>\n\n<h3>نتائج التعلم الرئيسية</h3>\n<ul>\n<li>التعامل مع نتائج الانتخابات</li>\n<li>الانتقال إلى الحكم</li>\n<li>التحضير للمنصب</li>\n<li>استمرار التواصل مع المجتمع</li>\n</ul>",
+      "order": 6,
+      "phase_number": 6,
+      "header_video_url": "https://www.youtube.com/watch?v=example6"
+    }
+  ]
+}
+

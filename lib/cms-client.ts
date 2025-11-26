@@ -1,146 +1,115 @@
 /**
  * CMS API Client Library
  * 
- * Type-safe client for fetching content from Strapi CMS.
- * Handles authentication, query building, and error handling.
+ * Reads content from local JSON files in the /content directory.
+ * Uses static imports for Next.js compatibility with both server and client components.
  */
 
 import {
   Phase,
-  PhaseResponse,
-  PhasesResponse,
   Module,
-  ModuleResponse,
-  ModulesResponse,
   Resource,
-  ResourcesResponse,
   Testimonial,
-  TestimonialsResponse,
   Settings,
-  SettingsResponse,
   CMSQueryParams,
-  CMSFetchError,
 } from './types/cms';
 
-// ============================================================================
-// Configuration
-// ============================================================================
-
-const CMS_BASE_URL = process.env.CMS_BASE_URL || process.env.NEXT_PUBLIC_CMS_URL || 'http://localhost:1337';
-const CMS_API_TOKEN = process.env.CMS_API_TOKEN || '';
-const CMS_OFFLINE = String(process.env.CMS_OFFLINE || '').toLowerCase() === '1' || String(process.env.CMS_OFFLINE || '').toLowerCase() === 'true';
-
-// Default cache settings for Next.js fetch
-const DEFAULT_CACHE_OPTIONS = {
-  next: { revalidate: 3600 }, // 1 hour
-};
+// Static imports of content files (works in both server and client)
+import phasesData from '../content/phases.json';
+import modulesData from '../content/modules.json';
+import resourcesData from '../content/resources.json';
+import testimonialsData from '../content/testimonials.json';
+import settingsData from '../content/settings.json';
 
 // ============================================================================
 // Helper Functions
 // ============================================================================
 
 /**
- * Build query string from CMSQueryParams
+ * Get localized field value based on locale
  */
-function buildQueryString(params: CMSQueryParams = {}): string {
-  const searchParams = new URLSearchParams();
-
-  // Add locale
-  if (params.locale) {
-    searchParams.append('locale', params.locale);
-  }
-
-  // Add populate
-  if (params.populate) {
-    if (Array.isArray(params.populate)) {
-      params.populate.forEach((p) => searchParams.append('populate', p));
-    } else {
-      searchParams.append('populate', params.populate);
+function getLocalizedField<T extends Record<string, unknown>>(
+  item: T,
+  field: string,
+  locale: string = 'en'
+): string {
+  if (locale === 'ar') {
+    const arField = `${field}_ar`;
+    if (arField in item && item[arField]) {
+      return item[arField] as string;
     }
   }
-
-  // Add filters
-  if (params.filters) {
-    Object.entries(params.filters).forEach(([key, value]) => {
-      searchParams.append(`filters[${key}]`, String(value));
-    });
-  }
-
-  // Add sort
-  if (params.sort) {
-    if (Array.isArray(params.sort)) {
-      params.sort.forEach((s) => searchParams.append('sort', s));
-    } else {
-      searchParams.append('sort', params.sort);
-    }
-  }
-
-  // Add pagination
-  if (params.pagination) {
-    Object.entries(params.pagination).forEach(([key, value]) => {
-      if (value !== undefined) {
-        searchParams.append(`pagination[${key}]`, String(value));
-      }
-    });
-  }
-
-  const queryString = searchParams.toString();
-  return queryString ? `?${queryString}` : '';
+  return (item[field] as string) || '';
 }
 
-/**
- * Fetch wrapper with authentication and error handling
- */
-async function cmsFetch<T>(
-  endpoint: string,
-  options: RequestInit = {}
-): Promise<T> {
-  // In offline mode we do not call the remote CMS at all.
-  if (CMS_OFFLINE) {
-    throw new Error('CMS_OFFLINE');
-  }
-  const url = `${CMS_BASE_URL}/api${endpoint}`;
-  
-  const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
-  };
+// ============================================================================
+// Type Definitions for Raw JSON Data
+// ============================================================================
 
-  // Merge existing headers if any
-  if (options.headers) {
-    const existingHeaders = new Headers(options.headers);
-    existingHeaders.forEach((value, key) => {
-      headers[key] = value;
-    });
-  }
+interface RawPhase {
+  id: number;
+  title: string;
+  title_ar: string;
+  slug: string;
+  description: string;
+  description_ar: string;
+  order: number;
+  phase_number: number;
+  header_video_url?: string;
+}
 
-  // Add authentication token if available
-  if (CMS_API_TOKEN) {
-    headers['Authorization'] = `Bearer ${CMS_API_TOKEN}`;
-  }
+interface RawModule {
+  id: number;
+  title: string;
+  title_ar: string;
+  slug: string;
+  summary: string;
+  summary_ar: string;
+  video_url?: string;
+  video_subtitle_url_en?: string;
+  video_subtitle_url_ar?: string;
+  key_takeaways?: string;
+  key_takeaways_ar?: string;
+  order: number;
+  phase_id: number;
+}
 
-  try {
-    const response = await fetch(url, {
-      ...DEFAULT_CACHE_OPTIONS,
-      ...options,
-      headers,
-    });
+interface RawResource {
+  id: number;
+  title: string;
+  title_ar: string;
+  description?: string;
+  description_ar?: string;
+  file_url?: string;
+  file_type: 'PDF' | 'Excel' | 'Word' | 'Other';
+  file_size?: string;
+  order: number;
+  module_id: number;
+}
 
-    if (!response.ok) {
-      const error = await response.json().catch(() => ({}));
-      throw new CMSFetchError(
-        response.status,
-        response.statusText,
-        error
-      );
-    }
+interface RawTestimonial {
+  id: number;
+  name: string;
+  name_ar: string;
+  quote: string;
+  quote_ar: string;
+  role?: string;
+  role_ar?: string;
+  photo_url?: string;
+  order: number;
+}
 
-    return await response.json();
-  } catch (error) {
-    if (error instanceof CMSFetchError) {
-      throw error;
-    }
-    throw new Error(`Failed to fetch from CMS: ${error}`);
-  }
+interface RawSettings {
+  site_title: string;
+  site_title_ar?: string;
+  hero_headline: string;
+  hero_headline_ar?: string;
+  hero_description: string;
+  hero_description_ar?: string;
+  hero_video_url?: string;
+  footer_text?: string;
+  footer_text_ar?: string;
+  social_links?: Array<{ platform: string; url: string }>;
 }
 
 // ============================================================================
@@ -153,35 +122,53 @@ async function cmsFetch<T>(
 export async function getPhases(
   params: CMSQueryParams = {}
 ): Promise<Phase[]> {
-  if (CMS_OFFLINE) {
-    const phasesJson = await import('../strapi-cms/sample-data/phases.json');
-    const items: any[] = (phasesJson as any).default?.phases || (phasesJson as any).phases || [];
-    return items.map((p, idx) => ({
-      id: idx + 1,
-      attributes: {
-        title: p.title,
-        slug: p.slug,
-        description: p.description,
-        order: p.order ?? idx + 1,
-        phase_number: p.phase_number ?? idx + 1,
-        header_video_url: p.header_video_url,
-        locale: (params.locale as any) || 'en',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        publishedAt: new Date().toISOString(),
-        modules: { data: [] },
-      },
-    }));
-  }
-  const defaultParams: CMSQueryParams = {
-    sort: 'order:asc',
-    populate: 'modules',
-    ...params,
-  };
-
-  const queryString = buildQueryString(defaultParams);
-  const response = await cmsFetch<PhasesResponse>(`/phases${queryString}`);
-  return response.data;
+  const locale = params.locale || 'en';
+  const phases = (phasesData as { phases: RawPhase[] }).phases;
+  const modules = (modulesData as { modules: RawModule[] }).modules;
+  
+  return phases
+    .sort((a, b) => a.order - b.order)
+    .map((phase) => {
+      // Get modules for this phase
+      const phaseModules = modules
+        .filter(m => m.phase_id === phase.id)
+        .sort((a, b) => a.order - b.order);
+      
+      return {
+        id: phase.id,
+        attributes: {
+          title: getLocalizedField(phase, 'title', locale),
+          slug: phase.slug,
+          description: getLocalizedField(phase, 'description', locale),
+          order: phase.order,
+          phase_number: phase.phase_number,
+          header_video_url: phase.header_video_url,
+          locale: locale as 'en' | 'ar',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          publishedAt: new Date().toISOString(),
+          modules: {
+            data: phaseModules.map(m => ({
+              id: m.id,
+              attributes: {
+                title: getLocalizedField(m, 'title', locale),
+                slug: m.slug,
+                summary: getLocalizedField(m, 'summary', locale),
+                video_url: m.video_url,
+                video_subtitle_url_en: m.video_subtitle_url_en,
+                video_subtitle_url_ar: m.video_subtitle_url_ar,
+                key_takeaways: locale === 'ar' ? m.key_takeaways_ar : m.key_takeaways,
+                order: m.order,
+                locale: locale as 'en' | 'ar',
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+                publishedAt: new Date().toISOString(),
+              },
+            })),
+          },
+        },
+      };
+    });
 }
 
 /**
@@ -189,11 +176,7 @@ export async function getPhases(
  * with modules and resources populated.
  */
 export async function fetchPhases(locale: 'en' | 'ar'): Promise<Phase[]> {
-  return getPhases({
-    locale,
-    populate: ['modules', 'modules.resources'],
-    sort: 'order:asc',
-  });
+  return getPhases({ locale });
 }
 
 /**
@@ -203,25 +186,8 @@ export async function getPhaseById(
   id: number,
   params: CMSQueryParams = {}
 ): Promise<Phase | null> {
-  if (CMS_OFFLINE) {
-    const all = await getPhases(params);
-    return all.find(p => p.id === id) || null;
-  }
-  const defaultParams: CMSQueryParams = {
-    populate: 'modules',
-    ...params,
-  };
-
-  const queryString = buildQueryString(defaultParams);
-  try {
-    const response = await cmsFetch<PhaseResponse>(`/phases/${id}${queryString}`);
-    return response.data;
-  } catch (error) {
-    if (error instanceof CMSFetchError && error.status === 404) {
-      return null;
-    }
-    throw error;
-  }
+  const phases = await getPhases(params);
+  return phases.find(p => p.id === id) || null;
 }
 
 /**
@@ -231,19 +197,8 @@ export async function getPhaseBySlug(
   slug: string,
   params: CMSQueryParams = {}
 ): Promise<Phase | null> {
-  if (CMS_OFFLINE) {
-    const all = await getPhases(params);
-    return all.find(p => p.attributes.slug === slug) || null;
-  }
-  const defaultParams: CMSQueryParams = {
-    filters: { slug: { $eq: slug } },
-    populate: 'modules',
-    ...params,
-  };
-
-  const queryString = buildQueryString(defaultParams);
-  const response = await cmsFetch<PhasesResponse>(`/phases${queryString}`);
-  return response.data[0] || null;
+  const phases = await getPhases(params);
+  return phases.find(p => p.attributes.slug === slug) || null;
 }
 
 // ============================================================================
@@ -256,19 +211,71 @@ export async function getPhaseBySlug(
 export async function getModules(
   params: CMSQueryParams = {}
 ): Promise<Module[]> {
-  if (CMS_OFFLINE) {
-    // No sample modules file provided; return empty for offline timeline usage
-    return [];
-  }
-  const defaultParams: CMSQueryParams = {
-    sort: 'order:asc',
-    populate: ['phase', 'resources'],
-    ...params,
-  };
-
-  const queryString = buildQueryString(defaultParams);
-  const response = await cmsFetch<ModulesResponse>(`/modules${queryString}`);
-  return response.data;
+  const locale = params.locale || 'en';
+  const modules = (modulesData as { modules: RawModule[] }).modules;
+  const phases = (phasesData as { phases: RawPhase[] }).phases;
+  const resources = (resourcesData as { resources: RawResource[] }).resources;
+  
+  return modules
+    .sort((a, b) => a.order - b.order)
+    .map((module) => {
+      const phase = phases.find(p => p.id === module.phase_id);
+      const moduleResources = resources
+        .filter(r => r.module_id === module.id)
+        .sort((a, b) => a.order - b.order);
+      
+      return {
+        id: module.id,
+        attributes: {
+          title: getLocalizedField(module, 'title', locale),
+          slug: module.slug,
+          summary: getLocalizedField(module, 'summary', locale),
+          video_url: module.video_url,
+          video_subtitle_url_en: module.video_subtitle_url_en,
+          video_subtitle_url_ar: module.video_subtitle_url_ar,
+          key_takeaways: locale === 'ar' ? module.key_takeaways_ar : module.key_takeaways,
+          order: module.order,
+          locale: locale as 'en' | 'ar',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          publishedAt: new Date().toISOString(),
+          phase: phase ? {
+            data: {
+              id: phase.id,
+              attributes: {
+                title: getLocalizedField(phase, 'title', locale),
+                slug: phase.slug,
+                description: getLocalizedField(phase, 'description', locale),
+                order: phase.order,
+                phase_number: phase.phase_number,
+                header_video_url: phase.header_video_url,
+                locale: locale as 'en' | 'ar',
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+                publishedAt: new Date().toISOString(),
+              },
+            },
+          } : undefined,
+          resources: {
+            data: moduleResources.map(r => ({
+              id: r.id,
+              attributes: {
+                title: getLocalizedField(r, 'title', locale),
+                description: getLocalizedField(r, 'description', locale),
+                file_url: r.file_url,
+                file_type: r.file_type,
+                file_size: r.file_size,
+                order: r.order,
+                locale: locale as 'en' | 'ar',
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+                publishedAt: new Date().toISOString(),
+              },
+            })),
+          },
+        },
+      };
+    });
 }
 
 /**
@@ -278,25 +285,8 @@ export async function getModuleById(
   id: number,
   params: CMSQueryParams = {}
 ): Promise<Module | null> {
-  if (CMS_OFFLINE) {
-    const all = await getModules(params);
-    return all.find(m => m.id === id) || null;
-  }
-  const defaultParams: CMSQueryParams = {
-    populate: ['phase', 'resources'],
-    ...params,
-  };
-
-  const queryString = buildQueryString(defaultParams);
-  try {
-    const response = await cmsFetch<ModuleResponse>(`/modules/${id}${queryString}`);
-    return response.data;
-  } catch (error) {
-    if (error instanceof CMSFetchError && error.status === 404) {
-      return null;
-    }
-    throw error;
-  }
+  const modules = await getModules(params);
+  return modules.find(m => m.id === id) || null;
 }
 
 /**
@@ -306,19 +296,8 @@ export async function getModuleBySlug(
   slug: string,
   params: CMSQueryParams = {}
 ): Promise<Module | null> {
-  if (CMS_OFFLINE) {
-    const all = await getModules(params);
-    return all.find(m => m.attributes.slug === slug) || null;
-  }
-  const defaultParams: CMSQueryParams = {
-    filters: { slug: { $eq: slug } },
-    populate: ['phase', 'resources'],
-    ...params,
-  };
-
-  const queryString = buildQueryString(defaultParams);
-  const response = await cmsFetch<ModulesResponse>(`/modules${queryString}`);
-  return response.data[0] || null;
+  const modules = await getModules(params);
+  return modules.find(m => m.attributes.slug === slug) || null;
 }
 
 /**
@@ -328,19 +307,13 @@ export async function getModulesByPhase(
   phaseSlug: string,
   params: CMSQueryParams = {}
 ): Promise<Module[]> {
-  if (CMS_OFFLINE) {
-    return [];
-  }
-  const defaultParams: CMSQueryParams = {
-    filters: { phase: { slug: { $eq: phaseSlug } } },
-    sort: 'order:asc',
-    populate: 'resources',
-    ...params,
-  };
-
-  const queryString = buildQueryString(defaultParams);
-  const response = await cmsFetch<ModulesResponse>(`/modules${queryString}`);
-  return response.data;
+  const phases = (phasesData as { phases: RawPhase[] }).phases;
+  const phase = phases.find(p => p.slug === phaseSlug);
+  
+  if (!phase) return [];
+  
+  const modules = await getModules(params);
+  return modules.filter(m => m.attributes.phase?.data.id === phase.id);
 }
 
 // ============================================================================
@@ -353,34 +326,26 @@ export async function getModulesByPhase(
 export async function getResources(
   params: CMSQueryParams = {}
 ): Promise<Resource[]> {
-  if (CMS_OFFLINE) {
-    const resourcesJson = await import('../strapi-cms/sample-data/resources.json');
-    const items: any[] = (resourcesJson as any).default || (resourcesJson as any);
-    return items.map((r, idx) => ({
-      id: idx + 1,
+  const locale = params.locale || 'en';
+  const resources = (resourcesData as { resources: RawResource[] }).resources;
+  
+  return resources
+    .sort((a, b) => a.order - b.order)
+    .map((resource) => ({
+      id: resource.id,
       attributes: {
-        title: r.title,
-        description: r.description,
-        file_url: r.file_url,
-        file_type: r.file_type,
-        file_size: r.file_size,
-        order: r.order ?? idx + 1,
-        locale: (params.locale as any) || 'en',
+        title: getLocalizedField(resource, 'title', locale),
+        description: getLocalizedField(resource, 'description', locale),
+        file_url: resource.file_url,
+        file_type: resource.file_type,
+        file_size: resource.file_size,
+        order: resource.order,
+        locale: locale as 'en' | 'ar',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         publishedAt: new Date().toISOString(),
       },
     }));
-  }
-  const defaultParams: CMSQueryParams = {
-    sort: 'order:asc',
-    populate: ['module', 'file'],
-    ...params,
-  };
-
-  const queryString = buildQueryString(defaultParams);
-  const response = await cmsFetch<ResourcesResponse>(`/resources${queryString}`);
-  return response.data;
 }
 
 /**
@@ -390,20 +355,32 @@ export async function getResourcesByModule(
   moduleSlug: string,
   params: CMSQueryParams = {}
 ): Promise<Resource[]> {
-  if (CMS_OFFLINE) {
-    const all = await getResources(params);
-    return all.filter(r => (r as any).attributes?.module?.data?.attributes?.slug === moduleSlug);
-  }
-  const defaultParams: CMSQueryParams = {
-    filters: { module: { slug: { $eq: moduleSlug } } },
-    sort: 'order:asc',
-    populate: 'file',
-    ...params,
-  };
-
-  const queryString = buildQueryString(defaultParams);
-  const response = await cmsFetch<ResourcesResponse>(`/resources${queryString}`);
-  return response.data;
+  const locale = params.locale || 'en';
+  const modules = (modulesData as { modules: RawModule[] }).modules;
+  const module = modules.find(m => m.slug === moduleSlug);
+  
+  if (!module) return [];
+  
+  const resources = (resourcesData as { resources: RawResource[] }).resources;
+  
+  return resources
+    .filter(r => r.module_id === module.id)
+    .sort((a, b) => a.order - b.order)
+    .map((resource) => ({
+      id: resource.id,
+      attributes: {
+        title: getLocalizedField(resource, 'title', locale),
+        description: getLocalizedField(resource, 'description', locale),
+        file_url: resource.file_url,
+        file_type: resource.file_type,
+        file_size: resource.file_size,
+        order: resource.order,
+        locale: locale as 'en' | 'ar',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        publishedAt: new Date().toISOString(),
+      },
+    }));
 }
 
 // ============================================================================
@@ -416,32 +393,24 @@ export async function getResourcesByModule(
 export async function getTestimonials(
   params: CMSQueryParams = {}
 ): Promise<Testimonial[]> {
-  if (CMS_OFFLINE) {
-    const testimonialsJson = await import('../strapi-cms/sample-data/testimonials.json');
-    const items: any[] = (testimonialsJson as any).default || (testimonialsJson as any);
-    return items.map((t, idx) => ({
-      id: idx + 1,
+  const locale = params.locale || 'en';
+  const testimonials = (testimonialsData as { testimonials: RawTestimonial[] }).testimonials;
+  
+  return testimonials
+    .sort((a, b) => a.order - b.order)
+    .map((testimonial) => ({
+      id: testimonial.id,
       attributes: {
-        name: t.name || t.author || 'Participant',
-        quote: t.quote || t.text || '',
-        role: t.role,
-        order: t.order ?? idx + 1,
-        locale: (params.locale as any) || 'en',
+        name: getLocalizedField(testimonial, 'name', locale),
+        quote: getLocalizedField(testimonial, 'quote', locale),
+        role: getLocalizedField(testimonial, 'role', locale),
+        order: testimonial.order,
+        locale: locale as 'en' | 'ar',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         publishedAt: new Date().toISOString(),
       },
     }));
-  }
-  const defaultParams: CMSQueryParams = {
-    sort: 'order:asc',
-    populate: 'photo',
-    ...params,
-  };
-
-  const queryString = buildQueryString(defaultParams);
-  const response = await cmsFetch<TestimonialsResponse>(`/testimonials${queryString}`);
-  return response.data;
 }
 
 // ============================================================================
@@ -454,39 +423,27 @@ export async function getTestimonials(
 export async function getSettings(
   params: CMSQueryParams = {}
 ): Promise<Settings | null> {
-  if (CMS_OFFLINE) {
-    const settingsJson = await import('../strapi-cms/sample-data/settings.json');
-    const src: any = (settingsJson as any).default || (settingsJson as any);
-    const toSettings = (locale: string): Settings => ({
-      id: 1,
-      attributes: {
-        site_title: src.site_title,
-        site_title_ar: src.site_title_ar,
-        hero_headline: src.hero_headline,
-        hero_headline_ar: src.hero_headline_ar,
-        hero_description: src.hero_description,
-        hero_description_ar: src.hero_description_ar,
-        hero_video_url: src.hero_video_url,
-        footer_text: src.footer_text,
-        footer_text_ar: src.footer_text_ar,
-        social_links: src.social_links,
-        locale: (locale as any) || 'en',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      },
-    });
-    return toSettings((params.locale as any) || 'en');
-  }
-  const queryString = buildQueryString(params);
-  try {
-    const response = await cmsFetch<SettingsResponse>(`/setting${queryString}`);
-    return response.data;
-  } catch (error) {
-    if (error instanceof CMSFetchError && error.status === 404) {
-      return null;
-    }
-    throw error;
-  }
+  const locale = params.locale || 'en';
+  const data = settingsData as RawSettings;
+  
+  return {
+    id: 1,
+    attributes: {
+      site_title: locale === 'ar' && data.site_title_ar ? data.site_title_ar : data.site_title,
+      site_title_ar: data.site_title_ar,
+      hero_headline: locale === 'ar' && data.hero_headline_ar ? data.hero_headline_ar : data.hero_headline,
+      hero_headline_ar: data.hero_headline_ar,
+      hero_description: locale === 'ar' && data.hero_description_ar ? data.hero_description_ar : data.hero_description,
+      hero_description_ar: data.hero_description_ar,
+      hero_video_url: data.hero_video_url,
+      footer_text: locale === 'ar' && data.footer_text_ar ? data.footer_text_ar : data.footer_text,
+      footer_text_ar: data.footer_text_ar,
+      social_links: data.social_links,
+      locale: locale as 'en' | 'ar',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+  };
 }
 
 // ============================================================================
@@ -498,29 +455,21 @@ export async function getSettings(
  */
 export function getMediaUrl(url: string | undefined): string | undefined {
   if (!url) return undefined;
-  if (url.startsWith('http')) return url;
-  return `${CMS_BASE_URL}${url}`;
+  return url;
 }
 
 /**
- * Check if CMS is configured
+ * Check if CMS is configured (always true for local JSON)
  */
 export function isCMSConfigured(): boolean {
-  if (CMS_OFFLINE) return true;
-  return Boolean(CMS_BASE_URL && CMS_API_TOKEN);
+  return true;
 }
 
 /**
- * Get CMS health status
+ * Get CMS health status (always true for local JSON)
  */
 export async function getCMSHealth(): Promise<boolean> {
-  if (CMS_OFFLINE) return true;
-  try {
-    await cmsFetch('/');
-    return true;
-  } catch {
-    return false;
-  }
+  return true;
 }
 
 // ============================================================================
@@ -528,8 +477,7 @@ export async function getCMSHealth(): Promise<boolean> {
 // ============================================================================
 
 export const cmsConfig = {
-  baseUrl: CMS_BASE_URL,
-  hasToken: Boolean(CMS_API_TOKEN),
-  offline: CMS_OFFLINE,
+  baseUrl: 'local',
+  hasToken: true,
+  offline: false,
 };
-

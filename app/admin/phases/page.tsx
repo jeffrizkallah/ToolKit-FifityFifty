@@ -1,0 +1,249 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+
+interface Phase {
+  id: number;
+  title: string;
+  title_ar: string;
+  slug: string;
+  description: string;
+  description_ar: string;
+  order: number;
+  phase_number: number;
+  header_video_url: string;
+}
+
+export default function PhasesPage() {
+  const [phases, setPhases] = useState<Phase[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const loadPhases = async () => {
+      try {
+        const authRes = await fetch('/api/admin/auth');
+        if (!authRes.ok) {
+          router.replace('/admin');
+          return;
+        }
+
+        const res = await fetch('/api/admin/content?type=phases');
+        if (res.ok) {
+          const data = await res.json();
+          setPhases(data.phases || []);
+        }
+      } catch (error) {
+        console.error('Error loading phases:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadPhases();
+  }, [router]);
+
+  const handleSave = async () => {
+    setSaving(true);
+    setMessage(null);
+
+    try {
+      const res = await fetch('/api/admin/content', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'phases', data: { phases } }),
+      });
+
+      if (res.ok) {
+        setMessage({ type: 'success', text: 'Phases saved successfully!' });
+        setEditingId(null);
+      } else {
+        const data = await res.json();
+        setMessage({ type: 'error', text: data.error || 'Failed to save phases' });
+      }
+    } catch (error) {
+      setMessage({ type: 'error', text: 'An error occurred while saving' });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const updatePhase = (id: number, field: keyof Phase, value: string | number) => {
+    setPhases(phases.map(p => 
+      p.id === id ? { ...p, [field]: value } : p
+    ));
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-pulse text-white/60">Loading phases...</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen p-6">
+      {/* Header */}
+      <header className="flex items-center justify-between mb-8">
+        <div className="flex items-center gap-4">
+          <Link
+            href="/admin/dashboard"
+            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+          >
+            <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </Link>
+          <div>
+            <h1 className="text-2xl font-bold text-white">Phases</h1>
+            <p className="text-slate-400">Manage the 6 campaign phases</p>
+          </div>
+        </div>
+        <button
+          onClick={handleSave}
+          disabled={saving}
+          className="px-6 py-2 bg-gradient-to-r from-brand-primary-500 to-brand-primary-600 hover:from-brand-primary-600 hover:to-brand-primary-700 text-white font-medium rounded-xl transition-all disabled:opacity-50 shadow-lg"
+        >
+          {saving ? 'Saving...' : 'Save All Changes'}
+        </button>
+      </header>
+
+      {/* Message */}
+      {message && (
+        <div className={`mb-6 p-4 rounded-xl ${message.type === 'success' ? 'bg-green-500/10 border border-green-500/20 text-green-400' : 'bg-red-500/10 border border-red-500/20 text-red-400'}`}>
+          {message.text}
+        </div>
+      )}
+
+      {/* Phases List */}
+      <div className="space-y-4">
+        {phases.sort((a, b) => a.order - b.order).map((phase) => (
+          <div
+            key={phase.id}
+            className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden"
+          >
+            {/* Phase Header */}
+            <div
+              className="flex items-center justify-between p-4 cursor-pointer hover:bg-white/5 transition-colors"
+              onClick={() => setEditingId(editingId === phase.id ? null : phase.id)}
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold">
+                  {phase.phase_number}
+                </div>
+                <div>
+                  <h3 className="text-white font-medium">{phase.title}</h3>
+                  <p className="text-slate-400 text-sm">{phase.slug}</p>
+                </div>
+              </div>
+              <svg
+                className={`w-5 h-5 text-slate-400 transition-transform ${editingId === phase.id ? 'rotate-180' : ''}`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+
+            {/* Edit Form */}
+            {editingId === phase.id && (
+              <div className="p-6 border-t border-white/10 space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-300 mb-2">Title (English)</label>
+                    <input
+                      type="text"
+                      value={phase.title}
+                      onChange={(e) => updatePhase(phase.id, 'title', e.target.value)}
+                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-300 mb-2">Title (Arabic)</label>
+                    <input
+                      type="text"
+                      dir="rtl"
+                      value={phase.title_ar}
+                      onChange={(e) => updatePhase(phase.id, 'title_ar', e.target.value)}
+                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-300 mb-2">Slug</label>
+                    <input
+                      type="text"
+                      value={phase.slug}
+                      onChange={(e) => updatePhase(phase.id, 'slug', e.target.value)}
+                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-300 mb-2">Order</label>
+                    <input
+                      type="number"
+                      value={phase.order}
+                      onChange={(e) => updatePhase(phase.id, 'order', parseInt(e.target.value))}
+                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-300 mb-2">Phase Number</label>
+                    <input
+                      type="number"
+                      value={phase.phase_number}
+                      onChange={(e) => updatePhase(phase.id, 'phase_number', parseInt(e.target.value))}
+                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">Header Video URL</label>
+                  <input
+                    type="url"
+                    value={phase.header_video_url}
+                    onChange={(e) => updatePhase(phase.id, 'header_video_url', e.target.value)}
+                    placeholder="https://youtube.com/watch?v=..."
+                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-300 mb-2">Description (English) - HTML</label>
+                    <textarea
+                      value={phase.description}
+                      onChange={(e) => updatePhase(phase.id, 'description', e.target.value)}
+                      rows={6}
+                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary-500 resize-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-300 mb-2">Description (Arabic) - HTML</label>
+                    <textarea
+                      dir="rtl"
+                      value={phase.description_ar}
+                      onChange={(e) => updatePhase(phase.id, 'description_ar', e.target.value)}
+                      rows={6}
+                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary-500 resize-none"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+

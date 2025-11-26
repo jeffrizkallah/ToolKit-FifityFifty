@@ -88,7 +88,7 @@ export function HeroSection({ headline, description, onWatchVideo }: HeroSection
       <div className="relative z-10 max-w-6xl mx-auto px-6 py-20 text-center">
         {/* Hero Headline */}
         <motion.h1
-          className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white mb-4 tracking-tight"
+          className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white mb-4 tracking-tight max-w-[800px] mx-auto"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
@@ -98,7 +98,7 @@ export function HeroSection({ headline, description, onWatchVideo }: HeroSection
 
         {/* Hero Description */}
         <motion.p
-          className="text-lg md:text-xl lg:text-xl text-white/90 mb-10 max-w-[600px] mx-auto leading-relaxed font-normal"
+          className="text-lg md:text-xl lg:text-xl text-white/90 mb-10 max-w-[800px] mx-auto leading-relaxed font-normal"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}

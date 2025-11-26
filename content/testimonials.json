@@ -1,0 +1,60 @@
+{
+  "testimonials": [
+    {
+      "id": 1,
+      "name": "Fatima Al-Hassan",
+      "name_ar": "فاطمة الحسن",
+      "quote": "The FiftyFifty ToolKit transformed how I approached my campaign. The structured phases helped me go from a first-time candidate to a confident campaigner in just a few months.",
+      "quote_ar": "حولت مجموعة أدوات FiftyFifty الطريقة التي تعاملت بها مع حملتي. ساعدتني المراحل المنظمة في الانتقال من مرشحة لأول مرة إلى ناشطة واثقة في بضعة أشهر فقط.",
+      "role": "City Council Candidate, Cairo",
+      "role_ar": "مرشحة مجلس المدينة، القاهرة",
+      "photo_url": "",
+      "order": 1
+    },
+    {
+      "id": 2,
+      "name": "Layla Mansour",
+      "name_ar": "ليلى منصور",
+      "quote": "The video modules are perfectly designed - short, practical, and culturally relevant. I could learn during my commute and immediately apply the concepts to my campaign.",
+      "quote_ar": "تم تصميم وحدات الفيديو بشكل مثالي - قصيرة وعملية وذات صلة ثقافية. كان بإمكاني التعلم أثناء تنقلاتي وتطبيق المفاهيم فوراً على حملتي.",
+      "role": "Parliamentary Candidate, Beirut",
+      "role_ar": "مرشحة برلمانية، بيروت",
+      "photo_url": "",
+      "order": 2
+    },
+    {
+      "id": 3,
+      "name": "Nour Ibrahim",
+      "name_ar": "نور إبراهيم",
+      "quote": "The bilingual resources were a game-changer for our team. We could work in Arabic while accessing international best practices. The templates saved us countless hours.",
+      "quote_ar": "كانت الموارد ثنائية اللغة بمثابة تغيير جذري لفريقنا. كان بإمكاننا العمل باللغة العربية مع الوصول إلى أفضل الممارسات الدولية. وفرت لنا القوالب ساعات لا تحصى.",
+      "role": "Campaign Manager, Amman",
+      "role_ar": "مدير الحملة، عمان",
+      "photo_url": "",
+      "order": 3
+    },
+    {
+      "id": 4,
+      "name": "Sara Ahmed",
+      "name_ar": "سارة أحمد",
+      "quote": "As a young woman entering politics, I felt overwhelmed. This toolkit gave me the confidence and practical tools to run a professional campaign that exceeded everyone's expectations.",
+      "quote_ar": "كامرأة شابة تدخل السياسة، شعرت بالارتباك. أعطتني مجموعة الأدوات هذه الثقة والأدوات العملية لإدارة حملة احترافية تجاوزت توقعات الجميع.",
+      "role": "Municipal Council Member, Tunis",
+      "role_ar": "عضو المجلس البلدي، تونس",
+      "photo_url": "",
+      "order": 4
+    },
+    {
+      "id": 5,
+      "name": "Hana Khalil",
+      "name_ar": "هنا خليل",
+      "quote": "What I appreciate most is the focus on community connection from day one. The toolkit helped me build genuine relationships with voters that lasted beyond the election.",
+      "quote_ar": "ما أقدره أكثر هو التركيز على التواصل المجتمعي منذ اليوم الأول. ساعدتني مجموعة الأدوات في بناء علاقات حقيقية مع الناخبين استمرت بعد الانتخابات.",
+      "role": "Regional Representative, Rabat",
+      "role_ar": "ممثلة إقليمية، الرباط",
+      "photo_url": "",
+      "order": 5
+    }
+  ]
+}
+

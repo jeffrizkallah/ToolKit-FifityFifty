@@ -28,13 +28,12 @@ export const config = {
   matcher: [
     // Match all pathnames except for:
     // - API routes
+    // - Admin routes (not localized)
     // - _next (Next.js internals)
     // - _static (inside /public)
     // - _vercel (Vercel internals)
     // - Static files (images, fonts, etc.)
-    '/((?!api|_next|_vercel|.*\\..*).*)',
-    // However, match all pathnames within `/api/`, except for the ones starting with `/api/webhooks/`
-    // '/api/((?!webhooks).*)',
+    '/((?!api|admin|_next|_vercel|.*\\..*).*)',
   ],
 };
 

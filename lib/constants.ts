@@ -6,15 +6,8 @@
 
 // Site Configuration
 export const SITE_NAME = 'FiftyFifty ToolKit';
-export const SITE_DESCRIPTION = 'Building sustainable communities through social responsibility';
+export const SITE_DESCRIPTION = 'A practical toolkit designed to help women run effective election campaigns';
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
-
-// CMS Configuration
-export const CMS_BASE_URL = process.env.CMS_BASE_URL || '';
-export const CMS_API_TOKEN = process.env.CMS_API_TOKEN || '';
-
-// Storage Configuration
-export const STORAGE_BUCKET_URL = process.env.STORAGE_BUCKET_URL || '';
 
 // Analytics
 export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID || '';
@@ -51,5 +44,6 @@ export const BREAKPOINTS = {
 export const API_ROUTES = {
   revalidate: '/api/revalidate',
   health: '/api/health',
+  adminAuth: '/api/admin/auth',
+  adminContent: '/api/admin/content',
 } as const;
-

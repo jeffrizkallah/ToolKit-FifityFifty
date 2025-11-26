@@ -1,12 +1,12 @@
 # ToolKit FiftyFifty
 
-A modern, bilingual (English/Arabic) web application for the FiftyFifty ToolKit platform. Built with Next.js 14+, TypeScript, and Tailwind CSS, featuring RTL support and a headless CMS integration.
+A modern, bilingual (English/Arabic) web application for the FiftyFifty ToolKit platform. Built with Next.js 14+, TypeScript, and Tailwind CSS, featuring RTL support and a simple, local content management system.
 
 ## 🚀 Features
 
 - **Bilingual Support**: Full English and Arabic localization with RTL layout
 - **Modern Stack**: Next.js 14+ with App Router and TypeScript
-- **Headless CMS**: Integrated with a headless CMS for content management
+- **Local CMS**: Simple JSON-based content management with admin panel
 - **Accessible**: WCAG 2.1 AA compliant with shadcn/ui components
 - **Performance**: Optimized with ISR (Incremental Static Regeneration)
 - **SEO Ready**: Metadata API and Google Analytics 4 integration
@@ -17,7 +17,7 @@ A modern, bilingual (English/Arabic) web application for the FiftyFifty ToolKit 
 - **Language**: TypeScript (strict mode)
 - **Styling**: Tailwind CSS with custom design tokens
 - **UI Components**: shadcn/ui
-- **CMS**: Headless CMS integration
+- **CMS**: Local JSON files with admin panel
 - **Deployment**: Vercel
 - **Analytics**: Google Analytics 4
 
@@ -38,10 +38,6 @@ A modern, bilingual (English/Arabic) web application for the FiftyFifty ToolKit 
 2. **Install dependencies**
    ```bash
    npm install
-   # or
-   yarn install
-   # or
-   pnpm install
    ```
 
 3. **Set up environment variables**
@@ -49,25 +45,19 @@ A modern, bilingual (English/Arabic) web application for the FiftyFifty ToolKit 
    cp env.example .env.local
    ```
    
-   Edit `.env.local` and add your environment variables:
+   Edit `.env.local` and set:
+   - `ADMIN_PASSWORD`: Password for the admin panel (required!)
    - `NEXT_PUBLIC_SITE_URL`: Your site URL
-   - `CMS_BASE_URL`: Your CMS API base URL
-   - `CMS_API_TOKEN`: Your CMS authentication token
-   - `NEXT_PUBLIC_GA_ID`: Google Analytics 4 measurement ID
-   - `REVALIDATE_SECRET`: Secret for ISR webhook authentication
-   - `STORAGE_BUCKET_URL`: S3-compatible storage bucket URL
+   - `NEXT_PUBLIC_GA_ID`: Google Analytics 4 measurement ID (optional)
 
 4. **Run the development server**
    ```bash
    npm run dev
-   # or
-   yarn dev
-   # or
-   pnpm dev
    ```
 
 5. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
+   - Main site: [http://localhost:3000](http://localhost:3000)
+   - Admin panel: [http://localhost:3000/admin](http://localhost:3000/admin)
 
 ## 📁 Project Structure
 
@@ -75,43 +65,56 @@ A modern, bilingual (English/Arabic) web application for the FiftyFifty ToolKit 
 toolkit-fiftyfifty/
 ├── app/                    # Next.js App Router
 │   ├── [locale]/          # Locale-based routing (en/ar)
+│   ├── admin/             # Admin panel pages
 │   ├── api/               # API routes
+│   │   └── admin/         # Admin API (auth, content)
 │   └── globals.css        # Global styles
 ├── components/            # React components
 │   ├── ui/               # shadcn/ui components
 │   └── ...               # Custom components
+├── content/               # JSON content files
+│   ├── phases.json       # Campaign phases
+│   ├── modules.json      # Learning modules
+│   ├── resources.json    # Downloadable resources
+│   ├── testimonials.json # Participant testimonials
+│   └── settings.json     # Site settings
 ├── lib/                   # Utility functions
-│   ├── cms/              # CMS integration
-│   ├── i18n/             # Internationalization
-│   └── utils/            # Helper functions
+│   ├── cms-client.ts     # Content fetching functions
+│   └── types/            # TypeScript types
+├── messages/              # i18n translation files
+│   ├── en.json           # English translations
+│   └── ar.json           # Arabic translations
 ├── public/                # Static assets
-├── styles/                # Additional styles
 ├── docs/                  # Project documentation
-│   ├── architecture/     # Architecture docs
-│   ├── epics/           # Epic definitions
-│   ├── stories/         # User stories
-│   └── setup/           # Setup guides
-├── env.example           # Environment variables template
-├── vercel.json          # Vercel configuration
-└── README.md            # This file
+└── README.md             # This file
 ```
+
+## 🔐 Admin Panel
+
+The admin panel allows you to edit all website content without touching code.
+
+### Accessing the Admin Panel
+
+1. Navigate to `/admin`
+2. Enter your admin password (set in `ADMIN_PASSWORD` env variable)
+3. Edit content for:
+   - **Site Settings**: Title, hero section, footer, social links
+   - **Phases**: The 6 campaign phases
+   - **Modules**: Learning modules within each phase
+   - **Resources**: Downloadable files and documents
+   - **Testimonials**: Participant quotes and stories
+
+### Content Structure
+
+All content supports both English and Arabic translations. Content is stored in JSON files in the `/content` directory and can be edited either through the admin panel or directly in the JSON files.
 
 ## 🌍 Internationalization
 
 The application supports English (en) and Arabic (ar) with:
 - Locale-based routing: `/en/*` and `/ar/*`
 - RTL layout for Arabic
-- Translated content from CMS
+- Bilingual content in admin panel
 - Language switcher component
-
-## 📚 Documentation
-
-- [Quick Start Guide](docs/QUICK_START.md)
-- [Setup Guide](docs/setup/SETUP_QUICK_START.md)
-- [Environment Variables](docs/setup/ENV_VARIABLES.md)
-- [Vercel Setup](docs/setup/VERCEL_SETUP.md)
-- [Architecture Overview](docs/architecture.md)
-- [Epics & Stories](docs/epics/README.md)
 
 ## 🔧 Development
 
@@ -122,70 +125,38 @@ The application supports English (en) and Arabic (ar) with:
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
 - `npm run type-check` - Run TypeScript compiler check
+- `npm run test` - Run tests
 
-### Branching Strategy
+### Environment Variables
 
-We follow **GitHub Flow** for our branching strategy:
-
-- `main` - Production-ready code
-- `develop` - Development branch for integration
-- `feature/*` - Feature branches
-- `bugfix/*` - Bug fix branches
-- `hotfix/*` - Urgent production fixes
-
-See [BRANCHING_STRATEGY.md](BRANCHING_STRATEGY.md) for detailed workflow.
-
-### Code Review Process
-
-- All changes require pull request reviews
-- At least one approval required before merging
-- All CI/CD checks must pass
-- Follow code style and conventions
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `ADMIN_PASSWORD` | Password for admin panel access | Yes |
+| `NEXT_PUBLIC_SITE_URL` | Public URL of your site | Yes |
+| `NEXT_PUBLIC_GA_ID` | Google Analytics 4 ID | No |
+| `REVALIDATION_SECRET` | Secret for ISR webhooks | No |
 
 ## 🚀 Deployment
 
 The application is deployed on Vercel with automatic deployments:
 
-- **Production**: `main` branch → production.vercel.app
-- **Preview**: Pull requests → preview URLs
-- **Development**: `develop` branch → dev.vercel.app
+1. Connect your GitHub repository to Vercel
+2. Set environment variables in Vercel dashboard
+3. Deploy!
 
-See [docs/setup/VERCEL_SETUP.md](docs/setup/VERCEL_SETUP.md) for detailed deployment instructions.
+**Important**: Set a strong `ADMIN_PASSWORD` in production!
 
 ## 🔒 Security
 
-- Never commit `.env` files or secrets to the repository
-- Use environment variables for all sensitive data
-- Keep dependencies up to date
-- Review security advisories regularly
-
-## 🤝 Contributing
-
-1. Create a feature branch from `develop`
-2. Make your changes
-3. Write/update tests if applicable
-4. Submit a pull request
-5. Wait for code review approval
+- Never commit `.env` files to the repository
+- Use a strong admin password in production
+- The admin panel uses HTTP-only cookies for session management
+- Content changes are saved directly to JSON files
 
 ## 📝 License
 
 [Add your license information here]
 
-## 👥 Team
-
-- **Product Owner**: [Name]
-- **Tech Lead**: [Name]
-- **Developers**: [Names]
-- **DevOps**: [Name]
-
-## 📞 Support
-
-For questions or issues:
-- Open an issue in GitHub
-- Contact the team via [communication channel]
-- Check documentation in `/docs`
-
 ---
 
 **Built with ❤️ for FiftyFifty**
-

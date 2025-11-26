@@ -1,0 +1,34 @@
+{
+  "site_title": "FiftyFifty ToolKit",
+  "site_title_ar": "أدوات FiftyFifty",
+  "hero_headline": "Run for Change, Lead with Confidence",
+  "hero_headline_ar": "ترشحي للتغيير، قودي بثقة",
+  "hero_description": "A practical toolkit designed to help women run effective election campaigns. Explore the 6 key phases, from taking the decision to run, to Election Day and beyond, with step-by-step guidance, short videos, and ready-to-use resources.",
+  "hero_description_ar": "مجموعة أدوات عملية مصممة لمساعدة النساء على إدارة حملات انتخابية فعالة. استكشفي المراحل الست الرئيسية، من اتخاذ قرار الترشح، إلى يوم الانتخابات وما بعده، مع إرشادات خطوة بخطوة، ومقاطع فيديو قصيرة، وموارد جاهزة للاستخدام.",
+  "hero_video_url": "",
+  "footer_text": "© 2025 FiftyFifty ToolKit. Empowering women in politics across the Arab world.",
+  "footer_text_ar": "© 2025 أدوات FiftyFifty. تمكين المرأة في السياسة في جميع أنحاء العالم العربي.",
+  "social_links": [
+    {
+      "platform": "facebook",
+      "url": "https://facebook.com/fiftyfiftytoolkit"
+    },
+    {
+      "platform": "twitter",
+      "url": "https://twitter.com/fiftyfiftytoolkit"
+    },
+    {
+      "platform": "linkedin",
+      "url": "https://linkedin.com/company/fiftyfiftytoolkit"
+    },
+    {
+      "platform": "instagram",
+      "url": "https://instagram.com/fiftyfiftytoolkit"
+    },
+    {
+      "platform": "youtube",
+      "url": "https://youtube.com/@fiftyfiftytoolkit"
+    }
+  ]
+}
+

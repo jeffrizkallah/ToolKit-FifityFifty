@@ -1,0 +1,125 @@
+{
+  "resources": [
+    {
+      "id": 1,
+      "title": "Personal Readiness Assessment Worksheet",
+      "title_ar": "ورقة عمل تقييم الجاهزية الشخصية",
+      "description": "A comprehensive worksheet to evaluate your readiness to run for office, including personal, professional, and financial considerations.",
+      "description_ar": "ورقة عمل شاملة لتقييم جاهزيتك للترشح للمنصب، بما في ذلك الاعتبارات الشخصية والمهنية والمالية.",
+      "file_url": "https://example.com/resources/readiness-assessment.pdf",
+      "file_type": "PDF",
+      "file_size": "2.5 MB",
+      "order": 1,
+      "module_id": 1
+    },
+    {
+      "id": 2,
+      "title": "Family Discussion Guide",
+      "title_ar": "دليل النقاش العائلي",
+      "description": "Guide for having important conversations with family members about your decision to run for office.",
+      "description_ar": "دليل لإجراء محادثات مهمة مع أفراد الأسرة حول قرارك بالترشح للمنصب.",
+      "file_url": "https://example.com/resources/family-discussion-guide.pdf",
+      "file_type": "PDF",
+      "file_size": "1.2 MB",
+      "order": 2,
+      "module_id": 2
+    },
+    {
+      "id": 3,
+      "title": "Campaign Platform Template",
+      "title_ar": "نموذج البرنامج الانتخابي",
+      "description": "Template for developing and organizing your campaign platform and key policy positions.",
+      "description_ar": "نموذج لتطوير وتنظيم برنامجك الانتخابي ومواقفك السياسية الرئيسية.",
+      "file_url": "https://example.com/resources/platform-template.docx",
+      "file_type": "Word",
+      "file_size": "850 KB",
+      "order": 1,
+      "module_id": 3
+    },
+    {
+      "id": 4,
+      "title": "Campaign Team Roles Checklist",
+      "title_ar": "قائمة أدوار فريق الحملة",
+      "description": "Comprehensive list of campaign team roles with responsibilities and required skills.",
+      "description_ar": "قائمة شاملة بأدوار فريق الحملة مع المسؤوليات والمهارات المطلوبة.",
+      "file_url": "https://example.com/resources/team-roles.xlsx",
+      "file_type": "Excel",
+      "file_size": "1.5 MB",
+      "order": 1,
+      "module_id": 4
+    },
+    {
+      "id": 5,
+      "title": "Canvassing Script Template",
+      "title_ar": "نموذج نص التجول",
+      "description": "Ready-to-use script for door-to-door canvassing with customization guidelines.",
+      "description_ar": "نص جاهز للاستخدام للتجول من باب لباب مع إرشادات التخصيص.",
+      "file_url": "https://example.com/resources/canvassing-script.pdf",
+      "file_type": "PDF",
+      "file_size": "720 KB",
+      "order": 1,
+      "module_id": 5
+    },
+    {
+      "id": 6,
+      "title": "Debate Preparation Workbook",
+      "title_ar": "كتاب إعداد المناظرات",
+      "description": "Workbook for preparing for candidate debates including practice questions and response frameworks.",
+      "description_ar": "كتاب للتحضير لمناظرات المرشحين بما في ذلك أسئلة الممارسة وأطر الاستجابة.",
+      "file_url": "https://example.com/resources/debate-prep.pdf",
+      "file_type": "PDF",
+      "file_size": "3.2 MB",
+      "order": 1,
+      "module_id": 6
+    },
+    {
+      "id": 7,
+      "title": "GOTV Planning Calendar",
+      "title_ar": "تقويم تخطيط GOTV",
+      "description": "Detailed planning calendar for Get Out The Vote activities in the final weeks before election.",
+      "description_ar": "تقويم تخطيط مفصل لأنشطة حملة اخرج للتصويت في الأسابيع الأخيرة قبل الانتخابات.",
+      "file_url": "https://example.com/resources/gotv-calendar.xlsx",
+      "file_type": "Excel",
+      "file_size": "1.8 MB",
+      "order": 1,
+      "module_id": 7
+    },
+    {
+      "id": 8,
+      "title": "Election Day Checklist",
+      "title_ar": "قائمة يوم الانتخابات",
+      "description": "Comprehensive checklist for all election day operations and volunteer assignments.",
+      "description_ar": "قائمة شاملة لجميع عمليات يوم الانتخابات ومهام المتطوعين.",
+      "file_url": "https://example.com/resources/election-day-checklist.pdf",
+      "file_type": "PDF",
+      "file_size": "950 KB",
+      "order": 1,
+      "module_id": 9
+    },
+    {
+      "id": 9,
+      "title": "Victory and Concession Speech Templates",
+      "title_ar": "نماذج خطابات النصر والتنازل",
+      "description": "Templates for both victory and concession speeches with key elements to include.",
+      "description_ar": "نماذج لخطابات النصر والتنازل مع العناصر الرئيسية التي يجب تضمينها.",
+      "file_url": "https://example.com/resources/speech-templates.docx",
+      "file_type": "Word",
+      "file_size": "680 KB",
+      "order": 1,
+      "module_id": 10
+    },
+    {
+      "id": 10,
+      "title": "Transition Planning Guide",
+      "title_ar": "دليل تخطيط الانتقال",
+      "description": "Step-by-step guide for planning your transition from candidate to elected official.",
+      "description_ar": "دليل خطوة بخطوة لتخطيط انتقالك من مرشح إلى مسؤول منتخب.",
+      "file_url": "https://example.com/resources/transition-guide.pdf",
+      "file_type": "PDF",
+      "file_size": "2.8 MB",
+      "order": 1,
+      "module_id": 11
+    }
+  ]
+}
+
