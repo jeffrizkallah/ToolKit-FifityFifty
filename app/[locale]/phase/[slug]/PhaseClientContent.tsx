@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Video, BookOpen } from 'lucide-react';
+import { Video } from 'lucide-react';
 import { VideoCarousel } from '@/components/VideoCarousel';
 import { DocumentsSection } from '@/components/DocumentsSection';
 import { DocumentData } from '@/components/DocumentCard';
