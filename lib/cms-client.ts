@@ -478,6 +478,51 @@ export async function getResourcesByModule(
     }));
 }
 
+/**
+ * Get all resources for a specific phase (across all modules in that phase)
+ */
+export async function getResourcesByPhase(
+  phaseSlug: string,
+  params: CMSQueryParams = {}
+): Promise<Array<Resource & { moduleTitle?: string }>> {
+  const locale = params.locale || 'en';
+  const phases = await getCachedPhases() as RawPhase[];
+  const phase = phases.find(p => p.slug === phaseSlug);
+  
+  if (!phase) return [];
+  
+  const modules = await getCachedModules() as RawModule[];
+  const phaseModules = modules.filter(m => m.phase_id === phase.id);
+  
+  if (phaseModules.length === 0) return [];
+  
+  const resources = await getCachedResources() as RawResource[];
+  const moduleIds = phaseModules.map(m => m.id);
+  
+  return resources
+    .filter(r => moduleIds.includes(r.module_id))
+    .sort((a, b) => a.order - b.order)
+    .map((resource) => {
+      const module = phaseModules.find(m => m.id === resource.module_id);
+      return {
+        id: resource.id,
+        attributes: {
+          title: getLocalizedField(resource, 'title', locale),
+          description: getLocalizedField(resource, 'description', locale),
+          file_url: resource.file_url,
+          file_type: resource.file_type,
+          file_size: resource.file_size,
+          order: resource.order,
+          locale: locale as 'en' | 'ar',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          publishedAt: new Date().toISOString(),
+        },
+        moduleTitle: module ? getLocalizedField(module, 'title', locale) : undefined,
+      };
+    });
+}
+
 // ============================================================================
 // Testimonial API
 // ============================================================================

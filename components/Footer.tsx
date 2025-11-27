@@ -9,6 +9,7 @@
  */
 
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import { LanguageToggle } from './ui/language-toggle';
 import { Facebook, Twitter, Instagram, Linkedin, Youtube } from 'lucide-react';
 
@@ -47,11 +48,13 @@ export function Footer({ locale }: FooterProps) {
           {/* Logo Section */}
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-4">
-              <div className="bg-white p-3 rounded">
-                <div className="text-[#0063AF] font-bold text-xl" aria-label="FiftyFifty">
-                  FiftyFifty
-                </div>
-              </div>
+              <Image
+                src="/Trans fiftyfifity logo.png"
+                alt="FiftyFifty Logo"
+                width={80}
+                height={80}
+                className="object-contain"
+              />
             </div>
             <p className="text-gray-400 text-sm">
               {locale === 'ar'
@@ -160,11 +163,23 @@ export function Footer({ locale }: FooterProps) {
             {locale === 'ar' ? 'شركاؤنا' : 'Our Partners'}
           </h2>
           <div className="flex justify-center items-center gap-8 flex-wrap" role="list" aria-label="Partner organizations">
-            <div className="bg-white px-6 py-3 rounded" role="listitem">
-              <span className="text-[#0063AF] font-semibold">UN Women</span>
+            <div className="bg-white p-3 rounded-lg" role="listitem">
+              <Image
+                src="/Un women logo.png"
+                alt="UN Women Logo"
+                width={120}
+                height={48}
+                className="h-12 w-auto object-contain"
+              />
             </div>
-            <div className="bg-white px-6 py-3 rounded" role="listitem">
-              <span className="text-[#EC1C24] font-semibold">FiftyFifty</span>
+            <div className="bg-transparent p-2 rounded-lg" role="listitem">
+              <Image
+                src="/Trans fiftyfifity logo.png"
+                alt="FiftyFifty Logo"
+                width={72}
+                height={72}
+                className="object-contain"
+              />
             </div>
           </div>
         </div>

@@ -75,7 +75,7 @@ export default function NotFoundPage() {
             </li>
             <li className="flex items-start gap-2">
               <span className="text-[#0063AF] font-bold">•</span>
-              <span>Explore the six phases of the FiftyFifty ToolKit</span>
+              <span>Explore the three phases of the FiftyFifty ToolKit</span>
             </li>
           </ul>
         </div>

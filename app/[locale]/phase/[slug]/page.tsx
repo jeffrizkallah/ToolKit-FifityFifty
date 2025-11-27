@@ -1,20 +1,20 @@
 import { setRequestLocale } from 'next-intl/server';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getPhases, getPhaseBySlug, getModulesByPhase } from '@/lib/cms-client';
-import { ModuleCard } from '@/components/ModuleCard';
+import { getPhases, getPhaseBySlug, getModulesByPhase, getResourcesByPhase } from '@/lib/cms-client';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, ArrowLeft, PlayCircle } from 'lucide-react';
+import { ArrowRight, ArrowLeft, BookOpen, Video } from 'lucide-react';
 import Link from 'next/link';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import { StructuredData } from '@/components/StructuredData';
+import { PhaseClientContent } from './PhaseClientContent';
 
 /**
  * Phase Detail Page
  * 
  * Implements US3.7 - Phase Detail Page Template
  * Dynamic route that displays a phase with all its modules.
- * Features: phase header, video, module grid, progress indicator, next phase navigation.
+ * Features: phase header, video carousel, documents section, progress indicator, next phase navigation.
  */
 
 interface PhasePageProps {
@@ -136,6 +136,14 @@ export default async function PhasePage({ params: { locale, slug } }: PhasePageP
     console.warn(`Failed to fetch modules for phase ${slug}:`, error);
   }
 
+  // Fetch resources for this phase
+  let resources: Awaited<ReturnType<typeof getResourcesByPhase>> = [];
+  try {
+    resources = await getResourcesByPhase(slug, { locale: validLocale });
+  } catch (error) {
+    console.warn(`Failed to fetch resources for phase ${slug}:`, error);
+  }
+
   // Fetch all phases to determine next phase
   let allPhases: Awaited<ReturnType<typeof getPhases>> = [];
   try {
@@ -159,8 +167,29 @@ export default async function PhasePage({ params: { locale, slug } }: PhasePageP
     title,
     description,
     phase_number,
-    header_video_url,
   } = phase.attributes;
+
+  // Prepare videos from modules
+  const videos = modules
+    .filter(module => module.attributes.video_url)
+    .map(module => ({
+      id: module.id,
+      title: module.attributes.title,
+      description: module.attributes.summary,
+      videoUrl: module.attributes.video_url!,
+      duration: '~10 min', // Could be fetched from YouTube API if needed
+    }));
+
+  // Prepare documents from resources
+  const documents = resources.map(resource => ({
+    id: resource.id,
+    title: resource.attributes.title,
+    description: resource.attributes.description,
+    fileUrl: resource.attributes.file_url || '',
+    fileType: (resource.attributes.file_type || 'Other') as 'PDF' | 'Word' | 'Excel' | 'PowerPoint' | 'Other',
+    fileSize: resource.attributes.file_size,
+    moduleTitle: resource.moduleTitle,
+  }));
 
   // Breadcrumb data for structured data
   const breadcrumbData = [
@@ -277,30 +306,25 @@ export default async function PhasePage({ params: { locale, slug } }: PhasePageP
                 </ul>
               </div>
               
-              {/* Video Button - Enhanced */}
-              {header_video_url && (
-                <div className="pt-4">
-                  <Button
-                    asChild
-                    size="lg"
-                    className="bg-white text-[#0041A8] hover:bg-white/95 px-8 py-6 text-base font-bold shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 rounded-full"
-                  >
-                    <a 
-                      href={header_video_url} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-3"
-                    >
-                      <PlayCircle className="h-6 w-6" />
-                      <span>{validLocale === 'ar' ? 'شاهد فيديو المرحلة' : 'Watch Phase Video'}</span>
-                    </a>
-                  </Button>
-                  {/* Optional: Video duration or thumbnail placeholder */}
-                  <p className="text-sm text-white/70 mt-2 ml-1">
-                    {validLocale === 'ar' ? 'مدة الفيديو: ~10 دقائق' : 'Video duration: ~10 minutes'}
-                  </p>
+              {/* Quick Stats */}
+              <div className="pt-4 flex flex-wrap gap-6">
+                <div className="flex items-center gap-2 text-white/80">
+                  <Video className="w-5 h-5" />
+                  <span className="text-sm font-medium">
+                    {validLocale === 'ar' 
+                      ? `${videos.length} فيديو تعليمي`
+                      : `${videos.length} Video${videos.length !== 1 ? 's' : ''}`}
+                  </span>
                 </div>
-              )}
+                <div className="flex items-center gap-2 text-white/80">
+                  <BookOpen className="w-5 h-5" />
+                  <span className="text-sm font-medium">
+                    {validLocale === 'ar' 
+                      ? `${documents.length} مستند`
+                      : `${documents.length} Document${documents.length !== 1 ? 's' : ''}`}
+                  </span>
+                </div>
+              </div>
             </div>
 
             {/* Right Column: Phase Number Circle */}
@@ -313,68 +337,18 @@ export default async function PhasePage({ params: { locale, slug } }: PhasePageP
                     {phase_number}
                   </span>
                 </div>
-                {/* Decorative circles */}
-                <div className="absolute -top-4 -right-4 w-32 h-32 rounded-full bg-white/5 backdrop-blur-md border border-white/10" />
-                <div className="absolute -bottom-4 -left-4 w-24 h-24 rounded-full bg-white/5 backdrop-blur-md border border-white/10" />
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Modules Section */}
-      <section className="py-20">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="mb-12 text-center">
-            <h2 className="text-3xl md:text-4xl font-extrabold text-[#0041A8] mb-3 tracking-tight">
-              {validLocale === 'ar' ? 'الوحدات التعليمية' : 'Learning Modules'}
-            </h2>
-            <p className="text-gray-600 text-lg font-normal max-w-2xl mx-auto">
-              {validLocale === 'ar'
-                ? `استكشف ${modules.length} وحدة تعليمية في هذه المرحلة`
-                : `Explore ${modules.length} learning modules in this phase`}
-            </p>
-          </div>
-
-          {/* Modules Grid */}
-          {modules.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {modules.map((module, index) => (
-                <ModuleCard
-                  key={module.id}
-                  module={module}
-                  locale={validLocale}
-                  index={index}
-                  phaseSlug={slug}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* Empty State with Glassmorphism Cards */}
-              {[1, 2, 3].map((i) => (
-                <div
-                  key={i}
-                  className="glass-component glass-layered rounded-2xl p-8 border border-neutral-200 bg-white/50 backdrop-blur-sm"
-                >
-                  <div className="flex flex-col items-center justify-center min-h-[200px] text-center">
-                    <div className="w-16 h-16 rounded-full bg-neutral-100 flex items-center justify-center mb-4">
-                      <svg className="w-8 h-8 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                      </svg>
-                    </div>
-                    <p className="text-sm text-neutral-500 font-medium">
-                      {validLocale === 'ar'
-                        ? 'لا توجد وحدات متاحة حالياً'
-                        : 'No modules available yet'}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
+      {/* Client-side Interactive Content (Video Carousel + Documents) */}
+      <PhaseClientContent
+        videos={videos}
+        documents={documents}
+        locale={validLocale}
+      />
 
       {/* Next Phase Navigation */}
       {nextPhase && (
@@ -457,4 +431,3 @@ export default async function PhasePage({ params: { locale, slug } }: PhasePageP
     </>
   );
 }
-

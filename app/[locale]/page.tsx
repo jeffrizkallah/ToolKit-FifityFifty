@@ -25,7 +25,7 @@ const TestimonialsSlider = dynamic(() => import('@/components/TestimonialsSlider
  * 
  * Landing page with hero section and phases timeline.
  * Implements US3.1 - Landing Page Layout & Hero Section
- * Implements US3.2 - Six-Phase Timeline Component
+ * Implements US3.2 - Three-Phase Timeline Component
  */
 
 export async function generateMetadata({
@@ -111,7 +111,7 @@ export default async function HomePage({ params: { locale } }: { params: { local
 
   const description = validLocale === 'ar'
     ? settings?.attributes?.hero_description_ar || 'منهجية شاملة ومنصة تعليمية لرواد الأعمال الاجتماعيين وقادة المجتمع في العالم العربي.'
-    : settings?.attributes?.hero_description || 'A practical toolkit designed to help women run effective election campaigns. Explore the 6 key phases, from taking the decision to run, to Election Day and beyond, with step-by-step guidance, short videos, and ready-to-use resources.';
+    : settings?.attributes?.hero_description || 'A practical toolkit designed to help women run effective election campaigns. Explore the 3 key phases, from deciding to run, to pre-campaign, to the campaign itself, with step-by-step guidance, short videos, and ready-to-use resources.';
 
   const heroVideoUrl = settings?.attributes?.hero_video_url;
 

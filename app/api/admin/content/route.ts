@@ -84,6 +84,140 @@ export async function GET(request: NextRequest) {
 }
 
 /**
+ * POST /api/admin/content
+ * Create new content in the database
+ * Body: { type: string, data: object }
+ */
+export async function POST(request: NextRequest) {
+  // Check authentication
+  if (!(await isAuthenticated())) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  try {
+    const body = await request.json();
+    const { type, data } = body;
+
+    if (!type || !VALID_CONTENT_TYPES.includes(type)) {
+      return NextResponse.json(
+        { error: `Invalid content type. Valid types: ${VALID_CONTENT_TYPES.join(', ')}` },
+        { status: 400 }
+      );
+    }
+
+    if (!data) {
+      return NextResponse.json(
+        { error: 'Data is required' },
+        { status: 400 }
+      );
+    }
+
+    let newId;
+
+    switch (type) {
+      case 'phases': {
+        const result = await sql`
+          INSERT INTO phases (title, title_ar, slug, description, description_ar, "order", phase_number, header_video_url)
+          VALUES (
+            ${data.title},
+            ${data.title_ar || ''},
+            ${data.slug},
+            ${data.description || null},
+            ${data.description_ar || null},
+            ${data.order || 1},
+            ${data.phase_number || 1},
+            ${data.header_video_url || null}
+          )
+          RETURNING id
+        `;
+        newId = result.rows[0]?.id;
+        break;
+      }
+      case 'modules': {
+        const result = await sql`
+          INSERT INTO modules (title, title_ar, slug, summary, summary_ar, video_url, video_subtitle_url_en, video_subtitle_url_ar, key_takeaways, key_takeaways_ar, "order", phase_id)
+          VALUES (
+            ${data.title},
+            ${data.title_ar || ''},
+            ${data.slug},
+            ${data.summary || null},
+            ${data.summary_ar || null},
+            ${data.video_url || null},
+            ${data.video_subtitle_url_en || null},
+            ${data.video_subtitle_url_ar || null},
+            ${data.key_takeaways || null},
+            ${data.key_takeaways_ar || null},
+            ${data.order || 1},
+            ${data.phase_id}
+          )
+          RETURNING id
+        `;
+        newId = result.rows[0]?.id;
+        break;
+      }
+      case 'resources': {
+        const result = await sql`
+          INSERT INTO resources (title, title_ar, description, description_ar, file_url, file_type, file_size, "order", module_id)
+          VALUES (
+            ${data.title},
+            ${data.title_ar || ''},
+            ${data.description || null},
+            ${data.description_ar || null},
+            ${data.file_url || null},
+            ${data.file_type || 'PDF'},
+            ${data.file_size || null},
+            ${data.order || 1},
+            ${data.module_id}
+          )
+          RETURNING id
+        `;
+        newId = result.rows[0]?.id;
+        break;
+      }
+      case 'testimonials': {
+        const result = await sql`
+          INSERT INTO testimonials (name, name_ar, quote, quote_ar, role, role_ar, photo_url, "order")
+          VALUES (
+            ${data.name},
+            ${data.name_ar || ''},
+            ${data.quote},
+            ${data.quote_ar || ''},
+            ${data.role || null},
+            ${data.role_ar || null},
+            ${data.photo_url || null},
+            ${data.order || 1}
+          )
+          RETURNING id
+        `;
+        newId = result.rows[0]?.id;
+        break;
+      }
+      default:
+        return NextResponse.json(
+          { error: 'Cannot create this content type' },
+          { status: 400 }
+        );
+    }
+
+    // Revalidate the cache for the updated content type
+    try {
+      revalidateTag(CACHE_TAGS[type as keyof typeof CACHE_TAGS]);
+      revalidateTag(CACHE_TAGS.all);
+    } catch (revalidateError) {
+      console.error('Cache revalidation error:', revalidateError);
+    }
+
+    return NextResponse.json({ success: true, id: newId, message: `${type} created successfully` });
+  } catch (error) {
+    console.error('Error creating content:', error);
+    return NextResponse.json(
+      { error: 'Failed to create content' },
+      { status: 500 }
+    );
+  }
+}
+
+/**
  * PUT /api/admin/content
  * Update content in the database
  * Body: { type: string, data: object }
@@ -223,6 +357,75 @@ export async function PUT(request: NextRequest) {
     console.error('Error updating content:', error);
     return NextResponse.json(
       { error: 'Failed to update content' },
+      { status: 500 }
+    );
+  }
+}
+
+/**
+ * DELETE /api/admin/content?type=modules|resources|testimonials&id=123
+ * Delete content from the database
+ */
+export async function DELETE(request: NextRequest) {
+  // Check authentication
+  if (!(await isAuthenticated())) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const searchParams = request.nextUrl.searchParams;
+  const contentType = searchParams.get('type');
+  const id = searchParams.get('id');
+
+  if (!contentType || !['modules', 'resources', 'testimonials'].includes(contentType)) {
+    return NextResponse.json(
+      { error: 'Invalid content type for deletion. Can only delete: modules, resources, testimonials' },
+      { status: 400 }
+    );
+  }
+
+  if (!id) {
+    return NextResponse.json(
+      { error: 'ID is required for deletion' },
+      { status: 400 }
+    );
+  }
+
+  try {
+    switch (contentType) {
+      case 'modules': {
+        // First delete related resources
+        await sql`DELETE FROM resources WHERE module_id = ${parseInt(id)}`;
+        // Then delete the module
+        await sql`DELETE FROM modules WHERE id = ${parseInt(id)}`;
+        break;
+      }
+      case 'resources': {
+        await sql`DELETE FROM resources WHERE id = ${parseInt(id)}`;
+        break;
+      }
+      case 'testimonials': {
+        await sql`DELETE FROM testimonials WHERE id = ${parseInt(id)}`;
+        break;
+      }
+    }
+
+    // Revalidate the cache
+    try {
+      revalidateTag(CACHE_TAGS[contentType as keyof typeof CACHE_TAGS]);
+      revalidateTag(CACHE_TAGS.all);
+      // Also revalidate resources when deleting modules
+      if (contentType === 'modules') {
+        revalidateTag(CACHE_TAGS.resources);
+      }
+    } catch (revalidateError) {
+      console.error('Cache revalidation error:', revalidateError);
+    }
+
+    return NextResponse.json({ success: true, message: `${contentType} deleted successfully` });
+  } catch (error) {
+    console.error('Error deleting content:', error);
+    return NextResponse.json(
+      { error: 'Failed to delete content' },
       { status: 500 }
     );
   }

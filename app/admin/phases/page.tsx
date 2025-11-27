@@ -101,7 +101,7 @@ export default function PhasesPage() {
           </Link>
           <div>
             <h1 className="text-2xl font-bold text-white">Phases</h1>
-            <p className="text-slate-400">Manage the 6 campaign phases</p>
+            <p className="text-slate-400">Manage the 3 campaign phases</p>
           </div>
         </div>
         <button

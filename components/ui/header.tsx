@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { Menu } from 'lucide-react';
 import { useState } from 'react';
+import Image from 'next/image';
 import { LanguageToggle } from './language-toggle';
 import {
   Sheet,
@@ -38,8 +39,15 @@ export function Header() {
       <div className="flex h-16 items-center justify-between max-w-6xl mx-auto px-6">
         {/* Logo / Brand */}
         <div className="flex items-center">
-          <a href="/" className="text-xl font-bold text-neutral-900 hover:text-accent-blue transition-all duration-300 ease-in-out" aria-label="FiftyFifty ToolKit Home">
-            FiftyFifty ToolKit
+          <a href="/" className="flex items-center transition-all duration-300 ease-in-out hover:opacity-80" aria-label="FiftyFifty ToolKit Home">
+            <Image
+              src="/Trans fiftyfifity logo.png"
+              alt="FiftyFifty Logo"
+              width={56}
+              height={56}
+              className="object-contain"
+              priority
+            />
           </a>
         </div>
 

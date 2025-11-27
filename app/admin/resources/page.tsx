@@ -15,6 +15,7 @@ interface Resource {
   file_size: string;
   order: number;
   module_id: number;
+  isNew?: boolean; // Track if this is a newly added resource
 }
 
 interface Module {
@@ -37,6 +38,7 @@ export default function ResourcesPage() {
   const [saving, setSaving] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [filterModule, setFilterModule] = useState<number | null>(null);
+  const [filterPhase, setFilterPhase] = useState<number | null>(null);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const router = useRouter();
 
@@ -81,19 +83,51 @@ export default function ResourcesPage() {
     setMessage(null);
 
     try {
-      const res = await fetch('/api/admin/content', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'resources', data: { resources } }),
-      });
+      // Separate new resources from existing ones
+      const existingResources = resources.filter(r => !r.isNew);
+      const newResources = resources.filter(r => r.isNew);
 
-      if (res.ok) {
-        setMessage({ type: 'success', text: 'Resources saved successfully!' });
-        setEditingId(null);
-      } else {
-        const data = await res.json();
-        setMessage({ type: 'error', text: data.error || 'Failed to save resources' });
+      // Update existing resources
+      if (existingResources.length > 0) {
+        const updateRes = await fetch('/api/admin/content', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type: 'resources', data: { resources: existingResources } }),
+        });
+
+        if (!updateRes.ok) {
+          const data = await updateRes.json();
+          setMessage({ type: 'error', text: data.error || 'Failed to update resources' });
+          setSaving(false);
+          return;
+        }
       }
+
+      // Create new resources
+      for (const resource of newResources) {
+        const createRes = await fetch('/api/admin/content', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type: 'resources', data: resource }),
+        });
+
+        if (!createRes.ok) {
+          const data = await createRes.json();
+          setMessage({ type: 'error', text: data.error || 'Failed to create resource' });
+          setSaving(false);
+          return;
+        }
+      }
+
+      // Reload data to get updated IDs
+      const resourcesRes = await fetch('/api/admin/content?type=resources');
+      if (resourcesRes.ok) {
+        const data = await resourcesRes.json();
+        setResources(data.resources || []);
+      }
+
+      setMessage({ type: 'success', text: 'Resources saved successfully!' });
+      setEditingId(null);
     } catch (error) {
       setMessage({ type: 'error', text: 'An error occurred while saving' });
     } finally {
@@ -108,28 +142,52 @@ export default function ResourcesPage() {
   };
 
   const addResource = () => {
-    const newId = Math.max(...resources.map(r => r.id), 0) + 1;
-    setResources([
-      ...resources,
-      {
-        id: newId,
-        title: 'New Resource',
-        title_ar: 'مورد جديد',
-        description: '',
-        description_ar: '',
-        file_url: '',
-        file_type: 'PDF',
-        file_size: '',
-        order: resources.length + 1,
-        module_id: modules[0]?.id || 1,
-      },
-    ]);
+    const newId = -Date.now(); // Use negative timestamp as temporary ID
+    const firstModule = modules[0];
+    
+    const newResource: Resource = {
+      id: newId,
+      title: 'New Resource',
+      title_ar: 'مورد جديد',
+      description: '',
+      description_ar: '',
+      file_url: '',
+      file_type: 'PDF',
+      file_size: '',
+      order: resources.filter(r => r.module_id === firstModule?.id).length + 1,
+      module_id: firstModule?.id || 1,
+      isNew: true,
+    };
+
+    setResources([...resources, newResource]);
     setEditingId(newId);
   };
 
-  const deleteResource = (id: number) => {
-    if (confirm('Are you sure you want to delete this resource?')) {
+  const deleteResource = async (id: number, isNew: boolean) => {
+    if (!confirm('Are you sure you want to delete this resource?')) {
+      return;
+    }
+
+    if (isNew) {
+      // Just remove from local state
       setResources(resources.filter(r => r.id !== id));
+    } else {
+      // Delete from database
+      try {
+        const res = await fetch(`/api/admin/content?type=resources&id=${id}`, {
+          method: 'DELETE',
+        });
+
+        if (res.ok) {
+          setResources(resources.filter(r => r.id !== id));
+          setMessage({ type: 'success', text: 'Resource deleted successfully!' });
+        } else {
+          const data = await res.json();
+          setMessage({ type: 'error', text: data.error || 'Failed to delete resource' });
+        }
+      } catch (error) {
+        setMessage({ type: 'error', text: 'An error occurred while deleting' });
+      }
     }
   };
 
@@ -140,9 +198,20 @@ export default function ResourcesPage() {
     return phase ? `${module.title} (Phase ${phase.phase_number})` : module.title;
   };
 
-  const filteredResources = filterModule 
-    ? resources.filter(r => r.module_id === filterModule)
-    : resources;
+  const getPhaseForModule = (moduleId: number) => {
+    const module = modules.find(m => m.id === moduleId);
+    return module?.phase_id;
+  };
+
+  // Filter resources by phase and/or module
+  let filteredResources = resources;
+  if (filterPhase) {
+    const phaseModuleIds = modules.filter(m => m.phase_id === filterPhase).map(m => m.id);
+    filteredResources = filteredResources.filter(r => phaseModuleIds.includes(r.module_id));
+  }
+  if (filterModule) {
+    filteredResources = filteredResources.filter(r => r.module_id === filterModule);
+  }
 
   const fileTypeColors: Record<string, string> = {
     PDF: 'from-red-500 to-red-600',
@@ -174,15 +243,18 @@ export default function ResourcesPage() {
           </Link>
           <div>
             <h1 className="text-2xl font-bold text-white">Resources</h1>
-            <p className="text-slate-400">Manage downloadable resources and files</p>
+            <p className="text-slate-400">Manage downloadable documents and files</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
           <button
             onClick={addResource}
-            className="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl text-white transition-colors"
+            className="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl text-white transition-colors flex items-center gap-2"
           >
-            + Add Resource
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+            Add Resource
           </button>
           <button
             onClick={handleSave}
@@ -194,19 +266,36 @@ export default function ResourcesPage() {
         </div>
       </header>
 
-      {/* Filter */}
-      <div className="mb-6">
+      {/* Filters */}
+      <div className="mb-6 flex flex-wrap gap-4">
+        <select
+          value={filterPhase || ''}
+          onChange={(e) => {
+            setFilterPhase(e.target.value ? parseInt(e.target.value) : null);
+            setFilterModule(null);
+          }}
+          className="px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+        >
+          <option value="">All Phases</option>
+          {phases.sort((a, b) => a.phase_number - b.phase_number).map((phase) => (
+            <option key={phase.id} value={phase.id}>
+              Phase {phase.phase_number}: {phase.title}
+            </option>
+          ))}
+        </select>
         <select
           value={filterModule || ''}
           onChange={(e) => setFilterModule(e.target.value ? parseInt(e.target.value) : null)}
           className="px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
         >
           <option value="">All Modules</option>
-          {modules.map((module) => (
-            <option key={module.id} value={module.id}>
-              {getModuleTitle(module.id)}
-            </option>
-          ))}
+          {modules
+            .filter(m => !filterPhase || m.phase_id === filterPhase)
+            .map((module) => (
+              <option key={module.id} value={module.id}>
+                {getModuleTitle(module.id)}
+              </option>
+            ))}
         </select>
       </div>
 
@@ -217,12 +306,29 @@ export default function ResourcesPage() {
         </div>
       )}
 
+      {/* Stats Bar */}
+      <div className="mb-6 flex items-center gap-4 text-sm text-slate-400">
+        <span>{filteredResources.length} resource{filteredResources.length !== 1 ? 's' : ''}</span>
+        <span>•</span>
+        <span>{filteredResources.filter(r => r.file_type === 'PDF').length} PDFs</span>
+        <span>•</span>
+        <span>{filteredResources.filter(r => r.file_type === 'Word').length} Word docs</span>
+        <span>•</span>
+        <span>{filteredResources.filter(r => r.file_type === 'Excel').length} Excel files</span>
+        {resources.some(r => r.isNew) && (
+          <>
+            <span>•</span>
+            <span className="text-amber-400">{resources.filter(r => r.isNew).length} unsaved new</span>
+          </>
+        )}
+      </div>
+
       {/* Resources List */}
       <div className="space-y-4">
         {filteredResources.sort((a, b) => a.module_id - b.module_id || a.order - b.order).map((resource) => (
           <div
             key={resource.id}
-            className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden"
+            className={`bg-white/5 backdrop-blur-xl border rounded-2xl overflow-hidden ${resource.isNew ? 'border-amber-500/50' : 'border-white/10'}`}
           >
             {/* Resource Header */}
             <div
@@ -230,18 +336,24 @@ export default function ResourcesPage() {
               onClick={() => setEditingId(editingId === resource.id ? null : resource.id)}
             >
               <div className="flex items-center gap-4">
-                <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${fileTypeColors[resource.file_type]} flex items-center justify-center text-white font-bold text-xs`}>
+                <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${resource.isNew ? 'from-amber-500 to-amber-600' : fileTypeColors[resource.file_type]} flex items-center justify-center text-white font-bold text-xs`}>
                   {resource.file_type}
                 </div>
                 <div>
-                  <h3 className="text-white font-medium">{resource.title}</h3>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-white font-medium">{resource.title}</h3>
+                    {resource.isNew && (
+                      <span className="px-2 py-0.5 bg-amber-500/20 text-amber-400 text-xs rounded-full">New</span>
+                    )}
+                  </div>
                   <p className="text-slate-400 text-sm">{getModuleTitle(resource.module_id)}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 <button
-                  onClick={(e) => { e.stopPropagation(); deleteResource(resource.id); }}
+                  onClick={(e) => { e.stopPropagation(); deleteResource(resource.id, resource.isNew || false); }}
                   className="p-2 hover:bg-red-500/20 rounded-lg text-red-400 transition-colors"
+                  title="Delete resource"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -305,40 +417,52 @@ export default function ResourcesPage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-slate-300 mb-2">File URL</label>
-                    <input
-                      type="url"
-                      value={resource.file_url}
-                      onChange={(e) => updateResource(resource.id, 'file_url', e.target.value)}
-                      placeholder="https://..."
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
-                    />
+                {/* File Settings */}
+                <div className="p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl">
+                  <h4 className="text-emerald-400 font-medium mb-4 flex items-center gap-2">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    File Settings
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-medium text-slate-300 mb-2">File URL</label>
+                      <input
+                        type="url"
+                        value={resource.file_url}
+                        onChange={(e) => updateResource(resource.id, 'file_url', e.target.value)}
+                        placeholder="https://..."
+                        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">File Type</label>
+                      <select
+                        value={resource.file_type}
+                        onChange={(e) => updateResource(resource.id, 'file_type', e.target.value)}
+                        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                      >
+                        <option value="PDF">PDF</option>
+                        <option value="Excel">Excel</option>
+                        <option value="Word">Word</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">File Size</label>
+                      <input
+                        type="text"
+                        value={resource.file_size}
+                        onChange={(e) => updateResource(resource.id, 'file_size', e.target.value)}
+                        placeholder="e.g., 2.5 MB"
+                        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                      />
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">File Type</label>
-                    <select
-                      value={resource.file_type}
-                      onChange={(e) => updateResource(resource.id, 'file_type', e.target.value)}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
-                    >
-                      <option value="PDF">PDF</option>
-                      <option value="Excel">Excel</option>
-                      <option value="Word">Word</option>
-                      <option value="Other">Other</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">File Size</label>
-                    <input
-                      type="text"
-                      value={resource.file_size}
-                      onChange={(e) => updateResource(resource.id, 'file_size', e.target.value)}
-                      placeholder="e.g., 2.5 MB"
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
-                    />
-                  </div>
+                  <p className="mt-2 text-xs text-emerald-400/70">
+                    This document will appear in the Documents &amp; Resources section on the phase page.
+                  </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -380,4 +504,3 @@ export default function ResourcesPage() {
     </div>
   );
 }
-

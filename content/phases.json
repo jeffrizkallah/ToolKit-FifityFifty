@@ -32,40 +32,6 @@
       "order": 3,
       "phase_number": 3,
       "header_video_url": "https://www.youtube.com/watch?v=example3"
-    },
-    {
-      "id": 4,
-      "title": "Pre-election",
-      "title_ar": "ما قبل الانتخابات",
-      "slug": "pre-election",
-      "description": "<p>The Pre-election phase focuses on final preparations before election day. Participants learn to mobilize supporters, finalize campaign strategies, and prepare for the crucial voting day.</p>\n\n<h3>Key Learning Outcomes</h3>\n<ul>\n<li>Final campaign mobilization</li>\n<li>Voter turnout strategies</li>\n<li>Election day preparation</li>\n<li>Last-minute campaigning</li>\n</ul>",
-      "description_ar": "<p>تركز مرحلة ما قبل الانتخابات على الاستعدادات النهائية قبل يوم الانتخابات. يتعلم المشاركون كيفية تعبئة المؤيدين، وإنهاء استراتيجيات الحملة، والتحضير ليوم التصويت الحاسم.</p>\n\n<h3>نتائج التعلم الرئيسية</h3>\n<ul>\n<li>التعبئة النهائية للحملة</li>\n<li>استراتيجيات إقبال الناخبين</li>\n<li>التحضير ليوم الانتخابات</li>\n<li>الحملة في اللحظة الأخيرة</li>\n</ul>",
-      "order": 4,
-      "phase_number": 4,
-      "header_video_url": "https://www.youtube.com/watch?v=example4"
-    },
-    {
-      "id": 5,
-      "title": "Election day",
-      "title_ar": "يوم الانتخابات",
-      "slug": "election-day",
-      "description": "<p>The Election day phase is the culmination of your campaign journey. Participants learn to execute their election day strategy, manage volunteers, and ensure maximum voter turnout.</p>\n\n<h3>Key Learning Outcomes</h3>\n<ul>\n<li>Election day execution</li>\n<li>Volunteer coordination</li>\n<li>Voter turnout maximization</li>\n<li>Results monitoring</li>\n</ul>",
-      "description_ar": "<p>مرحلة يوم الانتخابات هي تتويج لرحلة حملتك. يتعلم المشاركون تنفيذ استراتيجية يوم الانتخابات، وإدارة المتطوعين، وضمان أقصى إقبال للناخبين.</p>\n\n<h3>نتائج التعلم الرئيسية</h3>\n<ul>\n<li>تنفيذ يوم الانتخابات</li>\n<li>تنسيق المتطوعين</li>\n<li>تعظيم إقبال الناخبين</li>\n<li>مراقبة النتائج</li>\n</ul>",
-      "order": 5,
-      "phase_number": 5,
-      "header_video_url": "https://www.youtube.com/watch?v=example5"
-    },
-    {
-      "id": 6,
-      "title": "Post-election",
-      "title_ar": "ما بعد الانتخابات",
-      "slug": "post-election",
-      "description": "<p>The Post-election phase focuses on transitioning from campaign to governance. Participants learn to handle election results, transition to office, and begin their journey as elected officials.</p>\n\n<h3>Key Learning Outcomes</h3>\n<ul>\n<li>Election results handling</li>\n<li>Transition to governance</li>\n<li>Office preparation</li>\n<li>Continued community engagement</li>\n</ul>",
-      "description_ar": "<p>تركز مرحلة ما بعد الانتخابات على الانتقال من الحملة إلى الحكم. يتعلم المشاركون كيفية التعامل مع نتائج الانتخابات، والانتقال إلى المنصب، وبدء رحلتهم كمسؤولين منتخبين.</p>\n\n<h3>نتائج التعلم الرئيسية</h3>\n<ul>\n<li>التعامل مع نتائج الانتخابات</li>\n<li>الانتقال إلى الحكم</li>\n<li>التحضير للمنصب</li>\n<li>استمرار التواصل مع المجتمع</li>\n</ul>",
-      "order": 6,
-      "phase_number": 6,
-      "header_video_url": "https://www.youtube.com/watch?v=example6"
     }
   ]
 }
-

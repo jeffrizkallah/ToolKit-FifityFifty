@@ -99,7 +99,7 @@ The admin panel allows you to edit all website content without touching code.
 2. Enter your admin password (set in `ADMIN_PASSWORD` env variable)
 3. Edit content for:
    - **Site Settings**: Title, hero section, footer, social links
-   - **Phases**: The 6 campaign phases
+   - **Phases**: The 3 campaign phases
    - **Modules**: Learning modules within each phase
    - **Resources**: Downloadable files and documents
    - **Testimonials**: Participant quotes and stories

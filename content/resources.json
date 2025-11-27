@@ -71,55 +71,6 @@
       "file_size": "3.2 MB",
       "order": 1,
       "module_id": 6
-    },
-    {
-      "id": 7,
-      "title": "GOTV Planning Calendar",
-      "title_ar": "تقويم تخطيط GOTV",
-      "description": "Detailed planning calendar for Get Out The Vote activities in the final weeks before election.",
-      "description_ar": "تقويم تخطيط مفصل لأنشطة حملة اخرج للتصويت في الأسابيع الأخيرة قبل الانتخابات.",
-      "file_url": "https://example.com/resources/gotv-calendar.xlsx",
-      "file_type": "Excel",
-      "file_size": "1.8 MB",
-      "order": 1,
-      "module_id": 7
-    },
-    {
-      "id": 8,
-      "title": "Election Day Checklist",
-      "title_ar": "قائمة يوم الانتخابات",
-      "description": "Comprehensive checklist for all election day operations and volunteer assignments.",
-      "description_ar": "قائمة شاملة لجميع عمليات يوم الانتخابات ومهام المتطوعين.",
-      "file_url": "https://example.com/resources/election-day-checklist.pdf",
-      "file_type": "PDF",
-      "file_size": "950 KB",
-      "order": 1,
-      "module_id": 9
-    },
-    {
-      "id": 9,
-      "title": "Victory and Concession Speech Templates",
-      "title_ar": "نماذج خطابات النصر والتنازل",
-      "description": "Templates for both victory and concession speeches with key elements to include.",
-      "description_ar": "نماذج لخطابات النصر والتنازل مع العناصر الرئيسية التي يجب تضمينها.",
-      "file_url": "https://example.com/resources/speech-templates.docx",
-      "file_type": "Word",
-      "file_size": "680 KB",
-      "order": 1,
-      "module_id": 10
-    },
-    {
-      "id": 10,
-      "title": "Transition Planning Guide",
-      "title_ar": "دليل تخطيط الانتقال",
-      "description": "Step-by-step guide for planning your transition from candidate to elected official.",
-      "description_ar": "دليل خطوة بخطوة لتخطيط انتقالك من مرشح إلى مسؤول منتخب.",
-      "file_url": "https://example.com/resources/transition-guide.pdf",
-      "file_type": "PDF",
-      "file_size": "2.8 MB",
-      "order": 1,
-      "module_id": 11
     }
   ]
 }
-
