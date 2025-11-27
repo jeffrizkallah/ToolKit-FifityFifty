@@ -54,7 +54,6 @@ export function DocumentViewerModal({
   const [hasError, setHasError] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [zoom, setZoom] = useState(100);
-  const isRTL = locale === 'ar';
 
   // Reset state when document changes
   useEffect(() => {
