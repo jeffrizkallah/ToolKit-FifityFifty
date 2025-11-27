@@ -23,6 +23,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { DocumentData } from './DocumentCard';
+import { downloadFile } from '@/lib/utils';
 
 interface DocumentViewerModalProps {
   isOpen: boolean;
@@ -133,6 +134,7 @@ export function DocumentViewerModal({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent 
+        hideCloseButton
         className={`
           ${isFullscreen ? 'max-w-[95vw] h-[95vh]' : 'max-w-5xl h-[85vh]'} 
           w-full p-0 overflow-hidden flex flex-col
@@ -225,14 +227,13 @@ export function DocumentViewerModal({
             </a>
 
             {/* Download */}
-            <a
-              href={document.fileUrl}
-              download
+            <button
+              onClick={() => downloadFile(document.fileUrl, document.title)}
               className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
               title={locale === 'ar' ? 'تحميل' : 'Download'}
             >
               <Download className="w-5 h-5 text-gray-600" />
-            </a>
+            </button>
 
             {/* Close */}
             <button
@@ -278,14 +279,13 @@ export function DocumentViewerModal({
                   ? 'حدث خطأ أثناء تحميل المستند. يمكنك تحميله مباشرة.'
                   : 'There was an error loading the document. You can download it directly.'}
               </p>
-              <a
-                href={document.fileUrl}
-                download
+              <button
+                onClick={() => downloadFile(document.fileUrl, document.title)}
                 className="flex items-center gap-2 px-4 py-2 bg-[#0041A8] text-white rounded-lg hover:bg-[#003d96] transition-colors"
               >
                 <Download className="w-4 h-4" />
                 <span>{locale === 'ar' ? 'تحميل المستند' : 'Download Document'}</span>
-              </a>
+              </button>
             </div>
           )}
 

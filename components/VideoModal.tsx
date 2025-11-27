@@ -62,7 +62,7 @@ export function VideoModal({ isOpen, onClose, videoUrl, title, locale }: VideoMo
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl w-full p-0 overflow-hidden">
+      <DialogContent className="max-w-[95vw] sm:max-w-[90vw] md:max-w-4xl w-full p-0 overflow-hidden rounded-lg sm:rounded-xl">
         <DialogHeader className="sr-only">
           <DialogTitle>{title || defaultTitle}</DialogTitle>
           <DialogDescription>
@@ -86,8 +86,8 @@ export function VideoModal({ isOpen, onClose, videoUrl, title, locale }: VideoMo
         )}
 
         {!embedUrl && videoUrl && (
-          <div className="p-12 text-center">
-            <p className="text-gray-600">
+          <div className="p-6 sm:p-8 md:p-12 text-center">
+            <p className="text-sm sm:text-base text-gray-600">
               {locale === 'ar' 
                 ? 'جاري تحميل الفيديو...'
                 : 'Loading video...'
@@ -97,8 +97,8 @@ export function VideoModal({ isOpen, onClose, videoUrl, title, locale }: VideoMo
         )}
 
         {!videoUrl && (
-          <div className="p-12 text-center">
-            <p className="text-gray-600">
+          <div className="p-6 sm:p-8 md:p-12 text-center">
+            <p className="text-sm sm:text-base text-gray-600">
               {locale === 'ar' 
                 ? 'رابط الفيديو غير متوفر'
                 : 'Video URL not available'

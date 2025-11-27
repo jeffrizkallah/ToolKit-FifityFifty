@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { Download, FileText, File, Sheet, X, Search as SearchIcon } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn, downloadFile } from '@/lib/utils';
 import type { ResourceWithContext, ResourceFileType } from '@/lib/hooks/useResourceLibrary';
 
 /**
@@ -86,10 +86,12 @@ export function ResourceCard({
 
       {/* Download Button */}
       {fileUrl && (
-        <a
-          href={fileUrl}
-          download
-          onClick={handleDownload}
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            handleDownload();
+            downloadFile(fileUrl, resource.attributes.title);
+          }}
           className={cn(
             'flex-shrink-0 inline-flex items-center gap-2 px-4 py-2 rounded-lg',
             'bg-primary text-white hover:bg-primary/90',
@@ -98,7 +100,7 @@ export function ResourceCard({
         >
           <Download className="w-4 h-4" />
           {t('download')}
-        </a>
+        </button>
       )}
     </div>
   );

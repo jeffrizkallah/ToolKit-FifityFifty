@@ -21,11 +21,9 @@ export function Footer({ locale }: FooterProps) {
   const t = useTranslations('Navigation');
 
   const footerLinks = [
-    { key: 'home', href: '#' },
-    { key: 'about', href: '#' },
-    { key: 'initiatives', href: '#phases-timeline' },
-    { key: 'tools', href: '#' },
-    { key: 'contact', href: '#' },
+    { key: 'home', href: '/' },
+    { key: 'tools', href: '#phases-timeline' },
+    { key: 'contact', href: '#footer-contact' },
   ];
 
   const socialLinks = [
@@ -39,7 +37,7 @@ export function Footer({ locale }: FooterProps) {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gradient-to-br from-gray-800 via-gray-800 to-gray-900 text-white relative overflow-hidden" role="contentinfo">
+    <footer id="footer-contact" className="bg-gradient-to-br from-gray-800 via-gray-800 to-gray-900 text-white relative overflow-hidden" role="contentinfo">
       {/* Subtle Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-gray-900/50 to-transparent pointer-events-none" />
       <div className="container py-12 mx-auto max-w-6xl relative z-10">
@@ -49,7 +47,7 @@ export function Footer({ locale }: FooterProps) {
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-4">
               <Image
-                src="/Trans fiftyfifity logo.png"
+                src="/5050 Logo.png"
                 alt="FiftyFifty Logo"
                 width={80}
                 height={80}
@@ -172,9 +170,18 @@ export function Footer({ locale }: FooterProps) {
                 className="h-12 w-auto object-contain"
               />
             </div>
+            <div className="bg-white p-3 rounded-lg" role="listitem">
+              <Image
+                src="/UNDP-Logo-Blue-Small (1).png"
+                alt="UNDP Logo"
+                width={120}
+                height={48}
+                className="h-12 w-auto object-contain"
+              />
+            </div>
             <div className="bg-transparent p-2 rounded-lg" role="listitem">
               <Image
-                src="/Trans fiftyfifity logo.png"
+                src="/5050 Logo.png"
                 alt="FiftyFifty Logo"
                 width={72}
                 height={72}

@@ -27,11 +27,9 @@ export function Header() {
   const [open, setOpen] = useState(false);
 
   const navLinks = [
-    { key: 'home', href: '#' },
-    { key: 'about', href: '#' },
-    { key: 'initiatives', href: '#phases-timeline' },
-    { key: 'tools', href: '#' },
-    { key: 'contact', href: '#' },
+    { key: 'home', href: '/' },
+    { key: 'tools', href: '#phases-timeline' },
+    { key: 'contact', href: '#footer-contact' },
   ];
 
   return (
@@ -41,7 +39,7 @@ export function Header() {
         <div className="flex items-center">
           <a href="/" className="flex items-center transition-all duration-300 ease-in-out hover:opacity-80" aria-label="FiftyFifty ToolKit Home">
             <Image
-              src="/Trans fiftyfifity logo.png"
+              src="/5050 Logo.png"
               alt="FiftyFifty Logo"
               width={56}
               height={56}

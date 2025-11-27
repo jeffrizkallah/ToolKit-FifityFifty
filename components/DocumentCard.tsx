@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { FileText, FileSpreadsheet, File, Download, Eye, Clock } from 'lucide-react';
+import { downloadFile } from '@/lib/utils';
 
 export interface DocumentData {
   id: string | number;
@@ -162,15 +163,16 @@ export function DocumentCard({ document, locale, onView, index = 0 }: DocumentCa
             <Eye className="w-4 h-4" />
             <span>{locale === 'ar' ? 'عرض' : 'View'}</span>
           </button>
-          <a
-            href={document.fileUrl}
-            download
-            onClick={(e) => e.stopPropagation()}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              downloadFile(document.fileUrl, document.title);
+            }}
             className={`w-10 h-10 rounded-xl ${fileConfig.bgColor} ${fileConfig.borderColor} border flex items-center justify-center ${fileConfig.color} hover:scale-110 transition-transform`}
             title={locale === 'ar' ? 'تحميل' : 'Download'}
           >
             <Download className="w-4 h-4" />
-          </a>
+          </button>
         </div>
 
         {/* Hover Preview Tooltip */}

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { FileDown, FileText, FileSpreadsheet, File } from 'lucide-react';
 import { Resource } from '@/lib/types/cms';
 import { trackDownload } from '@/lib/analytics';
+import { downloadFile } from '@/lib/utils';
 
 interface ResourceListProps {
   resources: Resource[];
@@ -61,13 +62,15 @@ export default function ResourceList({
   };
 
   // Handle download button click with analytics tracking
-  const handleDownload = (resource: Resource) => {
+  const handleDownload = (resource: Resource, fileUrl: string) => {
     // Track download event with GA4 (no PII)
     trackDownload(
       resource.attributes.title,
       resource.attributes.file_type,
       moduleSlug
     );
+    // Trigger actual file download
+    downloadFile(fileUrl, resource.attributes.title);
   };
 
   // Get media URL helper
@@ -168,20 +171,11 @@ export default function ResourceList({
 
                     {/* Download Button */}
                     <Button
-                      asChild
-                      className="bg-[#0063AF] hover:bg-[#004a8a] text-white shrink-0"
-                      onClick={() => handleDownload(resource)}
+                      className="bg-[#0063AF] hover:bg-[#004a8a] text-white shrink-0 flex items-center gap-2"
+                      onClick={() => handleDownload(resource, fileUrl)}
                     >
-                      <a 
-                        href={fileUrl}
-                        download
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2"
-                      >
-                        <FileDown className="h-4 w-4" />
-                        <span className="hidden sm:inline">{t.download}</span>
-                      </a>
+                      <FileDown className="h-4 w-4" />
+                      <span className="hidden sm:inline">{t.download}</span>
                     </Button>
                   </div>
                 </Card>
