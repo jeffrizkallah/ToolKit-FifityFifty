@@ -198,11 +198,6 @@ export default function ResourcesPage() {
     return phase ? `${module.title} (Phase ${phase.phase_number})` : module.title;
   };
 
-  const getPhaseForModule = (moduleId: number) => {
-    const module = modules.find(m => m.id === moduleId);
-    return module?.phase_id;
-  };
-
   // Filter resources by phase and/or module
   let filteredResources = resources;
   if (filterPhase) {
