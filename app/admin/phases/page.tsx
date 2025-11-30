@@ -81,7 +81,7 @@ export default function PhasesPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-pulse text-white/60">Loading phases...</div>
+        <div className="animate-pulse text-gray-500">Loading phases...</div>
       </div>
     );
   }
@@ -93,21 +93,21 @@ export default function PhasesPage() {
         <div className="flex items-center gap-4">
           <Link
             href="/admin/dashboard"
-            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
           >
-            <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-white">Phases</h1>
-            <p className="text-slate-400">Manage the 3 campaign phases</p>
+            <h1 className="text-2xl font-bold text-gray-900">Phases</h1>
+            <p className="text-gray-500">Manage the 3 campaign phases</p>
           </div>
         </div>
         <button
           onClick={handleSave}
           disabled={saving}
-          className="px-6 py-2 bg-gradient-to-r from-brand-primary-500 to-brand-primary-600 hover:from-brand-primary-600 hover:to-brand-primary-700 text-white font-medium rounded-xl transition-all disabled:opacity-50 shadow-lg"
+          className="px-6 py-2 bg-gradient-to-r from-[#0063AF] to-[#0041A8] hover:from-[#0041A8] hover:to-[#003080] text-white font-medium rounded-xl transition-all disabled:opacity-50 shadow-lg"
         >
           {saving ? 'Saving...' : 'Save All Changes'}
         </button>
@@ -115,7 +115,7 @@ export default function PhasesPage() {
 
       {/* Message */}
       {message && (
-        <div className={`mb-6 p-4 rounded-xl ${message.type === 'success' ? 'bg-green-500/10 border border-green-500/20 text-green-400' : 'bg-red-500/10 border border-red-500/20 text-red-400'}`}>
+        <div className={`mb-6 p-4 rounded-xl ${message.type === 'success' ? 'bg-green-50 border border-green-200 text-green-700' : 'bg-red-50 border border-red-200 text-red-700'}`}>
           {message.text}
         </div>
       )}
@@ -125,11 +125,11 @@ export default function PhasesPage() {
         {phases.sort((a, b) => a.order - b.order).map((phase) => (
           <div
             key={phase.id}
-            className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden"
+            className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm"
           >
             {/* Phase Header */}
             <div
-              className="flex items-center justify-between p-4 cursor-pointer hover:bg-white/5 transition-colors"
+              className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
               onClick={() => setEditingId(editingId === phase.id ? null : phase.id)}
             >
               <div className="flex items-center gap-4">
@@ -137,12 +137,12 @@ export default function PhasesPage() {
                   {phase.phase_number}
                 </div>
                 <div>
-                  <h3 className="text-white font-medium">{phase.title}</h3>
-                  <p className="text-slate-400 text-sm">{phase.slug}</p>
+                  <h3 className="text-gray-900 font-medium">{phase.title}</h3>
+                  <p className="text-gray-500 text-sm">{phase.slug}</p>
                 </div>
               </div>
               <svg
-                className={`w-5 h-5 text-slate-400 transition-transform ${editingId === phase.id ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 text-gray-400 transition-transform ${editingId === phase.id ? 'rotate-180' : ''}`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -153,88 +153,88 @@ export default function PhasesPage() {
 
             {/* Edit Form */}
             {editingId === phase.id && (
-              <div className="p-6 border-t border-white/10 space-y-4">
+              <div className="p-6 border-t border-gray-200 space-y-4 bg-gray-50">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Title (English)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Title (English)</label>
                     <input
                       type="text"
                       value={phase.title}
                       onChange={(e) => updatePhase(phase.id, 'title', e.target.value)}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0063AF]"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Title (Arabic)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Title (Arabic)</label>
                     <input
                       type="text"
                       dir="rtl"
                       value={phase.title_ar}
                       onChange={(e) => updatePhase(phase.id, 'title_ar', e.target.value)}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0063AF]"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Slug</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Slug</label>
                     <input
                       type="text"
                       value={phase.slug}
                       onChange={(e) => updatePhase(phase.id, 'slug', e.target.value)}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0063AF]"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Order</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Order</label>
                     <input
                       type="number"
                       value={phase.order}
                       onChange={(e) => updatePhase(phase.id, 'order', parseInt(e.target.value))}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0063AF]"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Phase Number</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Phase Number</label>
                     <input
                       type="number"
                       value={phase.phase_number}
                       onChange={(e) => updatePhase(phase.id, 'phase_number', parseInt(e.target.value))}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0063AF]"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Header Video URL</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Header Video URL</label>
                   <input
                     type="url"
                     value={phase.header_video_url}
                     onChange={(e) => updatePhase(phase.id, 'header_video_url', e.target.value)}
                     placeholder="https://youtube.com/watch?v=..."
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                    className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0063AF]"
                   />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Description (English) - HTML</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Description (English) - HTML</label>
                     <textarea
                       value={phase.description}
                       onChange={(e) => updatePhase(phase.id, 'description', e.target.value)}
                       rows={6}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary-500 resize-none"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-[#0063AF] resize-none"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Description (Arabic) - HTML</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Description (Arabic) - HTML</label>
                     <textarea
                       dir="rtl"
                       value={phase.description_ar}
                       onChange={(e) => updatePhase(phase.id, 'description_ar', e.target.value)}
                       rows={6}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary-500 resize-none"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-[#0063AF] resize-none"
                     />
                   </div>
                 </div>
@@ -246,4 +246,3 @@ export default function PhasesPage() {
     </div>
   );
 }
-

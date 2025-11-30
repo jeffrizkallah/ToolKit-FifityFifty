@@ -18,7 +18,7 @@ interface Module {
   key_takeaways_ar: string;
   order: number;
   phase_id: number;
-  isNew?: boolean; // Track if this is a newly added module
+  isNew?: boolean;
 }
 
 interface Phase {
@@ -73,11 +73,9 @@ export default function ModulesPage() {
     setMessage(null);
 
     try {
-      // Separate new modules from existing ones
       const existingModules = modules.filter(m => !m.isNew);
       const newModules = modules.filter(m => m.isNew);
 
-      // Update existing modules
       if (existingModules.length > 0) {
         const updateRes = await fetch('/api/admin/content', {
           method: 'PUT',
@@ -93,7 +91,6 @@ export default function ModulesPage() {
         }
       }
 
-      // Create new modules
       for (const module of newModules) {
         const createRes = await fetch('/api/admin/content', {
           method: 'POST',
@@ -109,7 +106,6 @@ export default function ModulesPage() {
         }
       }
 
-      // Reload data to get updated IDs
       const modulesRes = await fetch('/api/admin/content?type=modules');
       if (modulesRes.ok) {
         const data = await modulesRes.json();
@@ -132,7 +128,7 @@ export default function ModulesPage() {
   };
 
   const addModule = () => {
-    const newId = -Date.now(); // Use negative timestamp as temporary ID
+    const newId = -Date.now();
     const firstPhase = phases.sort((a, b) => a.phase_number - b.phase_number)[0];
     
     const newModule: Module = {
@@ -162,10 +158,8 @@ export default function ModulesPage() {
     }
 
     if (isNew) {
-      // Just remove from local state
       setModules(modules.filter(m => m.id !== id));
     } else {
-      // Delete from database
       try {
         const res = await fetch(`/api/admin/content?type=modules&id=${id}`, {
           method: 'DELETE',
@@ -189,7 +183,6 @@ export default function ModulesPage() {
     return phase ? `Phase ${phase.phase_number}: ${phase.title}` : 'Unknown Phase';
   };
 
-  // Generate slug from title
   const generateSlug = (title: string) => {
     return title
       .toLowerCase()
@@ -206,7 +199,7 @@ export default function ModulesPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-pulse text-white/60">Loading modules...</div>
+        <div className="animate-pulse text-gray-500">Loading modules...</div>
       </div>
     );
   }
@@ -218,21 +211,21 @@ export default function ModulesPage() {
         <div className="flex items-center gap-4">
           <Link
             href="/admin/dashboard"
-            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
           >
-            <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-white">Modules</h1>
-            <p className="text-slate-400">Manage learning modules and their videos</p>
+            <h1 className="text-2xl font-bold text-gray-900">Modules</h1>
+            <p className="text-gray-500">Manage learning modules and their videos</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
           <button
             onClick={addModule}
-            className="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl text-white transition-colors flex items-center gap-2"
+            className="px-4 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-200 rounded-xl text-gray-700 transition-colors flex items-center gap-2"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -242,7 +235,7 @@ export default function ModulesPage() {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="px-6 py-2 bg-gradient-to-r from-brand-primary-500 to-brand-primary-600 hover:from-brand-primary-600 hover:to-brand-primary-700 text-white font-medium rounded-xl transition-all disabled:opacity-50 shadow-lg"
+            className="px-6 py-2 bg-gradient-to-r from-[#0063AF] to-[#0041A8] hover:from-[#0041A8] hover:to-[#003080] text-white font-medium rounded-xl transition-all disabled:opacity-50 shadow-lg"
           >
             {saving ? 'Saving...' : 'Save All Changes'}
           </button>
@@ -254,7 +247,7 @@ export default function ModulesPage() {
         <select
           value={filterPhase || ''}
           onChange={(e) => setFilterPhase(e.target.value ? parseInt(e.target.value) : null)}
-          className="px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+          className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0063AF]"
         >
           <option value="">All Phases</option>
           {phases.sort((a, b) => a.phase_number - b.phase_number).map((phase) => (
@@ -267,20 +260,20 @@ export default function ModulesPage() {
 
       {/* Message */}
       {message && (
-        <div className={`mb-6 p-4 rounded-xl ${message.type === 'success' ? 'bg-green-500/10 border border-green-500/20 text-green-400' : 'bg-red-500/10 border border-red-500/20 text-red-400'}`}>
+        <div className={`mb-6 p-4 rounded-xl ${message.type === 'success' ? 'bg-green-50 border border-green-200 text-green-700' : 'bg-red-50 border border-red-200 text-red-700'}`}>
           {message.text}
         </div>
       )}
 
       {/* Stats Bar */}
-      <div className="mb-6 flex items-center gap-4 text-sm text-slate-400">
+      <div className="mb-6 flex items-center gap-4 text-sm text-gray-500">
         <span>{filteredModules.length} module{filteredModules.length !== 1 ? 's' : ''}</span>
         <span>•</span>
         <span>{filteredModules.filter(m => m.video_url).length} with videos</span>
         {modules.some(m => m.isNew) && (
           <>
             <span>•</span>
-            <span className="text-amber-400">{modules.filter(m => m.isNew).length} unsaved new module{modules.filter(m => m.isNew).length !== 1 ? 's' : ''}</span>
+            <span className="text-amber-600">{modules.filter(m => m.isNew).length} unsaved new module{modules.filter(m => m.isNew).length !== 1 ? 's' : ''}</span>
           </>
         )}
       </div>
@@ -290,11 +283,11 @@ export default function ModulesPage() {
         {filteredModules.sort((a, b) => a.phase_id - b.phase_id || a.order - b.order).map((module) => (
           <div
             key={module.id}
-            className={`bg-white/5 backdrop-blur-xl border rounded-2xl overflow-hidden ${module.isNew ? 'border-amber-500/50' : 'border-white/10'}`}
+            className={`bg-white border rounded-2xl overflow-hidden shadow-sm ${module.isNew ? 'border-amber-400' : 'border-gray-200'}`}
           >
             {/* Module Header */}
             <div
-              className="flex items-center justify-between p-4 cursor-pointer hover:bg-white/5 transition-colors"
+              className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
               onClick={() => setEditingId(editingId === module.id ? null : module.id)}
             >
               <div className="flex items-center gap-4">
@@ -303,12 +296,12 @@ export default function ModulesPage() {
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="text-white font-medium">{module.title}</h3>
+                    <h3 className="text-gray-900 font-medium">{module.title}</h3>
                     {module.isNew && (
-                      <span className="px-2 py-0.5 bg-amber-500/20 text-amber-400 text-xs rounded-full">New</span>
+                      <span className="px-2 py-0.5 bg-amber-100 text-amber-700 text-xs rounded-full">New</span>
                     )}
                     {module.video_url && (
-                      <span className="px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs rounded-full flex items-center gap-1">
+                      <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs rounded-full flex items-center gap-1">
                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -317,13 +310,13 @@ export default function ModulesPage() {
                       </span>
                     )}
                   </div>
-                  <p className="text-slate-400 text-sm">{getPhaseTitle(module.phase_id)}</p>
+                  <p className="text-gray-500 text-sm">{getPhaseTitle(module.phase_id)}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 <button
                   onClick={(e) => { e.stopPropagation(); deleteModule(module.id, module.isNew || false); }}
-                  className="p-2 hover:bg-red-500/20 rounded-lg text-red-400 transition-colors"
+                  className="p-2 hover:bg-red-50 rounded-lg text-red-500 transition-colors"
                   title="Delete module"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -331,7 +324,7 @@ export default function ModulesPage() {
                   </svg>
                 </button>
                 <svg
-                  className={`w-5 h-5 text-slate-400 transition-transform ${editingId === module.id ? 'rotate-180' : ''}`}
+                  className={`w-5 h-5 text-gray-400 transition-transform ${editingId === module.id ? 'rotate-180' : ''}`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -343,10 +336,10 @@ export default function ModulesPage() {
 
             {/* Edit Form */}
             {editingId === module.id && (
-              <div className="p-6 border-t border-white/10 space-y-4">
+              <div className="p-6 border-t border-gray-200 space-y-4 bg-gray-50">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Title (English)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Title (English)</label>
                     <input
                       type="text"
                       value={module.title}
@@ -356,46 +349,46 @@ export default function ModulesPage() {
                           updateModule(module.id, 'slug', generateSlug(e.target.value));
                         }
                       }}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0063AF]"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Title (Arabic)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Title (Arabic)</label>
                     <input
                       type="text"
                       dir="rtl"
                       value={module.title_ar}
                       onChange={(e) => updateModule(module.id, 'title_ar', e.target.value)}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0063AF]"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Slug</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Slug</label>
                     <input
                       type="text"
                       value={module.slug}
                       onChange={(e) => updateModule(module.id, 'slug', e.target.value)}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0063AF]"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Order</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Order</label>
                     <input
                       type="number"
                       value={module.order}
                       onChange={(e) => updateModule(module.id, 'order', parseInt(e.target.value))}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0063AF]"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Phase</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Phase</label>
                     <select
                       value={module.phase_id}
                       onChange={(e) => updateModule(module.id, 'phase_id', parseInt(e.target.value))}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0063AF]"
                     >
                       {phases.sort((a, b) => a.phase_number - b.phase_number).map((phase) => (
                         <option key={phase.id} value={phase.id}>
@@ -408,29 +401,29 @@ export default function ModulesPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Summary (English)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Summary (English)</label>
                     <textarea
                       value={module.summary}
                       onChange={(e) => updateModule(module.id, 'summary', e.target.value)}
                       rows={3}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500 resize-none"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0063AF] resize-none"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Summary (Arabic)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Summary (Arabic)</label>
                     <textarea
                       dir="rtl"
                       value={module.summary_ar}
                       onChange={(e) => updateModule(module.id, 'summary_ar', e.target.value)}
                       rows={3}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500 resize-none"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0063AF] resize-none"
                     />
                   </div>
                 </div>
 
                 {/* Video Section */}
-                <div className="p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl">
-                  <h4 className="text-blue-400 font-medium mb-4 flex items-center gap-2">
+                <div className="p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                  <h4 className="text-blue-700 font-medium mb-4 flex items-center gap-2">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                     </svg>
@@ -438,38 +431,38 @@ export default function ModulesPage() {
                   </h4>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2">Video URL (YouTube/Vimeo)</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Video URL (YouTube/Vimeo)</label>
                       <input
                         type="url"
                         value={module.video_url}
                         onChange={(e) => updateModule(module.id, 'video_url', e.target.value)}
                         placeholder="https://youtube.com/watch?v=..."
-                        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                        className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0063AF]"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2">Subtitle URL (English)</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Subtitle URL (English)</label>
                       <input
                         type="url"
                         value={module.video_subtitle_url_en}
                         onChange={(e) => updateModule(module.id, 'video_subtitle_url_en', e.target.value)}
                         placeholder="https://..."
-                        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                        className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0063AF]"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2">Subtitle URL (Arabic)</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Subtitle URL (Arabic)</label>
                       <input
                         type="url"
                         value={module.video_subtitle_url_ar}
                         onChange={(e) => updateModule(module.id, 'video_subtitle_url_ar', e.target.value)}
                         placeholder="https://..."
-                        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                        className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0063AF]"
                       />
                     </div>
                   </div>
                   {module.video_url && (
-                    <p className="mt-2 text-xs text-blue-400/70">
+                    <p className="mt-2 text-xs text-blue-600">
                       This video will appear in the video carousel on the phase page.
                     </p>
                   )}
@@ -477,22 +470,22 @@ export default function ModulesPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Key Takeaways (English) - HTML</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Key Takeaways (English) - HTML</label>
                     <textarea
                       value={module.key_takeaways}
                       onChange={(e) => updateModule(module.id, 'key_takeaways', e.target.value)}
                       rows={4}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary-500 resize-none"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-[#0063AF] resize-none"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Key Takeaways (Arabic) - HTML</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Key Takeaways (Arabic) - HTML</label>
                     <textarea
                       dir="rtl"
                       value={module.key_takeaways_ar}
                       onChange={(e) => updateModule(module.id, 'key_takeaways_ar', e.target.value)}
                       rows={4}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary-500 resize-none"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-[#0063AF] resize-none"
                     />
                   </div>
                 </div>
@@ -502,7 +495,7 @@ export default function ModulesPage() {
         ))}
 
         {filteredModules.length === 0 && (
-          <div className="text-center py-12 text-slate-400">
+          <div className="text-center py-12 text-gray-400">
             No modules found. Click &quot;Add Module&quot; to create one.
           </div>
         )}

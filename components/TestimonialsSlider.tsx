@@ -81,8 +81,12 @@ export function TestimonialsSlider({ testimonials, locale }: TestimonialsSliderP
         <div className="overflow-hidden py-6" ref={emblaRef}>
           <div className="flex">
               {testimonials.map((testimonial) => {
-                const photoUrl = testimonial.attributes.photo?.data?.attributes?.url;
-                const fullPhotoUrl = photoUrl ? getMediaUrl(photoUrl) : null;
+                // Support both Strapi-style photo and direct photo_url
+                const strapiPhotoUrl = testimonial.attributes.photo?.data?.attributes?.url;
+                const directPhotoUrl = testimonial.attributes.photo_url;
+                const fullPhotoUrl = strapiPhotoUrl 
+                  ? getMediaUrl(strapiPhotoUrl) 
+                  : directPhotoUrl || null;
 
                 return (
                   <div
@@ -105,8 +109,9 @@ export function TestimonialsSlider({ testimonials, locale }: TestimonialsSliderP
 
                       {/* Photo and Attribution */}
                       <div className="flex items-center gap-4 pt-4 border-t border-neutral-200">
-                        {fullPhotoUrl && (
-                          <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border-2 border-[#0063AF]/20">
+                        {/* Avatar - Photo or Initials Fallback */}
+                        {fullPhotoUrl ? (
+                          <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-[#0063AF]/20 ring-offset-2">
                             <Image
                               src={fullPhotoUrl}
                               alt={testimonial.attributes.name}
@@ -114,6 +119,17 @@ export function TestimonialsSlider({ testimonials, locale }: TestimonialsSliderP
                               className="object-cover"
                               sizes="48px"
                             />
+                          </div>
+                        ) : (
+                          <div className="w-12 h-12 rounded-full flex-shrink-0 bg-gradient-to-br from-[#0063AF] to-[#0041A8] flex items-center justify-center ring-2 ring-[#0063AF]/20 ring-offset-2">
+                            <span className="text-white font-semibold text-sm">
+                              {testimonial.attributes.name
+                                .split(' ')
+                                .map(n => n[0])
+                                .join('')
+                                .slice(0, 2)
+                                .toUpperCase()}
+                            </span>
                           </div>
                         )}
                         <div className="flex-1 min-w-0">

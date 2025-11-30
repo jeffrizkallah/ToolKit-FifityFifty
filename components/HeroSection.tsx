@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { useTranslations } from 'next-intl';
+import { Play } from 'lucide-react';
 
 interface HeroSectionProps {
   headline: string;
@@ -20,85 +21,72 @@ export function HeroSection({ headline, description, onWatchVideo }: HeroSection
     }
   };
 
+  // Symmetrical orb positions - 6 orbs in balanced arrangement
+  const orbPositions = [
+    { left: 10, top: 20, size: 120, delay: 0 },
+    { left: 85, top: 25, size: 100, delay: 0.5 },
+    { left: 8, top: 70, size: 80, delay: 1 },
+    { left: 88, top: 65, size: 90, delay: 1.5 },
+    { left: 25, top: 85, size: 60, delay: 2 },
+    { left: 75, top: 80, size: 70, delay: 2.5 },
+  ];
+
   return (
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#0041A8] via-[#0063AF] to-[#007BFF] rounded-2xl mx-4 my-8">
-      {/* Animated Gradient Overlay */}
-      <motion.div 
-        className="absolute inset-0 opacity-30"
-        animate={{
-          background: [
-            'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%)',
-            'radial-gradient(circle at 80% 50%, rgba(255,255,255,0.1) 0%, transparent 50%)',
-            'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%)',
-          ],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-      />
-      
-      {/* Glass Blur Overlay */}
-      <div className="absolute inset-0 backdrop-blur-[1px] bg-white/5" />
-      
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0" style={{
-          backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)',
-          backgroundSize: '40px 40px'
-        }} />
+      {/* Subtle Gradient Glow - Single unified background effect */}
+      <div className="absolute inset-0">
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-white/5 rounded-full blur-3xl" />
       </div>
 
-      {/* Animated Dots/Waves Pattern */}
+      {/* Symmetrical Floating Orbs - Reduced to 6 balanced positions */}
       <div className="absolute inset-0 overflow-hidden">
-        {Array.from({ length: 20 }, (_, i) => {
-          const positions = [
-            { left: 10, top: 20 }, { left: 85, top: 15 }, { left: 25, top: 60 },
-            { left: 70, top: 55 }, { left: 15, top: 80 }, { left: 90, top: 75 },
-            { left: 50, top: 40 }, { left: 35, top: 35 }, { left: 65, top: 25 },
-            { left: 20, top: 45 }, { left: 80, top: 50 }, { left: 40, top: 70 },
-            { left: 75, top: 65 }, { left: 30, top: 10 }, { left: 60, top: 85 },
-            { left: 5, top: 30 }, { left: 95, top: 40 }, { left: 45, top: 15 },
-            { left: 55, top: 90 }, { left: 12, top: 65 }
-          ];
-          return (
-            <motion.div
-              key={i}
-              className="absolute w-2 h-2 bg-white/20 rounded-full"
-              style={{
-                left: `${positions[i]?.left || 50}%`,
-                top: `${positions[i]?.top || 50}%`,
-              }}
-              animate={{
-                y: [0, -30, 0],
-                opacity: [0.2, 0.5, 0.2],
-              }}
-              transition={{
-                duration: 3 + (i % 3),
-                repeat: Infinity,
-                delay: (i * 0.2) % 4,
-              }}
-            />
-          );
-        })}
+        {orbPositions.map((orb, i) => (
+          <motion.div
+            key={i}
+            className="absolute rounded-full bg-white/10"
+            style={{
+              left: `${orb.left}%`,
+              top: `${orb.top}%`,
+              width: orb.size,
+              height: orb.size,
+              filter: 'blur(40px)',
+            }}
+            animate={{
+              y: [0, -20, 0],
+              opacity: [0.1, 0.2, 0.1],
+            }}
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              delay: orb.delay,
+              ease: 'easeInOut',
+            }}
+          />
+        ))}
       </div>
 
       {/* Content Container */}
-      <div className="relative z-10 max-w-6xl mx-auto px-6 py-20 text-center">
+      <div className="relative z-10 max-w-4xl mx-auto px-6 py-20 text-center flex flex-col items-center">
         {/* Hero Headline */}
         <motion.h1
-          className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white mb-4 tracking-tight max-w-[800px] mx-auto"
+          className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight max-w-[800px]"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
+          transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }}
         >
-          {headline}
+          {headline.includes(',') ? (
+            <>
+              {headline.split(',')[0]},<br />
+              {headline.split(',').slice(1).join(',')}
+            </>
+          ) : (
+            headline
+          )}
         </motion.h1>
 
         {/* Hero Description */}
         <motion.p
-          className="text-lg md:text-xl lg:text-xl text-white/90 mb-10 max-w-[800px] mx-auto leading-relaxed font-normal"
+          className="mt-6 text-lg md:text-xl text-white/85 max-w-[640px] leading-relaxed"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
@@ -106,44 +94,47 @@ export function HeroSection({ headline, description, onWatchVideo }: HeroSection
           {description}
         </motion.p>
 
-        {/* Single Primary CTA */}
+        {/* CTAs - Horizontal layout */}
         <motion.div
-          className="flex flex-col items-center gap-6"
+          className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4, ease: 'easeOut' }}
+          transition={{ duration: 0.8, delay: 0.35, ease: 'easeOut' }}
         >
           <Button
             size="lg"
             onClick={handleScrollToPhases}
-            className="px-10 py-6 text-lg font-extrabold shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 rounded-full tracking-wide"
+            className="px-8 py-6 text-base font-bold shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 rounded-full"
           >
             {t('startJourney')}
           </Button>
-          {/* Watch Video as Link Below */}
-          <button
+          <Button
+            size="lg"
+            variant="outline"
             onClick={onWatchVideo}
-            className="text-white/80 hover:text-white text-sm font-medium underline-offset-4 hover:underline transition-all"
+            className="px-8 py-6 text-base font-medium rounded-full bg-white/10 border-white/30 text-white hover:bg-white/20 hover:border-white/40 backdrop-blur-sm transition-all duration-300"
           >
+            <Play className="w-4 h-4 mr-2" />
             {t('watchVideo')}
-          </button>
+          </Button>
         </motion.div>
 
-        {/* Scroll Indicator */}
+        {/* Scroll Indicator - Simplified */}
         <motion.div
-          className="mt-20"
+          className="mt-16"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1, ease: 'easeOut' }}
+          transition={{ duration: 1, delay: 0.8, ease: 'easeOut' }}
         >
-          <motion.div
-            className="inline-block cursor-pointer"
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          <motion.button
+            className="p-3 rounded-full border border-white/20 text-white/60 hover:text-white hover:border-white/40 transition-colors"
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
             onClick={handleScrollToPhases}
+            aria-label="Scroll to content"
           >
             <svg
-              className="w-6 h-6 text-white"
+              className="w-5 h-5"
               fill="none"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -151,22 +142,20 @@ export function HeroSection({ headline, description, onWatchVideo }: HeroSection
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+              <path d="M19 14l-7 7m0 0l-7-7m7 7V3" />
             </svg>
-          </motion.div>
+          </motion.button>
         </motion.div>
 
         {/* Partnership Tagline */}
-        <motion.div
-          className="mt-8"
+        <motion.p
+          className="mt-10 text-xs text-white/50 max-w-md text-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1.2, ease: 'easeOut' }}
+          transition={{ duration: 1, delay: 1, ease: 'easeOut' }}
         >
-          <p className="text-sm text-blue-100 text-center">
-            Created by FiftyFifty and UN Women to make political participation more accessible, practical, and achievable for every woman.
-          </p>
-        </motion.div>
+          Created by FiftyFifty and UN Women to make political participation more accessible, practical, and achievable for every woman.
+        </motion.p>
       </div>
     </section>
   );

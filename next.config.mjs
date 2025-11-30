@@ -27,6 +27,10 @@ const nextConfig = {
         hostname: 'localhost',
         port: '1337', // Local Strapi CMS
       },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com', // Unsplash images
+      },
       // Add your production CMS domain when available
       // Example:
       // {

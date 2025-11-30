@@ -106,7 +106,7 @@ export default function TestimonialsPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-pulse text-white/60">Loading testimonials...</div>
+        <div className="animate-pulse text-gray-500">Loading testimonials...</div>
       </div>
     );
   }
@@ -118,28 +118,28 @@ export default function TestimonialsPage() {
         <div className="flex items-center gap-4">
           <Link
             href="/admin/dashboard"
-            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
           >
-            <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-white">Testimonials</h1>
-            <p className="text-slate-400">Edit participant testimonials and quotes</p>
+            <h1 className="text-2xl font-bold text-gray-900">Testimonials</h1>
+            <p className="text-gray-500">Edit participant testimonials and quotes</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
           <button
             onClick={addTestimonial}
-            className="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl text-white transition-colors"
+            className="px-4 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-200 rounded-xl text-gray-700 transition-colors"
           >
             + Add Testimonial
           </button>
           <button
             onClick={handleSave}
             disabled={saving}
-            className="px-6 py-2 bg-gradient-to-r from-brand-primary-500 to-brand-primary-600 hover:from-brand-primary-600 hover:to-brand-primary-700 text-white font-medium rounded-xl transition-all disabled:opacity-50 shadow-lg"
+            className="px-6 py-2 bg-gradient-to-r from-[#0063AF] to-[#0041A8] hover:from-[#0041A8] hover:to-[#003080] text-white font-medium rounded-xl transition-all disabled:opacity-50 shadow-lg"
           >
             {saving ? 'Saving...' : 'Save All Changes'}
           </button>
@@ -148,7 +148,7 @@ export default function TestimonialsPage() {
 
       {/* Message */}
       {message && (
-        <div className={`mb-6 p-4 rounded-xl ${message.type === 'success' ? 'bg-green-500/10 border border-green-500/20 text-green-400' : 'bg-red-500/10 border border-red-500/20 text-red-400'}`}>
+        <div className={`mb-6 p-4 rounded-xl ${message.type === 'success' ? 'bg-green-50 border border-green-200 text-green-700' : 'bg-red-50 border border-red-200 text-red-700'}`}>
           {message.text}
         </div>
       )}
@@ -158,11 +158,11 @@ export default function TestimonialsPage() {
         {testimonials.sort((a, b) => a.order - b.order).map((testimonial) => (
           <div
             key={testimonial.id}
-            className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden"
+            className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm"
           >
             {/* Testimonial Header */}
             <div
-              className="flex items-center justify-between p-4 cursor-pointer hover:bg-white/5 transition-colors"
+              className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
               onClick={() => setEditingId(editingId === testimonial.id ? null : testimonial.id)}
             >
               <div className="flex items-center gap-4">
@@ -170,21 +170,21 @@ export default function TestimonialsPage() {
                   {testimonial.name.charAt(0)}
                 </div>
                 <div>
-                  <h3 className="text-white font-medium">{testimonial.name}</h3>
-                  <p className="text-slate-400 text-sm">{testimonial.role}</p>
+                  <h3 className="text-gray-900 font-medium">{testimonial.name}</h3>
+                  <p className="text-gray-500 text-sm">{testimonial.role}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 <button
                   onClick={(e) => { e.stopPropagation(); deleteTestimonial(testimonial.id); }}
-                  className="p-2 hover:bg-red-500/20 rounded-lg text-red-400 transition-colors"
+                  className="p-2 hover:bg-red-50 rounded-lg text-red-500 transition-colors"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
                 </button>
                 <svg
-                  className={`w-5 h-5 text-slate-400 transition-transform ${editingId === testimonial.id ? 'rotate-180' : ''}`}
+                  className={`w-5 h-5 text-gray-400 transition-transform ${editingId === testimonial.id ? 'rotate-180' : ''}`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -196,91 +196,91 @@ export default function TestimonialsPage() {
 
             {/* Edit Form */}
             {editingId === testimonial.id && (
-              <div className="p-6 border-t border-white/10 space-y-4">
+              <div className="p-6 border-t border-gray-200 space-y-4 bg-gray-50">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Name (English)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Name (English)</label>
                     <input
                       type="text"
                       value={testimonial.name}
                       onChange={(e) => updateTestimonial(testimonial.id, 'name', e.target.value)}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0063AF]"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Name (Arabic)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Name (Arabic)</label>
                     <input
                       type="text"
                       dir="rtl"
                       value={testimonial.name_ar}
                       onChange={(e) => updateTestimonial(testimonial.id, 'name_ar', e.target.value)}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0063AF]"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Role/Title (English)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Role/Title (English)</label>
                     <input
                       type="text"
                       value={testimonial.role}
                       onChange={(e) => updateTestimonial(testimonial.id, 'role', e.target.value)}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0063AF]"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Role/Title (Arabic)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Role/Title (Arabic)</label>
                     <input
                       type="text"
                       dir="rtl"
                       value={testimonial.role_ar}
                       onChange={(e) => updateTestimonial(testimonial.id, 'role_ar', e.target.value)}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0063AF]"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Quote (English)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Quote (English)</label>
                     <textarea
                       value={testimonial.quote}
                       onChange={(e) => updateTestimonial(testimonial.id, 'quote', e.target.value)}
                       rows={4}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500 resize-none"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0063AF] resize-none"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Quote (Arabic)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Quote (Arabic)</label>
                     <textarea
                       dir="rtl"
                       value={testimonial.quote_ar}
                       onChange={(e) => updateTestimonial(testimonial.id, 'quote_ar', e.target.value)}
                       rows={4}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500 resize-none"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0063AF] resize-none"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Photo URL (optional)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Photo URL (optional)</label>
                     <input
                       type="url"
                       value={testimonial.photo_url}
                       onChange={(e) => updateTestimonial(testimonial.id, 'photo_url', e.target.value)}
                       placeholder="https://..."
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0063AF]"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Order</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Order</label>
                     <input
                       type="number"
                       value={testimonial.order}
                       onChange={(e) => updateTestimonial(testimonial.id, 'order', parseInt(e.target.value))}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-brand-primary-500"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0063AF]"
                     />
                   </div>
                 </div>
@@ -290,7 +290,7 @@ export default function TestimonialsPage() {
         ))}
 
         {testimonials.length === 0 && (
-          <div className="text-center py-12 text-slate-400">
+          <div className="text-center py-12 text-gray-400">
             No testimonials found. Click &quot;Add Testimonial&quot; to create one.
           </div>
         )}
@@ -298,4 +298,3 @@ export default function TestimonialsPage() {
     </div>
   );
 }
-

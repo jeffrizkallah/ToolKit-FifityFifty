@@ -544,6 +544,7 @@ export async function getTestimonials(
         name: getLocalizedField(testimonial, 'name', locale),
         quote: getLocalizedField(testimonial, 'quote', locale),
         role: getLocalizedField(testimonial, 'role', locale),
+        photo_url: testimonial.photo_url || undefined,
         order: testimonial.order,
         locale: locale as 'en' | 'ar',
         createdAt: new Date().toISOString(),

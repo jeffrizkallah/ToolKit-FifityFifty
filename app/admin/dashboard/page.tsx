@@ -126,7 +126,7 @@ export default function AdminDashboard() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-pulse text-white/60">Loading dashboard...</div>
+        <div className="animate-pulse text-gray-500">Loading dashboard...</div>
       </div>
     );
   }
@@ -136,20 +136,20 @@ export default function AdminDashboard() {
       {/* Header */}
       <header className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-white">Content Management</h1>
-          <p className="text-slate-400">FiftyFifty ToolKit Admin Panel</p>
+          <h1 className="text-2xl font-bold text-gray-900">Content Management</h1>
+          <p className="text-gray-500">FiftyFifty ToolKit Admin Panel</p>
         </div>
         <div className="flex items-center gap-4">
           <Link
             href="/"
             target="_blank"
-            className="px-4 py-2 text-sm text-slate-300 hover:text-white transition-colors"
+            className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 transition-colors"
           >
             View Site →
           </Link>
           <button
             onClick={handleLogout}
-            className="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-sm text-slate-300 hover:text-white transition-all"
+            className="px-4 py-2 bg-white hover:bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-600 hover:text-gray-900 transition-all shadow-sm"
           >
             Sign Out
           </button>
@@ -162,15 +162,15 @@ export default function AdminDashboard() {
           <Link
             key={section.id}
             href={`/admin/${section.id}`}
-            className="group block bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all hover:border-white/20 hover:shadow-xl"
+            className="group block bg-white border border-gray-200 rounded-2xl p-6 hover:bg-gray-50 transition-all hover:border-gray-300 hover:shadow-lg"
           >
             <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br ${section.color} mb-4 shadow-lg group-hover:scale-110 transition-transform`}>
               <span className="text-white">{section.icon}</span>
             </div>
-            <h2 className="text-xl font-semibold text-white mb-2">{section.title}</h2>
-            <p className="text-slate-400 text-sm mb-4">{section.description}</p>
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">{section.title}</h2>
+            <p className="text-gray-500 text-sm mb-4">{section.description}</p>
             {section.id !== 'settings' && (
-              <div className="text-sm text-slate-500">
+              <div className="text-sm text-gray-400">
                 {counts[section.id as keyof ContentCounts] || 0} items
               </div>
             )}
@@ -179,11 +179,11 @@ export default function AdminDashboard() {
       </div>
 
       {/* Quick Info */}
-      <div className="mt-8 p-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl">
-        <h3 className="text-lg font-semibold text-white mb-4">Quick Tips</h3>
-        <ul className="space-y-2 text-sm text-slate-400">
+      <div className="mt-8 p-6 bg-white border border-gray-200 rounded-2xl shadow-sm">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Tips</h3>
+        <ul className="space-y-2 text-sm text-gray-600">
           <li>• All content supports both English and Arabic translations</li>
-          <li>• Changes are saved directly to JSON files in the <code className="px-2 py-0.5 bg-white/10 rounded">/content</code> directory</li>
+          <li>• Changes are saved directly to JSON files in the <code className="px-2 py-0.5 bg-gray-100 rounded text-gray-700">/content</code> directory</li>
           <li>• Rich text fields support HTML formatting</li>
           <li>• Remember to save your changes before navigating away</li>
         </ul>

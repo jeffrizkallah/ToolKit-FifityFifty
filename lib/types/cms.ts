@@ -145,6 +145,7 @@ export interface Testimonial {
     photo?: {
       data: StrapiMedia;
     };
+    photo_url?: string;
     role?: string;
     order: number;
     locale: 'en' | 'ar';
