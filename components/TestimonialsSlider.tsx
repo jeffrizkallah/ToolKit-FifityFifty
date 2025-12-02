@@ -93,22 +93,8 @@ export function TestimonialsSlider({ testimonials, locale }: TestimonialsSliderP
                     key={testimonial.id}
                     className="flex-[0_0_100%] min-w-0 px-3 sm:px-4 lg:px-5 sm:flex-[0_0_50%] lg:flex-[0_0_33.333%]">
                     <div className="glass-component glass-layered bg-white rounded-2xl shadow-soft hover:shadow-elevated p-8 h-full flex flex-col transition-all duration-300 border border-neutral-100 hover:border-[#0063AF]/40">
-                      {/* Quote Icon */}
-                      <div className="mb-4 flex items-start">
-                        <svg className="w-8 h-8 text-[#0063AF]/30" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.996 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.984zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                        </svg>
-                      </div>
-                      
-                      {/* Quote */}
-                      <blockquote className="flex-1 mb-6">
-                        <p className="text-gray-700 text-base leading-relaxed font-normal">
-                          "{testimonial.attributes.quote}"
-                        </p>
-                      </blockquote>
-
                       {/* Photo and Attribution */}
-                      <div className="flex items-center gap-4 pt-4 border-t border-neutral-200">
+                      <div className="flex items-center gap-4 pb-4 mb-4 border-b border-neutral-200">
                         {/* Avatar - Photo or Initials Fallback */}
                         {fullPhotoUrl ? (
                           <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-[#0063AF]/20 ring-offset-2">
@@ -143,6 +129,20 @@ export function TestimonialsSlider({ testimonials, locale }: TestimonialsSliderP
                           )}
                         </div>
                       </div>
+
+                      {/* Quote Icon */}
+                      <div className="mb-4 flex items-start">
+                        <svg className="w-8 h-8 text-[#0063AF]/30" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.996 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.984zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                        </svg>
+                      </div>
+                      
+                      {/* Quote */}
+                      <blockquote className="flex-1">
+                        <p className="text-gray-700 text-base leading-relaxed font-normal">
+                          "{testimonial.attributes.quote}"
+                        </p>
+                      </blockquote>
                     </div>
                   </div>
                 );
