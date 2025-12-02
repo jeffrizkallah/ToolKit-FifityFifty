@@ -78,6 +78,65 @@ export default function PhasesPage() {
     ));
   };
 
+  const addPhase = () => {
+    const newId = Math.max(...phases.map(p => p.id), 0) + 1;
+    const newPhaseNumber = Math.max(...phases.map(p => p.phase_number), 0) + 1;
+    const newOrder = Math.max(...phases.map(p => p.order), 0) + 1;
+    setPhases([
+      ...phases,
+      {
+        id: newId,
+        title: `New Phase ${newPhaseNumber}`,
+        title_ar: `المرحلة الجديدة ${newPhaseNumber}`,
+        slug: `phase-${newPhaseNumber}`,
+        description: '',
+        description_ar: '',
+        order: newOrder,
+        phase_number: newPhaseNumber,
+        header_video_url: '',
+      },
+    ]);
+    setEditingId(newId);
+  };
+
+  const deletePhase = async (id: number) => {
+    const phase = phases.find(p => p.id === id);
+    if (!phase) return;
+    
+    if (!confirm(`Are you sure you want to delete "${phase.title}"? This will also delete all modules and resources within this phase. This action cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      // Check if this phase exists in the database (not just locally added)
+      const existingPhases = await fetch('/api/admin/content?type=phases').then(r => r.json());
+      const existsInDb = existingPhases.phases?.some((p: Phase) => p.id === id);
+
+      if (existsInDb) {
+        // Delete from database
+        const res = await fetch(`/api/admin/content?type=phases&id=${id}`, {
+          method: 'DELETE',
+        });
+
+        if (!res.ok) {
+          const data = await res.json();
+          setMessage({ type: 'error', text: data.error || 'Failed to delete phase' });
+          return;
+        }
+      }
+
+      // Remove from local state
+      setPhases(phases.filter(p => p.id !== id));
+      setMessage({ type: 'success', text: 'Phase deleted successfully!' });
+      
+      if (editingId === id) {
+        setEditingId(null);
+      }
+    } catch (error) {
+      setMessage({ type: 'error', text: 'An error occurred while deleting' });
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -101,16 +160,24 @@ export default function PhasesPage() {
           </Link>
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Phases</h1>
-            <p className="text-gray-500">Manage the 3 campaign phases</p>
+            <p className="text-gray-500">Manage campaign phases</p>
           </div>
         </div>
-        <button
-          onClick={handleSave}
-          disabled={saving}
-          className="px-6 py-2 bg-gradient-to-r from-[#0063AF] to-[#0041A8] hover:from-[#0041A8] hover:to-[#003080] text-white font-medium rounded-xl transition-all disabled:opacity-50 shadow-lg"
-        >
-          {saving ? 'Saving...' : 'Save All Changes'}
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={addPhase}
+            className="px-4 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-200 rounded-xl text-gray-700 transition-colors"
+          >
+            + Add Phase
+          </button>
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className="px-6 py-2 bg-gradient-to-r from-[#0063AF] to-[#0041A8] hover:from-[#0041A8] hover:to-[#003080] text-white font-medium rounded-xl transition-all disabled:opacity-50 shadow-lg"
+          >
+            {saving ? 'Saving...' : 'Save All Changes'}
+          </button>
+        </div>
       </header>
 
       {/* Message */}
@@ -141,14 +208,25 @@ export default function PhasesPage() {
                   <p className="text-gray-500 text-sm">{phase.slug}</p>
                 </div>
               </div>
-              <svg
-                className={`w-5 h-5 text-gray-400 transition-transform ${editingId === phase.id ? 'rotate-180' : ''}`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={(e) => { e.stopPropagation(); deletePhase(phase.id); }}
+                  className="p-2 hover:bg-red-50 rounded-lg text-red-500 transition-colors"
+                  title="Delete phase"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                </button>
+                <svg
+                  className={`w-5 h-5 text-gray-400 transition-transform ${editingId === phase.id ? 'rotate-180' : ''}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
             </div>
 
             {/* Edit Form */}
@@ -242,6 +320,12 @@ export default function PhasesPage() {
             )}
           </div>
         ))}
+
+        {phases.length === 0 && (
+          <div className="text-center py-12 text-gray-400">
+            No phases found. Click &quot;Add Phase&quot; to create one.
+          </div>
+        )}
       </div>
     </div>
   );

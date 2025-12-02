@@ -3,15 +3,13 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { useTranslations } from 'next-intl';
-import { Play } from 'lucide-react';
 
 interface HeroSectionProps {
   headline: string;
   description: string;
-  onWatchVideo: () => void;
 }
 
-export function HeroSection({ headline, description, onWatchVideo }: HeroSectionProps) {
+export function HeroSection({ headline, description }: HeroSectionProps) {
   const t = useTranslations('HomePage.hero');
 
   const handleScrollToPhases = () => {
@@ -94,9 +92,9 @@ export function HeroSection({ headline, description, onWatchVideo }: HeroSection
           {description}
         </motion.p>
 
-        {/* CTAs - Horizontal layout */}
+        {/* CTA - Centered single button */}
         <motion.div
-          className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
+          className="mt-10 flex items-center justify-center"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.35, ease: 'easeOut' }}
@@ -107,15 +105,6 @@ export function HeroSection({ headline, description, onWatchVideo }: HeroSection
             className="px-8 py-6 text-base font-bold shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 rounded-full"
           >
             {t('startJourney')}
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            onClick={onWatchVideo}
-            className="px-8 py-6 text-base font-medium rounded-full bg-white/10 border-white/30 text-white hover:bg-white/20 hover:border-white/40 backdrop-blur-sm transition-all duration-300"
-          >
-            <Play className="w-4 h-4 mr-2" />
-            {t('watchVideo')}
           </Button>
         </motion.div>
 

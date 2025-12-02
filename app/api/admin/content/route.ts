@@ -249,20 +249,42 @@ export async function PUT(request: NextRequest) {
 
     switch (type) {
       case 'phases': {
+        // First, get existing phase IDs to determine insert vs update
+        const { rows: existingPhases } = await sql`SELECT id FROM phases`;
+        const existingIds = new Set(existingPhases.map(p => p.id));
+        
         for (const phase of data.phases) {
-          await sql`
-            UPDATE phases SET
-              title = ${phase.title},
-              title_ar = ${phase.title_ar},
-              slug = ${phase.slug},
-              description = ${phase.description || null},
-              description_ar = ${phase.description_ar || null},
-              "order" = ${phase.order},
-              phase_number = ${phase.phase_number},
-              header_video_url = ${phase.header_video_url || null},
-              updated_at = NOW()
-            WHERE id = ${phase.id}
-          `;
+          if (existingIds.has(phase.id)) {
+            // Update existing phase
+            await sql`
+              UPDATE phases SET
+                title = ${phase.title},
+                title_ar = ${phase.title_ar},
+                slug = ${phase.slug},
+                description = ${phase.description || null},
+                description_ar = ${phase.description_ar || null},
+                "order" = ${phase.order},
+                phase_number = ${phase.phase_number},
+                header_video_url = ${phase.header_video_url || null},
+                updated_at = NOW()
+              WHERE id = ${phase.id}
+            `;
+          } else {
+            // Insert new phase (let database generate the ID)
+            await sql`
+              INSERT INTO phases (title, title_ar, slug, description, description_ar, "order", phase_number, header_video_url)
+              VALUES (
+                ${phase.title},
+                ${phase.title_ar || ''},
+                ${phase.slug},
+                ${phase.description || null},
+                ${phase.description_ar || null},
+                ${phase.order || 1},
+                ${phase.phase_number || 1},
+                ${phase.header_video_url || null}
+              )
+            `;
+          }
         }
         break;
       }
@@ -309,20 +331,42 @@ export async function PUT(request: NextRequest) {
         break;
       }
       case 'testimonials': {
+        // First, get existing testimonial IDs to determine insert vs update
+        const { rows: existingTestimonials } = await sql`SELECT id FROM testimonials`;
+        const existingIds = new Set(existingTestimonials.map(t => t.id));
+        
         for (const testimonial of data.testimonials) {
-          await sql`
-            UPDATE testimonials SET
-              name = ${testimonial.name},
-              name_ar = ${testimonial.name_ar},
-              quote = ${testimonial.quote},
-              quote_ar = ${testimonial.quote_ar},
-              role = ${testimonial.role || null},
-              role_ar = ${testimonial.role_ar || null},
-              photo_url = ${testimonial.photo_url || null},
-              "order" = ${testimonial.order},
-              updated_at = NOW()
-            WHERE id = ${testimonial.id}
-          `;
+          if (existingIds.has(testimonial.id)) {
+            // Update existing testimonial
+            await sql`
+              UPDATE testimonials SET
+                name = ${testimonial.name},
+                name_ar = ${testimonial.name_ar},
+                quote = ${testimonial.quote},
+                quote_ar = ${testimonial.quote_ar},
+                role = ${testimonial.role || null},
+                role_ar = ${testimonial.role_ar || null},
+                photo_url = ${testimonial.photo_url || null},
+                "order" = ${testimonial.order},
+                updated_at = NOW()
+              WHERE id = ${testimonial.id}
+            `;
+          } else {
+            // Insert new testimonial (let database generate the ID)
+            await sql`
+              INSERT INTO testimonials (name, name_ar, quote, quote_ar, role, role_ar, photo_url, "order")
+              VALUES (
+                ${testimonial.name},
+                ${testimonial.name_ar},
+                ${testimonial.quote},
+                ${testimonial.quote_ar},
+                ${testimonial.role || null},
+                ${testimonial.role_ar || null},
+                ${testimonial.photo_url || null},
+                ${testimonial.order}
+              )
+            `;
+          }
         }
         break;
       }
@@ -378,9 +422,9 @@ export async function DELETE(request: NextRequest) {
   const contentType = searchParams.get('type');
   const id = searchParams.get('id');
 
-  if (!contentType || !['modules', 'resources', 'testimonials'].includes(contentType)) {
+  if (!contentType || !['phases', 'modules', 'resources', 'testimonials'].includes(contentType)) {
     return NextResponse.json(
-      { error: 'Invalid content type for deletion. Can only delete: modules, resources, testimonials' },
+      { error: 'Invalid content type for deletion. Can only delete: phases, modules, resources, testimonials' },
       { status: 400 }
     );
   }
@@ -394,6 +438,17 @@ export async function DELETE(request: NextRequest) {
 
   try {
     switch (contentType) {
+      case 'phases': {
+        // First delete related modules and their resources
+        const { rows: phaseModules } = await sql`SELECT id FROM modules WHERE phase_id = ${parseInt(id)}`;
+        for (const module of phaseModules) {
+          await sql`DELETE FROM resources WHERE module_id = ${module.id}`;
+        }
+        await sql`DELETE FROM modules WHERE phase_id = ${parseInt(id)}`;
+        // Then delete the phase
+        await sql`DELETE FROM phases WHERE id = ${parseInt(id)}`;
+        break;
+      }
       case 'modules': {
         // First delete related resources
         await sql`DELETE FROM resources WHERE module_id = ${parseInt(id)}`;
@@ -415,8 +470,12 @@ export async function DELETE(request: NextRequest) {
     try {
       revalidateTag(CACHE_TAGS[contentType as keyof typeof CACHE_TAGS]);
       revalidateTag(CACHE_TAGS.all);
-      // Also revalidate resources when deleting modules
+      // Also revalidate related content when deleting
       if (contentType === 'modules') {
+        revalidateTag(CACHE_TAGS.resources);
+      }
+      if (contentType === 'phases') {
+        revalidateTag(CACHE_TAGS.modules);
         revalidateTag(CACHE_TAGS.resources);
       }
     } catch (revalidateError) {
