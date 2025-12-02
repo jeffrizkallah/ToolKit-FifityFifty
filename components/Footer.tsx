@@ -163,9 +163,9 @@ export function Footer({ locale }: FooterProps) {
           <div className="flex justify-center items-center gap-8 flex-wrap" role="list" aria-label="Partner organizations">
             <div className="bg-white p-3 rounded-lg" role="listitem">
               <Image
-                src="/UNDP-Logo-Blue-Small (1).png"
-                alt="UNDP Logo"
-                width={120}
+                src="/Canada Logo 2021-02.jpg"
+                alt="In partnership with Canada"
+                width={180}
                 height={48}
                 className="h-12 w-auto object-contain"
               />
