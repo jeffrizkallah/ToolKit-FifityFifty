@@ -154,7 +154,7 @@ export function HeroSection({ headline, description, onWatchVideo }: HeroSection
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 1, ease: 'easeOut' }}
         >
-          Created by FiftyFifty and UN Women to make political participation more accessible, practical, and achievable for every woman.
+          Created in collaboration with UN Women to make political participation more accessible, practical, and achievable for every woman.
         </motion.p>
       </div>
     </section>
