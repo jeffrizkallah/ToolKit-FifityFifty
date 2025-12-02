@@ -158,6 +158,7 @@ interface RawModule {
   summary: string;
   summary_ar: string;
   video_url?: string;
+  video_duration?: string;
   video_subtitle_url_en?: string;
   video_subtitle_url_ar?: string;
   key_takeaways?: string;
@@ -250,6 +251,7 @@ export async function getPhases(
                 slug: m.slug,
                 summary: getLocalizedField(m, 'summary', locale),
                 video_url: m.video_url,
+                video_duration: m.video_duration,
                 video_subtitle_url_en: m.video_subtitle_url_en,
                 video_subtitle_url_ar: m.video_subtitle_url_ar,
                 key_takeaways: locale === 'ar' ? m.key_takeaways_ar : m.key_takeaways,
@@ -326,6 +328,7 @@ export async function getModules(
           slug: module.slug,
           summary: getLocalizedField(module, 'summary', locale),
           video_url: module.video_url,
+          video_duration: module.video_duration,
           video_subtitle_url_en: module.video_subtitle_url_en,
           video_subtitle_url_ar: module.video_subtitle_url_ar,
           key_takeaways: locale === 'ar' ? module.key_takeaways_ar : module.key_takeaways,

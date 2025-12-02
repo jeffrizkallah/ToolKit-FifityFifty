@@ -31,6 +31,14 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'images.unsplash.com', // Unsplash images
       },
+      {
+        protocol: 'https',
+        hostname: '*.public.blob.vercel-storage.com', // Vercel Blob Storage
+      },
+      {
+        protocol: 'https',
+        hostname: 'files.fm', // External file hosting
+      },
       // Add your production CMS domain when available
       // Example:
       // {

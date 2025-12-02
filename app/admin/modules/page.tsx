@@ -12,6 +12,7 @@ interface Module {
   summary: string;
   summary_ar: string;
   video_url: string;
+  video_duration: string;
   video_subtitle_url_en: string;
   video_subtitle_url_ar: string;
   key_takeaways: string;
@@ -139,6 +140,7 @@ export default function ModulesPage() {
       summary: '',
       summary_ar: '',
       video_url: '',
+      video_duration: '',
       video_subtitle_url_en: '',
       video_subtitle_url_ar: '',
       key_takeaways: '',
@@ -429,8 +431,8 @@ export default function ModulesPage() {
                     </svg>
                     Video Settings
                   </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div className="md:col-span-2">
                       <label className="block text-sm font-medium text-gray-700 mb-2">Video URL (YouTube/Vimeo)</label>
                       <input
                         type="url"
@@ -440,6 +442,19 @@ export default function ModulesPage() {
                         className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0063AF]"
                       />
                     </div>
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Video Duration</label>
+                      <input
+                        type="text"
+                        value={module.video_duration || ''}
+                        onChange={(e) => updateModule(module.id, 'video_duration', e.target.value)}
+                        placeholder="e.g. ~10 min, 5:30, 1h 20min"
+                        className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0063AF]"
+                      />
+                      <p className="mt-1 text-xs text-gray-500">Displayed on the video thumbnail (e.g. "~10 min")</p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">Subtitle URL (English)</label>
                       <input
@@ -462,7 +477,7 @@ export default function ModulesPage() {
                     </div>
                   </div>
                   {module.video_url && (
-                    <p className="mt-2 text-xs text-blue-600">
+                    <p className="mt-3 text-xs text-blue-600">
                       This video will appear in the video carousel on the phase page.
                     </p>
                   )}

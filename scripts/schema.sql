@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS modules (
   summary TEXT,
   summary_ar TEXT,
   video_url VARCHAR(500),
+  video_duration VARCHAR(50),
   video_subtitle_url_en VARCHAR(500),
   video_subtitle_url_ar VARCHAR(500),
   key_takeaways TEXT,

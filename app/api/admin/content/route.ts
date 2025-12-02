@@ -135,7 +135,7 @@ export async function POST(request: NextRequest) {
       }
       case 'modules': {
         const result = await sql`
-          INSERT INTO modules (title, title_ar, slug, summary, summary_ar, video_url, video_subtitle_url_en, video_subtitle_url_ar, key_takeaways, key_takeaways_ar, "order", phase_id)
+          INSERT INTO modules (title, title_ar, slug, summary, summary_ar, video_url, video_duration, video_subtitle_url_en, video_subtitle_url_ar, key_takeaways, key_takeaways_ar, "order", phase_id)
           VALUES (
             ${data.title},
             ${data.title_ar || ''},
@@ -143,6 +143,7 @@ export async function POST(request: NextRequest) {
             ${data.summary || null},
             ${data.summary_ar || null},
             ${data.video_url || null},
+            ${data.video_duration || null},
             ${data.video_subtitle_url_en || null},
             ${data.video_subtitle_url_ar || null},
             ${data.key_takeaways || null},
@@ -275,6 +276,7 @@ export async function PUT(request: NextRequest) {
               summary = ${module.summary || null},
               summary_ar = ${module.summary_ar || null},
               video_url = ${module.video_url || null},
+              video_duration = ${module.video_duration || null},
               video_subtitle_url_en = ${module.video_subtitle_url_en || null},
               video_subtitle_url_ar = ${module.video_subtitle_url_ar || null},
               key_takeaways = ${module.key_takeaways || null},

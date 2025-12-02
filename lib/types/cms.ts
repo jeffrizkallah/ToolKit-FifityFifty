@@ -84,6 +84,7 @@ export interface Module {
     slug: string;
     summary: string;
     video_url?: string;
+    video_duration?: string;
     video_subtitle_url_en?: string;
     video_subtitle_url_ar?: string;
     key_takeaways?: string; // Rich text HTML

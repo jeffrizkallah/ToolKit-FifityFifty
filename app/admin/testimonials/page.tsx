@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface Testimonial {
   id: number;
@@ -22,6 +23,8 @@ export default function TestimonialsPage() {
   const [saving, setSaving] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [uploadingId, setUploadingId] = useState<number | null>(null);
+  const [dragOverId, setDragOverId] = useState<number | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -103,6 +106,67 @@ export default function TestimonialsPage() {
     }
   };
 
+  const handleFileUpload = async (id: number, file: File) => {
+    // Validate file type
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    if (!allowedTypes.includes(file.type)) {
+      setMessage({ type: 'error', text: 'Invalid file type. Please upload JPEG, PNG, WebP, or GIF.' });
+      return;
+    }
+
+    // Validate file size (5MB max)
+    if (file.size > 5 * 1024 * 1024) {
+      setMessage({ type: 'error', text: 'File size exceeds 5MB limit.' });
+      return;
+    }
+
+    setUploadingId(id);
+    setMessage(null);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('folder', 'testimonials');
+
+      const res = await fetch('/api/admin/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        updateTestimonial(id, 'photo_url', data.url);
+        setMessage({ type: 'success', text: 'Image uploaded successfully!' });
+      } else {
+        const data = await res.json();
+        setMessage({ type: 'error', text: data.error || 'Failed to upload image' });
+      }
+    } catch (error) {
+      setMessage({ type: 'error', text: 'An error occurred while uploading' });
+    } finally {
+      setUploadingId(null);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent, id: number) => {
+    e.preventDefault();
+    setDragOverId(null);
+    
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      handleFileUpload(id, files[0]);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent, id: number) => {
+    e.preventDefault();
+    setDragOverId(id);
+  };
+
+  const handleDragLeave = () => {
+    setDragOverId(null);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -166,9 +230,21 @@ export default function TestimonialsPage() {
               onClick={() => setEditingId(editingId === testimonial.id ? null : testimonial.id)}
             >
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-rose-500 to-rose-600 flex items-center justify-center text-white font-bold text-lg">
-                  {testimonial.name.charAt(0)}
-                </div>
+                {testimonial.photo_url ? (
+                  <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-100">
+                    <Image
+                      src={testimonial.photo_url}
+                      alt={testimonial.name}
+                      width={48}
+                      height={48}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-rose-500 to-rose-600 flex items-center justify-center text-white font-bold text-lg">
+                    {testimonial.name.charAt(0)}
+                  </div>
+                )}
                 <div>
                   <h3 className="text-gray-900 font-medium">{testimonial.name}</h3>
                   <p className="text-gray-500 text-sm">{testimonial.role}</p>
@@ -263,16 +339,103 @@ export default function TestimonialsPage() {
                   </div>
                 </div>
 
+                {/* Photo Upload Section */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Photo URL (optional)</label>
-                    <input
-                      type="url"
-                      value={testimonial.photo_url}
-                      onChange={(e) => updateTestimonial(testimonial.id, 'photo_url', e.target.value)}
-                      placeholder="https://..."
-                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0063AF]"
-                    />
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Photo</label>
+                    
+                    {/* Upload Area */}
+                    <div
+                      onDrop={(e) => handleDrop(e, testimonial.id)}
+                      onDragOver={(e) => handleDragOver(e, testimonial.id)}
+                      onDragLeave={handleDragLeave}
+                      className={`relative border-2 border-dashed rounded-xl p-4 transition-all ${
+                        dragOverId === testimonial.id
+                          ? 'border-[#0063AF] bg-blue-50'
+                          : 'border-gray-300 hover:border-gray-400'
+                      }`}
+                    >
+                      {uploadingId === testimonial.id ? (
+                        <div className="flex flex-col items-center justify-center py-4">
+                          <div className="w-8 h-8 border-2 border-[#0063AF] border-t-transparent rounded-full animate-spin mb-2"></div>
+                          <p className="text-sm text-gray-500">Uploading...</p>
+                        </div>
+                      ) : testimonial.photo_url ? (
+                        <div className="flex items-center gap-4">
+                          <div className="w-20 h-20 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                            <Image
+                              src={testimonial.photo_url}
+                              alt="Preview"
+                              width={80}
+                              height={80}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm text-gray-600 truncate mb-2">
+                              {testimonial.photo_url.split('/').pop()}
+                            </p>
+                            <div className="flex gap-2">
+                              <label className="cursor-pointer px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm text-gray-700 transition-colors">
+                                Replace
+                                <input
+                                  type="file"
+                                  accept="image/jpeg,image/png,image/webp,image/gif"
+                                  onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    if (file) handleFileUpload(testimonial.id, file);
+                                  }}
+                                  className="hidden"
+                                />
+                              </label>
+                              <button
+                                onClick={() => updateTestimonial(testimonial.id, 'photo_url', '')}
+                                className="px-3 py-1.5 bg-red-50 hover:bg-red-100 rounded-lg text-sm text-red-600 transition-colors"
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <label className="flex flex-col items-center justify-center py-4 cursor-pointer">
+                          <svg className="w-10 h-10 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                          <p className="text-sm font-medium text-gray-700 mb-1">
+                            Click to upload or drag and drop
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            JPEG, PNG, WebP or GIF (max 5MB)
+                          </p>
+                          <input
+                            type="file"
+                            accept="image/jpeg,image/png,image/webp,image/gif"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) handleFileUpload(testimonial.id, file);
+                            }}
+                            className="hidden"
+                          />
+                        </label>
+                      )}
+                    </div>
+
+                    {/* URL Input (Alternative) */}
+                    <div className="mt-3">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="flex-1 h-px bg-gray-200"></div>
+                        <span className="text-xs text-gray-400 uppercase">or enter URL</span>
+                        <div className="flex-1 h-px bg-gray-200"></div>
+                      </div>
+                      <input
+                        type="url"
+                        value={testimonial.photo_url}
+                        onChange={(e) => updateTestimonial(testimonial.id, 'photo_url', e.target.value)}
+                        placeholder="https://example.com/image.jpg"
+                        className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0063AF] text-sm"
+                      />
+                    </div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Order</label>

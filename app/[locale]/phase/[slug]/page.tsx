@@ -177,7 +177,7 @@ export default async function PhasePage({ params: { locale, slug } }: PhasePageP
       title: module.attributes.title,
       description: module.attributes.summary,
       videoUrl: module.attributes.video_url!,
-      duration: '~10 min', // Could be fetched from YouTube API if needed
+      duration: module.attributes.video_duration || undefined,
     }));
 
   // Prepare documents from resources
