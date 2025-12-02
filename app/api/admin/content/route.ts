@@ -158,7 +158,7 @@ export async function POST(request: NextRequest) {
       }
       case 'resources': {
         const result = await sql`
-          INSERT INTO resources (title, title_ar, description, description_ar, file_url, file_type, file_size, "order", module_id)
+          INSERT INTO resources (title, title_ar, description, description_ar, file_url, file_type, file_size, "order", phase_id)
           VALUES (
             ${data.title},
             ${data.title_ar || ''},
@@ -168,7 +168,7 @@ export async function POST(request: NextRequest) {
             ${data.file_type || 'PDF'},
             ${data.file_size || null},
             ${data.order || 1},
-            ${data.module_id}
+            ${data.phase_id}
           )
           RETURNING id
         `;
@@ -323,7 +323,7 @@ export async function PUT(request: NextRequest) {
               file_type = ${resource.file_type},
               file_size = ${resource.file_size || null},
               "order" = ${resource.order},
-              module_id = ${resource.module_id},
+              phase_id = ${resource.phase_id},
               updated_at = NOW()
             WHERE id = ${resource.id}
           `;

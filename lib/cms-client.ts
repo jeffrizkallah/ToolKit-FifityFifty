@@ -178,7 +178,7 @@ interface RawResource {
   file_type: 'PDF' | 'Excel' | 'Word' | 'Other';
   file_size?: string;
   order: number;
-  module_id: number;
+  phase_id: number;
 }
 
 interface RawTestimonial {
@@ -311,15 +311,11 @@ export async function getModules(
   const locale = params.locale || 'en';
   const modules = await getCachedModules() as RawModule[];
   const phases = await getCachedPhases() as RawPhase[];
-  const resources = await getCachedResources() as RawResource[];
   
   return modules
     .sort((a, b) => a.order - b.order)
     .map((module) => {
       const phase = phases.find(p => p.id === module.phase_id);
-      const moduleResources = resources
-        .filter(r => r.module_id === module.id)
-        .sort((a, b) => a.order - b.order);
       
       return {
         id: module.id,
@@ -355,21 +351,7 @@ export async function getModules(
             },
           } : undefined,
           resources: {
-            data: moduleResources.map(r => ({
-              id: r.id,
-              attributes: {
-                title: getLocalizedField(r, 'title', locale),
-                description: getLocalizedField(r, 'description', locale),
-                file_url: r.file_url,
-                file_type: r.file_type,
-                file_size: r.file_size,
-                order: r.order,
-                locale: locale as 'en' | 'ar',
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString(),
-                publishedAt: new Date().toISOString(),
-              },
-            })),
+            data: [],
           },
         },
       };
@@ -447,42 +429,19 @@ export async function getResources(
 }
 
 /**
- * Get resources for a specific module
+ * Get resources for a specific module (deprecated - resources are now linked to phases)
  */
 export async function getResourcesByModule(
   moduleSlug: string,
   params: CMSQueryParams = {}
 ): Promise<Resource[]> {
-  const locale = params.locale || 'en';
-  const modules = await getCachedModules() as RawModule[];
-  const module = modules.find(m => m.slug === moduleSlug);
-  
-  if (!module) return [];
-  
-  const resources = await getCachedResources() as RawResource[];
-  
-  return resources
-    .filter(r => r.module_id === module.id)
-    .sort((a, b) => a.order - b.order)
-    .map((resource) => ({
-      id: resource.id,
-      attributes: {
-        title: getLocalizedField(resource, 'title', locale),
-        description: getLocalizedField(resource, 'description', locale),
-        file_url: resource.file_url,
-        file_type: resource.file_type,
-        file_size: resource.file_size,
-        order: resource.order,
-        locale: locale as 'en' | 'ar',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        publishedAt: new Date().toISOString(),
-      },
-    }));
+  // Resources are now linked to phases, not modules
+  // This function is kept for backwards compatibility but returns empty
+  return [];
 }
 
 /**
- * Get all resources for a specific phase (across all modules in that phase)
+ * Get all resources for a specific phase
  */
 export async function getResourcesByPhase(
   phaseSlug: string,
@@ -494,19 +453,12 @@ export async function getResourcesByPhase(
   
   if (!phase) return [];
   
-  const modules = await getCachedModules() as RawModule[];
-  const phaseModules = modules.filter(m => m.phase_id === phase.id);
-  
-  if (phaseModules.length === 0) return [];
-  
   const resources = await getCachedResources() as RawResource[];
-  const moduleIds = phaseModules.map(m => m.id);
   
   return resources
-    .filter(r => moduleIds.includes(r.module_id))
+    .filter(r => r.phase_id === phase.id)
     .sort((a, b) => a.order - b.order)
     .map((resource) => {
-      const module = phaseModules.find(m => m.id === resource.module_id);
       return {
         id: resource.id,
         attributes: {
@@ -521,7 +473,6 @@ export async function getResourcesByPhase(
           updatedAt: new Date().toISOString(),
           publishedAt: new Date().toISOString(),
         },
-        moduleTitle: module ? getLocalizedField(module, 'title', locale) : undefined,
       };
     });
 }

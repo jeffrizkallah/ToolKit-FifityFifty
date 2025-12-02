@@ -125,8 +125,8 @@ export interface Resource {
     createdAt: string;
     updatedAt: string;
     publishedAt: string;
-    module?: {
-      data: Module;
+    phase?: {
+      data: Phase;
     };
   };
 }

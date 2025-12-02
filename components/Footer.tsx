@@ -163,15 +163,6 @@ export function Footer({ locale }: FooterProps) {
           <div className="flex justify-center items-center gap-8 flex-wrap" role="list" aria-label="Partner organizations">
             <div className="bg-white p-3 rounded-lg" role="listitem">
               <Image
-                src="/Un women logo.png"
-                alt="UN Women Logo"
-                width={120}
-                height={48}
-                className="h-12 w-auto object-contain"
-              />
-            </div>
-            <div className="bg-white p-3 rounded-lg" role="listitem">
-              <Image
                 src="/UNDP-Logo-Blue-Small (1).png"
                 alt="UNDP Logo"
                 width={120}
@@ -181,11 +172,11 @@ export function Footer({ locale }: FooterProps) {
             </div>
             <div className="bg-transparent p-2 rounded-lg" role="listitem">
               <Image
-                src="/5050 Logo.png"
+                src="/LOCKUP_white_EN.png"
                 alt="FiftyFifty Logo"
-                width={72}
-                height={72}
-                className="object-contain"
+                width={180}
+                height={48}
+                className="h-12 w-auto object-contain"
               />
             </div>
           </div>

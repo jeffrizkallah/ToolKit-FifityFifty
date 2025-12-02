@@ -14,14 +14,8 @@ interface Resource {
   file_type: 'PDF' | 'Excel' | 'Word' | 'Other';
   file_size: string;
   order: number;
-  module_id: number;
-  isNew?: boolean;
-}
-
-interface Module {
-  id: number;
-  title: string;
   phase_id: number;
+  isNew?: boolean;
 }
 
 interface Phase {
@@ -32,12 +26,10 @@ interface Phase {
 
 export default function ResourcesPage() {
   const [resources, setResources] = useState<Resource[]>([]);
-  const [modules, setModules] = useState<Module[]>([]);
   const [phases, setPhases] = useState<Phase[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
-  const [filterModule, setFilterModule] = useState<number | null>(null);
   const [filterPhase, setFilterPhase] = useState<number | null>(null);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const router = useRouter();
@@ -51,19 +43,14 @@ export default function ResourcesPage() {
           return;
         }
 
-        const [resourcesRes, modulesRes, phasesRes] = await Promise.all([
+        const [resourcesRes, phasesRes] = await Promise.all([
           fetch('/api/admin/content?type=resources'),
-          fetch('/api/admin/content?type=modules'),
           fetch('/api/admin/content?type=phases'),
         ]);
 
         if (resourcesRes.ok) {
           const data = await resourcesRes.json();
           setResources(data.resources || []);
-        }
-        if (modulesRes.ok) {
-          const data = await modulesRes.json();
-          setModules(data.modules || []);
         }
         if (phasesRes.ok) {
           const data = await phasesRes.json();
@@ -139,7 +126,7 @@ export default function ResourcesPage() {
 
   const addResource = () => {
     const newId = -Date.now();
-    const firstModule = modules[0];
+    const firstPhase = phases.sort((a, b) => a.phase_number - b.phase_number)[0];
     
     const newResource: Resource = {
       id: newId,
@@ -150,8 +137,8 @@ export default function ResourcesPage() {
       file_url: '',
       file_type: 'PDF',
       file_size: '',
-      order: resources.filter(r => r.module_id === firstModule?.id).length + 1,
-      module_id: firstModule?.id || 1,
+      order: resources.filter(r => r.phase_id === firstPhase?.id).length + 1,
+      phase_id: firstPhase?.id || 1,
       isNew: true,
     };
 
@@ -185,20 +172,15 @@ export default function ResourcesPage() {
     }
   };
 
-  const getModuleTitle = (moduleId: number) => {
-    const module = modules.find(m => m.id === moduleId);
-    if (!module) return 'Unknown Module';
-    const phase = phases.find(p => p.id === module.phase_id);
-    return phase ? `${module.title} (Phase ${phase.phase_number})` : module.title;
+  const getPhaseTitle = (phaseId: number) => {
+    const phase = phases.find(p => p.id === phaseId);
+    if (!phase) return 'Unknown Phase';
+    return `Phase ${phase.phase_number}: ${phase.title}`;
   };
 
   let filteredResources = resources;
   if (filterPhase) {
-    const phaseModuleIds = modules.filter(m => m.phase_id === filterPhase).map(m => m.id);
-    filteredResources = filteredResources.filter(r => phaseModuleIds.includes(r.module_id));
-  }
-  if (filterModule) {
-    filteredResources = filteredResources.filter(r => r.module_id === filterModule);
+    filteredResources = filteredResources.filter(r => r.phase_id === filterPhase);
   }
 
   const fileTypeColors: Record<string, string> = {
@@ -260,7 +242,6 @@ export default function ResourcesPage() {
           value={filterPhase || ''}
           onChange={(e) => {
             setFilterPhase(e.target.value ? parseInt(e.target.value) : null);
-            setFilterModule(null);
           }}
           className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0063AF]"
         >
@@ -270,20 +251,6 @@ export default function ResourcesPage() {
               Phase {phase.phase_number}: {phase.title}
             </option>
           ))}
-        </select>
-        <select
-          value={filterModule || ''}
-          onChange={(e) => setFilterModule(e.target.value ? parseInt(e.target.value) : null)}
-          className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0063AF]"
-        >
-          <option value="">All Modules</option>
-          {modules
-            .filter(m => !filterPhase || m.phase_id === filterPhase)
-            .map((module) => (
-              <option key={module.id} value={module.id}>
-                {getModuleTitle(module.id)}
-              </option>
-            ))}
         </select>
       </div>
 
@@ -313,7 +280,7 @@ export default function ResourcesPage() {
 
       {/* Resources List */}
       <div className="space-y-4">
-        {filteredResources.sort((a, b) => a.module_id - b.module_id || a.order - b.order).map((resource) => (
+        {filteredResources.sort((a, b) => a.phase_id - b.phase_id || a.order - b.order).map((resource) => (
           <div
             key={resource.id}
             className={`bg-white border rounded-2xl overflow-hidden shadow-sm ${resource.isNew ? 'border-amber-400' : 'border-gray-200'}`}
@@ -334,7 +301,7 @@ export default function ResourcesPage() {
                       <span className="px-2 py-0.5 bg-amber-100 text-amber-700 text-xs rounded-full">New</span>
                     )}
                   </div>
-                  <p className="text-gray-500 text-sm">{getModuleTitle(resource.module_id)}</p>
+                  <p className="text-gray-500 text-sm">{getPhaseTitle(resource.phase_id)}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
@@ -464,15 +431,15 @@ export default function ResourcesPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Module</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Phase</label>
                     <select
-                      value={resource.module_id}
-                      onChange={(e) => updateResource(resource.id, 'module_id', parseInt(e.target.value))}
+                      value={resource.phase_id}
+                      onChange={(e) => updateResource(resource.id, 'phase_id', parseInt(e.target.value))}
                       className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0063AF]"
                     >
-                      {modules.map((module) => (
-                        <option key={module.id} value={module.id}>
-                          {getModuleTitle(module.id)}
+                      {phases.sort((a, b) => a.phase_number - b.phase_number).map((phase) => (
+                        <option key={phase.id} value={phase.id}>
+                          Phase {phase.phase_number}: {phase.title}
                         </option>
                       ))}
                     </select>
