@@ -432,8 +432,8 @@ export async function getResources(
  * Get resources for a specific module (deprecated - resources are now linked to phases)
  */
 export async function getResourcesByModule(
-  moduleSlug: string,
-  params: CMSQueryParams = {}
+  _moduleSlug: string,
+  _params: CMSQueryParams = {}
 ): Promise<Resource[]> {
   // Resources are now linked to phases, not modules
   // This function is kept for backwards compatibility but returns empty
