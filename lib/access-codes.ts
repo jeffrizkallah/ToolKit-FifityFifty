@@ -182,10 +182,11 @@ export async function createAccessCode(
 ): Promise<{ success: boolean; code?: AccessCode; error?: string }> {
   try {
     const code = generateAccessCode();
+    const expiresAtStr = expiresAt ? expiresAt.toISOString() : null;
     
     const { rows } = await sql`
       INSERT INTO access_codes (code, description, max_uses, expires_at)
-      VALUES (${code}, ${description || null}, ${maxUses || null}, ${expiresAt || null})
+      VALUES (${code}, ${description || null}, ${maxUses || null}, ${expiresAtStr})
       RETURNING *
     `;
 
