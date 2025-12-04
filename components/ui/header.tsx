@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { Menu } from 'lucide-react';
+import { Menu, LogOut } from 'lucide-react';
 import { useState } from 'react';
 import Image from 'next/image';
 import { LanguageToggle } from './language-toggle';
@@ -25,6 +25,18 @@ import { Button } from './button';
 export function Header() {
   const t = useTranslations('Navigation');
   const [open, setOpen] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    setLoggingOut(true);
+    try {
+      await fetch('/api/auth/session', { method: 'DELETE' });
+      window.location.href = '/login';
+    } catch (error) {
+      console.error('Logout error:', error);
+      setLoggingOut(false);
+    }
+  };
 
   const navLinks = [
     { key: 'home', href: '/' },
@@ -62,9 +74,22 @@ export function Header() {
           ))}
         </nav>
 
-        {/* Right Side: Language Toggle + Mobile Menu */}
+        {/* Right Side: Language Toggle + Logout + Mobile Menu */}
         <div className="flex items-center gap-2">
           <LanguageToggle />
+          
+          {/* Logout Button - Desktop */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleLogout}
+            disabled={loggingOut}
+            className="hidden md:flex items-center gap-1.5 text-gray-600 hover:text-red-600 hover:bg-red-50"
+            aria-label="Sign out"
+          >
+            <LogOut className="h-4 w-4" />
+            <span className="text-sm">{loggingOut ? '...' : 'Sign Out'}</span>
+          </Button>
           
           {/* Mobile Menu */}
           <Sheet open={open} onOpenChange={setOpen}>
@@ -93,6 +118,15 @@ export function Header() {
                     {t(link.key)}
                   </a>
                 ))}
+                {/* Mobile Logout */}
+                <button
+                  onClick={handleLogout}
+                  disabled={loggingOut}
+                  className="text-lg text-red-600 hover:text-red-700 py-2 text-start flex items-center gap-2"
+                >
+                  <LogOut className="h-5 w-5" />
+                  {loggingOut ? 'Signing out...' : 'Sign Out'}
+                </button>
               </nav>
             </SheetContent>
           </Sheet>

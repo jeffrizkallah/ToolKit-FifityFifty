@@ -1,39 +1,75 @@
-import createMiddleware from 'next-intl/middleware';
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import createIntlMiddleware from 'next-intl/middleware';
 import { locales, defaultLocale } from './i18n';
 
+const SESSION_COOKIE_NAME = 'site_access_session';
+
 /**
- * Next.js Middleware for Internationalization
- * 
- * This middleware handles locale detection and routing.
- * It redirects users to the appropriate locale-based URL.
+ * Create the internationalization middleware
  */
-
-export default createMiddleware({
-  // A list of all locales that are supported
+const intlMiddleware = createIntlMiddleware({
   locales,
-
-  // Used when no locale matches
   defaultLocale,
-
-  // Don't redirect to default locale (shows locale in URL)
   localePrefix: 'always',
-
-  // Detect locale from Accept-Language header
   localeDetection: true,
 });
 
+/**
+ * Combined middleware for authentication and internationalization
+ */
+export default async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  // Skip auth check for these paths
+  const publicPaths = [
+    '/login',
+    '/api/auth',
+    '/admin',
+    '/api/admin',
+    '/_next',
+    '/_vercel',
+    '/favicon.ico',
+    '/robots.txt',
+    '/sitemap.xml',
+  ];
+
+  // Check if path is public (starts with any public path)
+  const isPublicPath = publicPaths.some(path => pathname.startsWith(path));
+
+  // Check if path is for static files
+  const isStaticFile = pathname.match(/\.(png|jpg|jpeg|gif|webp|svg|ico|css|js|woff|woff2|ttf|eot)$/);
+
+  // Skip middleware for public paths and static files
+  if (isPublicPath || isStaticFile) {
+    // For login page, just return the response without locale handling
+    if (pathname === '/login') {
+      return NextResponse.next();
+    }
+    return NextResponse.next();
+  }
+
+  // Check for authentication cookie
+  const sessionCookie = request.cookies.get(SESSION_COOKIE_NAME);
+
+  // If no session, redirect to login
+  if (!sessionCookie?.value) {
+    const loginUrl = new URL('/login', request.url);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  // User is authenticated, proceed with i18n middleware for locale-based routes
+  return intlMiddleware(request);
+}
+
 export const config = {
-  // Match only internationalized pathnames
-  // Skip Next.js internals and static files
+  // Match all pathnames except for:
+  // - API routes (handled separately above)
+  // - Admin routes (not localized)
+  // - _next (Next.js internals)
+  // - _vercel (Vercel internals)
+  // - Static files (images, fonts, etc.)
   matcher: [
-    // Match all pathnames except for:
-    // - API routes
-    // - Admin routes (not localized)
-    // - _next (Next.js internals)
-    // - _static (inside /public)
-    // - _vercel (Vercel internals)
-    // - Static files (images, fonts, etc.)
-    '/((?!api|admin|_next|_vercel|.*\\..*).*)',
+    '/((?!_next|_vercel|.*\\..*).*)',
   ],
 };
-
