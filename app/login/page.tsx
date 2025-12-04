@@ -22,7 +22,7 @@ export default function LoginPage() {
   const [mode, setMode] = useState<Mode>('register');
   const [step, setStep] = useState<Step>('code');
   const [code, setCode] = useState('');
-  const [codeId, setCodeId] = useState<number | null>(null);
+  const [, setCodeId] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
