@@ -24,7 +24,7 @@ async function isAdminAuthenticated(): Promise<boolean> {
  * Get a specific access code with registrations
  */
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
@@ -112,7 +112,7 @@ export async function PATCH(
  * Delete an access code
  */
 export async function DELETE(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
