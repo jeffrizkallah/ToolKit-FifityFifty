@@ -5,7 +5,9 @@ import {
   registerWithCode, 
   validatePhoneNumber,
   validateEmail,
-  AGE_RANGES
+  validateAge,
+  GOVERNORATES,
+  ELECTORAL_DISTRICTS
 } from '@/lib/access-codes';
 
 const SESSION_COOKIE_NAME = 'site_access_session';
@@ -31,16 +33,17 @@ export async function POST(request: NextRequest) {
     const { 
       code, 
       fullName, 
-      ageRange, 
+      age, 
       contactNumber, 
       emailAddress, 
+      governorate,
       electoralDistrict, 
       currentAddress, 
       privacyConsent 
     } = body;
 
     // Validate required fields
-    if (!code || !fullName || !ageRange || !contactNumber || !emailAddress || !electoralDistrict || !currentAddress) {
+    if (!code || !fullName || age === undefined || !contactNumber || !emailAddress || !governorate || !electoralDistrict || !currentAddress) {
       return NextResponse.json(
         { error: 'All fields are required' },
         { status: 400 }
@@ -55,10 +58,29 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate age range
-    if (!AGE_RANGES.includes(ageRange)) {
+    // Validate age
+    const ageNum = typeof age === 'number' ? age : parseInt(age, 10);
+    if (!validateAge(ageNum)) {
       return NextResponse.json(
-        { error: 'Please select a valid age range' },
+        { error: 'Please enter a valid age (16-120)' },
+        { status: 400 }
+      );
+    }
+
+    // Validate governorate
+    const validGovernorate = GOVERNORATES.some(g => g.value === governorate);
+    if (!validGovernorate) {
+      return NextResponse.json(
+        { error: 'Please select a valid governorate' },
+        { status: 400 }
+      );
+    }
+
+    // Validate electoral district
+    const validDistrict = ELECTORAL_DISTRICTS.some(d => d.value === electoralDistrict);
+    if (!validDistrict) {
+      return NextResponse.json(
+        { error: 'Please select a valid electoral district' },
         { status: 400 }
       );
     }
@@ -92,10 +114,11 @@ export async function POST(request: NextRequest) {
     const registerResult = await registerWithCode(
       codeResult.codeData.id,
       fullName.trim(),
-      ageRange,
+      ageNum,
       contactNumber.trim(),
       emailAddress.trim().toLowerCase(),
-      electoralDistrict.trim(),
+      governorate,
+      electoralDistrict,
       currentAddress.trim(),
       privacyConsent
     );

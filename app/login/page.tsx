@@ -3,16 +3,50 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Lock, User, Phone, MapPin, Mail, Home, Calendar, ChevronRight, Check, AlertCircle, Loader2, LogIn } from 'lucide-react';
+import { Lock, User, Phone, MapPin, Mail, Home, Calendar, ChevronRight, Check, AlertCircle, Loader2, LogIn, Building } from 'lucide-react';
 
-// Age range options
-const AGE_RANGES = [
-  'Under 18',
-  '18-24',
-  '25-34',
-  '35-44',
-  '45-54',
-  '55+',
+// Governorate options (Lebanese governorates)
+const GOVERNORATES = [
+  { value: 'mount-lebanon-1', labelEn: 'Mount Lebanon 1', labelAr: 'جبل لبنان 1' },
+  { value: 'mount-lebanon-2', labelEn: 'Mount Lebanon 2', labelAr: 'جبل لبنان 2' },
+  { value: 'mount-lebanon-3', labelEn: 'Mount Lebanon 3', labelAr: 'جبل لبنان 3' },
+  { value: 'mount-lebanon-4', labelEn: 'Mount Lebanon 4', labelAr: 'جبل لبنان 4' },
+  { value: 'baalbak-hermel', labelEn: 'Baalbak/Hermel', labelAr: 'بعلبك الهرمل' },
+  { value: 'north', labelEn: 'North', labelAr: 'الشمال' },
+  { value: 'south', labelEn: 'South', labelAr: 'الجنوب' },
+  { value: 'bekaa', labelEn: 'Bekaa', labelAr: 'البقاع' },
+  { value: 'beirut', labelEn: 'Beirut', labelAr: 'بيروت' },
+];
+
+// Electoral District options (Lebanese electoral districts)
+const ELECTORAL_DISTRICTS = [
+  { value: 'akkar', labelEn: 'Akkar', labelAr: 'عكار' },
+  { value: 'aley', labelEn: 'Aley', labelAr: 'عاليه' },
+  { value: 'baabda', labelEn: 'Baabda', labelAr: 'بعبدا' },
+  { value: 'baalback', labelEn: 'Baalback', labelAr: 'بعلبك' },
+  { value: 'batroun', labelEn: 'Batroun', labelAr: 'البترون' },
+  { value: 'bcharre', labelEn: 'Bcharre', labelAr: 'بشري' },
+  { value: 'beirut', labelEn: 'Beirut', labelAr: 'بيروت' },
+  { value: 'bint-jbeil', labelEn: 'Bint Jbeil', labelAr: 'بنت جبيل' },
+  { value: 'chouf', labelEn: 'Chouf', labelAr: 'الشوف' },
+  { value: 'el-metn', labelEn: 'El Metn', labelAr: 'المتن' },
+  { value: 'hasbaya', labelEn: 'Hasbaya', labelAr: 'حاصبيا' },
+  { value: 'hermel', labelEn: 'Hermel', labelAr: 'الهرمل' },
+  { value: 'jbeil', labelEn: 'Jbeil', labelAr: 'جبيل' },
+  { value: 'jezzine', labelEn: 'Jezzine', labelAr: 'جزين' },
+  { value: 'kesserwan', labelEn: 'Kesserwan', labelAr: 'كسروان' },
+  { value: 'koura', labelEn: 'Koura', labelAr: 'الكورة' },
+  { value: 'marjaayoun', labelEn: 'Marjaayoun', labelAr: 'مرجعيون' },
+  { value: 'minnieh-donniyeh', labelEn: 'Minnieh-Donniyeh', labelAr: 'المنية - الضنية' },
+  { value: 'nabatieh', labelEn: 'Nabatieh', labelAr: 'النبطية' },
+  { value: 'rashaya', labelEn: 'Rashaya', labelAr: 'راشيا' },
+  { value: 'rashaya-al-fekhar', labelEn: 'Rashaya Al Fekhar', labelAr: 'راشيا الفخار' },
+  { value: 'saida', labelEn: 'Saida', labelAr: 'صيدا' },
+  { value: 'sour', labelEn: 'Sour', labelAr: 'صور' },
+  { value: 'tripoli', labelEn: 'Tripoli', labelAr: 'طرابلس' },
+  { value: 'west-beqaa', labelEn: 'West Beqaa', labelAr: 'البقاع الغربي' },
+  { value: 'zahle', labelEn: 'Zahle', labelAr: 'زحلة' },
+  { value: 'zgharta', labelEn: 'Zgharta', labelAr: 'زغرتا' },
 ];
 
 type Mode = 'register' | 'login';
@@ -29,9 +63,10 @@ export default function LoginPage() {
   
   // Registration form state
   const [fullName, setFullName] = useState('');
-  const [ageRange, setAgeRange] = useState('');
+  const [age, setAge] = useState('');
   const [contactNumber, setContactNumber] = useState('');
   const [emailAddress, setEmailAddress] = useState('');
+  const [governorate, setGovernorate] = useState('');
   const [electoralDistrict, setElectoralDistrict] = useState('');
   const [currentAddress, setCurrentAddress] = useState('');
   const [privacyConsent, setPrivacyConsent] = useState(false);
@@ -93,6 +128,14 @@ export default function LoginPage() {
     setError('');
     setIsLoading(true);
 
+    // Validate age
+    const ageNum = parseInt(age, 10);
+    if (isNaN(ageNum) || ageNum < 16 || ageNum > 120) {
+      setError('Please enter a valid age (16-120)');
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const response = await fetch('/api/auth/register', {
         method: 'POST',
@@ -100,9 +143,10 @@ export default function LoginPage() {
         body: JSON.stringify({
           code: code.trim(),
           fullName,
-          ageRange,
+          age: ageNum,
           contactNumber,
           emailAddress,
+          governorate,
           electoralDistrict,
           currentAddress,
           privacyConsent,
@@ -333,8 +377,8 @@ export default function LoginPage() {
                         type="text"
                         value={loginCode}
                         onChange={(e) => setLoginCode(e.target.value.toUpperCase())}
-                        placeholder="TOOLKIT-XXXX-XXXX"
-                        className="w-full px-4 py-3 pl-12 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0063AF] focus:border-transparent outline-none transition-all bg-white text-gray-900 placeholder-gray-400 font-mono tracking-wider"
+                        placeholder="Enter your access code"
+                        className="w-full px-4 py-3 pl-12 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0063AF] focus:border-transparent outline-none transition-all bg-white text-gray-900 placeholder-gray-400"
                         required
                         autoComplete="off"
                       />
@@ -387,8 +431,8 @@ export default function LoginPage() {
                         type="text"
                         value={code}
                         onChange={(e) => setCode(e.target.value.toUpperCase())}
-                        placeholder="TOOLKIT-XXXX-XXXX"
-                        className="w-full px-4 py-3 pl-12 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0063AF] focus:border-transparent outline-none transition-all bg-white text-gray-900 placeholder-gray-400 font-mono tracking-wider"
+                        placeholder="Enter your access code"
+                        className="w-full px-4 py-3 pl-12 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0063AF] focus:border-transparent outline-none transition-all bg-white text-gray-900 placeholder-gray-400"
                         required
                         autoComplete="off"
                       />
@@ -434,7 +478,7 @@ export default function LoginPage() {
                   {/* Full Name */}
                   <div>
                     <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-2">
-                      Full Name *
+                      Full Name / الاسم الكامل *
                     </label>
                     <div className="relative">
                       <input
@@ -450,33 +494,31 @@ export default function LoginPage() {
                     </div>
                   </div>
 
-                  {/* Age Range */}
+                  {/* Age */}
                   <div>
-                    <label htmlFor="ageRange" className="block text-sm font-medium text-gray-700 mb-2">
-                      Age Range *
+                    <label htmlFor="age" className="block text-sm font-medium text-gray-700 mb-2">
+                      Age / العمر *
                     </label>
                     <div className="relative">
-                      <select
-                        id="ageRange"
-                        value={ageRange}
-                        onChange={(e) => setAgeRange(e.target.value)}
-                        className="w-full px-4 py-3 pl-12 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0063AF] focus:border-transparent outline-none transition-all bg-white text-gray-900 appearance-none cursor-pointer"
+                      <input
+                        id="age"
+                        type="number"
+                        min="16"
+                        max="120"
+                        value={age}
+                        onChange={(e) => setAge(e.target.value)}
+                        placeholder="Enter your age"
+                        className="w-full px-4 py-3 pl-12 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0063AF] focus:border-transparent outline-none transition-all bg-white text-gray-900 placeholder-gray-400"
                         required
-                      >
-                        <option value="">Select age range</option>
-                        {AGE_RANGES.map((range) => (
-                          <option key={range} value={range}>{range}</option>
-                        ))}
-                      </select>
+                      />
                       <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                      <ChevronRight className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 rotate-90" />
                     </div>
                   </div>
 
                   {/* Contact Number */}
                   <div>
                     <label htmlFor="contactNumber" className="block text-sm font-medium text-gray-700 mb-2">
-                      Contact Number *
+                      Contact Number / رقم الهاتف *
                     </label>
                     <div className="relative">
                       <input
@@ -495,7 +537,7 @@ export default function LoginPage() {
                   {/* Email Address */}
                   <div>
                     <label htmlFor="emailAddress" className="block text-sm font-medium text-gray-700 mb-2">
-                      Email Address *
+                      Email Address / البريد الالكتروني *
                     </label>
                     <div className="relative">
                       <input
@@ -511,41 +553,72 @@ export default function LoginPage() {
                     </div>
                   </div>
 
+                  {/* Governorate */}
+                  <div>
+                    <label htmlFor="governorate" className="block text-sm font-medium text-gray-700 mb-2">
+                      Governorate / المحافظة (النفوس) *
+                    </label>
+                    <div className="relative">
+                      <select
+                        id="governorate"
+                        value={governorate}
+                        onChange={(e) => setGovernorate(e.target.value)}
+                        className="w-full px-4 py-3 pl-12 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0063AF] focus:border-transparent outline-none transition-all bg-white text-gray-900 appearance-none cursor-pointer"
+                        required
+                      >
+                        <option value="">Select governorate / اختر المحافظة</option>
+                        {GOVERNORATES.map((gov) => (
+                          <option key={gov.value} value={gov.value}>
+                            {gov.labelEn} | {gov.labelAr}
+                          </option>
+                        ))}
+                      </select>
+                      <Building className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <ChevronRight className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 rotate-90" />
+                    </div>
+                  </div>
+
                   {/* Electoral District */}
                   <div>
                     <label htmlFor="electoralDistrict" className="block text-sm font-medium text-gray-700 mb-2">
-                      Electoral District *
+                      Electoral District / دائرة النفوس *
                     </label>
                     <div className="relative">
-                      <input
+                      <select
                         id="electoralDistrict"
-                        type="text"
                         value={electoralDistrict}
                         onChange={(e) => setElectoralDistrict(e.target.value)}
-                        placeholder="Enter your electoral district"
-                        className="w-full px-4 py-3 pl-12 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0063AF] focus:border-transparent outline-none transition-all bg-white text-gray-900 placeholder-gray-400"
+                        className="w-full px-4 py-3 pl-12 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0063AF] focus:border-transparent outline-none transition-all bg-white text-gray-900 appearance-none cursor-pointer"
                         required
-                      />
+                      >
+                        <option value="">Select electoral district / اختر دائرة النفوس</option>
+                        {ELECTORAL_DISTRICTS.map((district) => (
+                          <option key={district.value} value={district.value}>
+                            {district.labelEn} | {district.labelAr}
+                          </option>
+                        ))}
+                      </select>
                       <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <ChevronRight className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 rotate-90" />
                     </div>
                   </div>
 
                   {/* Current Address */}
                   <div>
                     <label htmlFor="currentAddress" className="block text-sm font-medium text-gray-700 mb-2">
-                      Current Address *
+                      Current Address / مكان السكن الحالي *
                     </label>
                     <div className="relative">
-                      <textarea
+                      <input
                         id="currentAddress"
+                        type="text"
                         value={currentAddress}
                         onChange={(e) => setCurrentAddress(e.target.value)}
                         placeholder="Enter your current address"
-                        rows={2}
-                        className="w-full px-4 py-3 pl-12 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0063AF] focus:border-transparent outline-none transition-all bg-white text-gray-900 placeholder-gray-400 resize-none"
+                        className="w-full px-4 py-3 pl-12 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0063AF] focus:border-transparent outline-none transition-all bg-white text-gray-900 placeholder-gray-400"
                         required
                       />
-                      <Home className="absolute left-4 top-4 w-5 h-5 text-gray-400" />
+                      <Home className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     </div>
                   </div>
 
@@ -576,7 +649,7 @@ export default function LoginPage() {
                   {/* Submit Button */}
                   <button
                     type="submit"
-                    disabled={isLoading || !fullName || !ageRange || !contactNumber || !emailAddress || !electoralDistrict || !currentAddress || !privacyConsent}
+                    disabled={isLoading || !fullName || !age || !contactNumber || !emailAddress || !governorate || !electoralDistrict || !currentAddress || !privacyConsent}
                     className="w-full py-3 px-4 bg-gradient-to-r from-[#0063AF] to-[#004080] text-white font-semibold rounded-xl hover:from-[#005090] hover:to-[#003060] focus:ring-4 focus:ring-[#0063AF]/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
                   >
                     {isLoading ? (

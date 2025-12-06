@@ -19,9 +19,10 @@ interface Registration {
   id: number;
   code_id: number;
   full_name: string;
-  age_range: string;
+  age: number;
   contact_number: string;
   email_address: string;
+  governorate: string;
   electoral_district: string;
   current_address: string;
   created_at: string;
@@ -29,8 +30,9 @@ interface Registration {
 
 interface CodeStatistics {
   totalRegistrations: number;
+  governorateBreakdown: Record<string, number>;
   districtBreakdown: Record<string, number>;
-  ageBreakdown: Record<string, number>;
+  averageAge: number;
 }
 
 export default function AccessCodesPage() {
@@ -336,7 +338,7 @@ export default function AccessCodesPage() {
                   {/* Statistics */}
                   {statistics && statistics.totalRegistrations > 0 && (
                     <div className="p-4 border-b border-gray-100 bg-gradient-to-r from-cyan-50 to-blue-50">
-                      <div className="grid grid-cols-3 gap-4 text-center">
+                      <div className="grid grid-cols-4 gap-4 text-center">
                         <div>
                           <div className="text-2xl font-bold text-cyan-600">
                             {statistics.totalRegistrations}
@@ -345,16 +347,21 @@ export default function AccessCodesPage() {
                         </div>
                         <div>
                           <div className="text-2xl font-bold text-blue-600">
+                            {statistics.averageAge}
+                          </div>
+                          <div className="text-xs text-gray-500">Avg Age</div>
+                        </div>
+                        <div>
+                          <div className="text-2xl font-bold text-indigo-600">
+                            {Object.keys(statistics.governorateBreakdown).length}
+                          </div>
+                          <div className="text-xs text-gray-500">Governorates</div>
+                        </div>
+                        <div>
+                          <div className="text-2xl font-bold text-purple-600">
                             {Object.keys(statistics.districtBreakdown).length}
                           </div>
                           <div className="text-xs text-gray-500">Districts</div>
-                        </div>
-                        <div>
-                          <div className="text-sm font-medium text-gray-700 truncate px-1">
-                            {Object.entries(statistics.districtBreakdown)
-                              .sort(([, a], [, b]) => b - a)[0]?.[0] || '-'}
-                          </div>
-                          <div className="text-xs text-gray-500">Top District</div>
                         </div>
                       </div>
                     </div>
@@ -376,8 +383,9 @@ export default function AccessCodesPage() {
                               <p className="text-xs text-gray-400">{reg.contact_number}</p>
                             </div>
                             <div className="text-right text-sm">
-                              <p className="text-gray-600">{reg.electoral_district}</p>
-                              <p className="text-gray-400">{reg.age_range}</p>
+                              <p className="text-gray-600">Age: {reg.age}</p>
+                              <p className="text-gray-500">{reg.governorate}</p>
+                              <p className="text-gray-400">{reg.electoral_district}</p>
                             </div>
                           </div>
                           <p className="text-xs text-gray-500 mt-2 line-clamp-1" title={reg.current_address}>

@@ -31,7 +31,7 @@ export function Timeline({ phases, locale }: TimelineProps) {
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-extrabold text-[#0041A8] mb-3 tracking-tight">
-            {locale === 'ar' ? 'المراحل الأربع' : 'The Four Phases'}
+            {locale === 'ar' ? 'المراحل الثلاث' : 'The Three Phases'}
           </h2>
           <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto font-normal leading-relaxed">
             {locale === 'ar' 

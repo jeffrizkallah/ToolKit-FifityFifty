@@ -44,12 +44,13 @@ export async function GET(
     const registrations = await getRegistrationsByCodeId(codeId);
 
     // Generate CSV
-    const headers = ['Full Name', 'Age Range', 'Contact Number', 'Email Address', 'Electoral District', 'Current Address', 'Registered At'];
+    const headers = ['Full Name', 'Age', 'Contact Number', 'Email Address', 'Governorate', 'Electoral District', 'Current Address', 'Registered At'];
     const rows = registrations.map(reg => [
       reg.full_name,
-      reg.age_range,
+      reg.age.toString(),
       reg.contact_number,
       reg.email_address,
+      reg.governorate,
       reg.electoral_district,
       reg.current_address.replace(/"/g, '""'), // Escape quotes in address
       new Date(reg.created_at).toISOString()

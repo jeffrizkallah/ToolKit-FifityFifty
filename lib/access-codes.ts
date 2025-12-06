@@ -16,25 +16,61 @@ export interface AccessCode {
   created_at: Date;
 }
 
-// Age range options
-export const AGE_RANGES = [
-  'Under 18',
-  '18-24',
-  '25-34',
-  '35-44',
-  '45-54',
-  '55+',
+// Governorate options (Lebanese governorates)
+export const GOVERNORATES = [
+  { value: 'mount-lebanon-1', labelEn: 'Mount Lebanon 1', labelAr: 'جبل لبنان 1' },
+  { value: 'mount-lebanon-2', labelEn: 'Mount Lebanon 2', labelAr: 'جبل لبنان 2' },
+  { value: 'mount-lebanon-3', labelEn: 'Mount Lebanon 3', labelAr: 'جبل لبنان 3' },
+  { value: 'mount-lebanon-4', labelEn: 'Mount Lebanon 4', labelAr: 'جبل لبنان 4' },
+  { value: 'baalbak-hermel', labelEn: 'Baalbak/Hermel', labelAr: 'بعلبك الهرمل' },
+  { value: 'north', labelEn: 'North', labelAr: 'الشمال' },
+  { value: 'south', labelEn: 'South', labelAr: 'الجنوب' },
+  { value: 'bekaa', labelEn: 'Bekaa', labelAr: 'البقاع' },
+  { value: 'beirut', labelEn: 'Beirut', labelAr: 'بيروت' },
 ] as const;
 
-export type AgeRange = typeof AGE_RANGES[number];
+// Electoral District options (Lebanese electoral districts)
+export const ELECTORAL_DISTRICTS = [
+  { value: 'akkar', labelEn: 'Akkar', labelAr: 'عكار' },
+  { value: 'aley', labelEn: 'Aley', labelAr: 'عاليه' },
+  { value: 'baabda', labelEn: 'Baabda', labelAr: 'بعبدا' },
+  { value: 'baalback', labelEn: 'Baalback', labelAr: 'بعلبك' },
+  { value: 'batroun', labelEn: 'Batroun', labelAr: 'البترون' },
+  { value: 'bcharre', labelEn: 'Bcharre', labelAr: 'بشري' },
+  { value: 'beirut', labelEn: 'Beirut', labelAr: 'بيروت' },
+  { value: 'bint-jbeil', labelEn: 'Bint Jbeil', labelAr: 'بنت جبيل' },
+  { value: 'chouf', labelEn: 'Chouf', labelAr: 'الشوف' },
+  { value: 'el-metn', labelEn: 'El Metn', labelAr: 'المتن' },
+  { value: 'hasbaya', labelEn: 'Hasbaya', labelAr: 'حاصبيا' },
+  { value: 'hermel', labelEn: 'Hermel', labelAr: 'الهرمل' },
+  { value: 'jbeil', labelEn: 'Jbeil', labelAr: 'جبيل' },
+  { value: 'jezzine', labelEn: 'Jezzine', labelAr: 'جزين' },
+  { value: 'kesserwan', labelEn: 'Kesserwan', labelAr: 'كسروان' },
+  { value: 'koura', labelEn: 'Koura', labelAr: 'الكورة' },
+  { value: 'marjaayoun', labelEn: 'Marjaayoun', labelAr: 'مرجعيون' },
+  { value: 'minnieh-donniyeh', labelEn: 'Minnieh-Donniyeh', labelAr: 'المنية - الضنية' },
+  { value: 'nabatieh', labelEn: 'Nabatieh', labelAr: 'النبطية' },
+  { value: 'rashaya', labelEn: 'Rashaya', labelAr: 'راشيا' },
+  { value: 'rashaya-al-fekhar', labelEn: 'Rashaya Al Fekhar', labelAr: 'راشيا الفخار' },
+  { value: 'saida', labelEn: 'Saida', labelAr: 'صيدا' },
+  { value: 'sour', labelEn: 'Sour', labelAr: 'صور' },
+  { value: 'tripoli', labelEn: 'Tripoli', labelAr: 'طرابلس' },
+  { value: 'west-beqaa', labelEn: 'West Beqaa', labelAr: 'البقاع الغربي' },
+  { value: 'zahle', labelEn: 'Zahle', labelAr: 'زحلة' },
+  { value: 'zgharta', labelEn: 'Zgharta', labelAr: 'زغرتا' },
+] as const;
+
+export type Governorate = typeof GOVERNORATES[number]['value'];
+export type ElectoralDistrict = typeof ELECTORAL_DISTRICTS[number]['value'];
 
 export interface AccessRegistration {
   id: number;
   code_id: number;
   full_name: string;
-  age_range: string;
+  age: number;
   contact_number: string;
   email_address: string;
+  governorate: string;
   electoral_district: string;
   current_address: string;
   privacy_consent: boolean;
@@ -46,19 +82,21 @@ export interface AccessRegistration {
 // ============================================================================
 
 /**
- * Generate a unique access code
+ * The default/standard access code for the FiftyFifty Toolkit 2025
+ */
+export const DEFAULT_ACCESS_CODE = 'TOOLKIT-FF-2025';
+
+/**
+ * Generate a unique access code with a random suffix
+ * Format: TOOLKIT-FF-XXXX where XXXX is a random alphanumeric string
  */
 export function generateAccessCode(): string {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Removed confusing chars (0,O,1,I)
-  let code = 'TOOLKIT-';
+  let suffix = '';
   for (let i = 0; i < 4; i++) {
-    code += chars.charAt(Math.floor(Math.random() * chars.length));
+    suffix += chars.charAt(Math.floor(Math.random() * chars.length));
   }
-  code += '-';
-  for (let i = 0; i < 4; i++) {
-    code += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return code;
+  return `TOOLKIT-FF-${suffix}`;
 }
 
 /**
@@ -110,17 +148,18 @@ export async function verifyAccessCode(code: string): Promise<{ valid: boolean; 
 export async function registerWithCode(
   codeId: number,
   fullName: string,
-  ageRange: string,
+  age: number,
   contactNumber: string,
   emailAddress: string,
+  governorate: string,
   electoralDistrict: string,
   currentAddress: string,
   privacyConsent: boolean
 ): Promise<{ success: boolean; registrationId?: number; error?: string }> {
   try {
     const { rows } = await sql`
-      INSERT INTO access_registrations (code_id, full_name, age_range, contact_number, email_address, electoral_district, current_address, privacy_consent)
-      VALUES (${codeId}, ${fullName}, ${ageRange}, ${contactNumber}, ${emailAddress}, ${electoralDistrict}, ${currentAddress}, ${privacyConsent})
+      INSERT INTO access_registrations (code_id, full_name, age, contact_number, email_address, governorate, electoral_district, current_address, privacy_consent)
+      VALUES (${codeId}, ${fullName}, ${age}, ${contactNumber}, ${emailAddress}, ${governorate}, ${electoralDistrict}, ${currentAddress}, ${privacyConsent})
       RETURNING id
     `;
 
@@ -261,27 +300,38 @@ export async function getAllRegistrations(): Promise<(AccessRegistration & { cod
 }
 
 /**
+ * Validate age (must be between 16 and 120)
+ */
+export function validateAge(age: number): boolean {
+  return Number.isInteger(age) && age >= 16 && age <= 120;
+}
+
+/**
  * Get registration statistics for a code
  */
 export async function getCodeStatistics(codeId: number): Promise<{
   totalRegistrations: number;
+  governorateBreakdown: Record<string, number>;
   districtBreakdown: Record<string, number>;
-  ageBreakdown: Record<string, number>;
+  averageAge: number;
 }> {
   const registrations = await getRegistrationsByCodeId(codeId);
   
+  const governorateBreakdown: Record<string, number> = {};
   const districtBreakdown: Record<string, number> = {};
-  const ageBreakdown: Record<string, number> = {};
+  let totalAge = 0;
   
   for (const reg of registrations) {
+    governorateBreakdown[reg.governorate] = (governorateBreakdown[reg.governorate] || 0) + 1;
     districtBreakdown[reg.electoral_district] = (districtBreakdown[reg.electoral_district] || 0) + 1;
-    ageBreakdown[reg.age_range] = (ageBreakdown[reg.age_range] || 0) + 1;
+    totalAge += reg.age;
   }
   
   return {
     totalRegistrations: registrations.length,
+    governorateBreakdown,
     districtBreakdown,
-    ageBreakdown,
+    averageAge: registrations.length > 0 ? Math.round(totalAge / registrations.length) : 0,
   };
 }
 
