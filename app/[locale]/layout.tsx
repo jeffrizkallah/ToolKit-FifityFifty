@@ -9,6 +9,7 @@ import { CookieConsent } from '@/components/CookieConsent';
 import { StructuredData } from '@/components/StructuredData';
 import { GoogleAnalytics } from '@/components/GoogleAnalytics';
 import { ProgressProvider } from '@/lib/contexts/ProgressContext';
+import { getSettings } from '@/lib/cms-client';
 import '@/app/globals.css';
 
 /**
@@ -53,6 +54,15 @@ export default async function LocaleLayout({
   // Validate and cast locale for Footer
   const validLocale = (locale === 'ar' || locale === 'en') ? locale : 'en';
 
+  // Fetch settings for social links
+  let socialLinks: Array<{ platform: string; url: string }> = [];
+  try {
+    const settings = await getSettings({ locale: validLocale });
+    socialLinks = settings?.attributes?.social_links || [];
+  } catch (error) {
+    console.warn('Failed to fetch settings for social links:', error);
+  }
+
   return (
     <html lang={locale} dir={direction}>
       <head>
@@ -85,7 +95,7 @@ export default async function LocaleLayout({
             <main id="main-content">
               {children}
             </main>
-            <Footer locale={validLocale} />
+            <Footer locale={validLocale} socialLinks={socialLinks} />
             <CookieConsent locale={validLocale} />
           </ProgressProvider>
         </NextIntlClientProvider>

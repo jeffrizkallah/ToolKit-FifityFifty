@@ -11,13 +11,30 @@
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { LanguageToggle } from './ui/language-toggle';
-import { Facebook, Twitter, Instagram, Linkedin, Youtube } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Linkedin, Youtube, LucideIcon } from 'lucide-react';
+
+// Social link from database
+interface SocialLinkData {
+  platform: string;
+  url: string;
+}
 
 interface FooterProps {
   locale: 'en' | 'ar';
+  socialLinks?: SocialLinkData[];
 }
 
-export function Footer({ locale }: FooterProps) {
+// Map platform names to Lucide icons
+const platformIcons: Record<string, LucideIcon> = {
+  facebook: Facebook,
+  twitter: Twitter,
+  x: Twitter, // X (formerly Twitter) uses the same icon
+  instagram: Instagram,
+  linkedin: Linkedin,
+  youtube: Youtube,
+};
+
+export function Footer({ locale, socialLinks: dbSocialLinks }: FooterProps) {
   const t = useTranslations('Navigation');
 
   const footerLinks = [
@@ -26,13 +43,23 @@ export function Footer({ locale }: FooterProps) {
     { key: 'contact', href: '#footer-contact' },
   ];
 
-  const socialLinks = [
+  // Default social links (fallback if no DB links provided)
+  const defaultSocialLinks = [
     { name: 'Facebook', icon: Facebook, href: '#' },
     { name: 'Twitter', icon: Twitter, href: '#' },
     { name: 'Instagram', icon: Instagram, href: '#' },
     { name: 'LinkedIn', icon: Linkedin, href: '#' },
     { name: 'YouTube', icon: Youtube, href: '#' },
   ];
+
+  // Use database social links if available, mapping platform names to icons
+  const socialLinks = dbSocialLinks && dbSocialLinks.length > 0
+    ? dbSocialLinks.map(link => ({
+        name: link.platform.charAt(0).toUpperCase() + link.platform.slice(1),
+        icon: platformIcons[link.platform.toLowerCase()] || Facebook,
+        href: link.url,
+      }))
+    : defaultSocialLinks;
 
   const currentYear = new Date().getFullYear();
 
