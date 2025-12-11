@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 interface HeroSectionProps {
   headline: string;
@@ -11,6 +11,7 @@ interface HeroSectionProps {
 
 export function HeroSection({ headline, description }: HeroSectionProps) {
   const t = useTranslations('HomePage.hero');
+  const locale = useLocale();
 
   const handleScrollToPhases = () => {
     const phasesSection = document.getElementById('phases-timeline');
@@ -92,9 +93,9 @@ export function HeroSection({ headline, description }: HeroSectionProps) {
           {description}
         </motion.p>
 
-        {/* CTA - Centered single button */}
+        {/* CTA - Two buttons */}
         <motion.div
-          className="mt-10 flex items-center justify-center"
+          className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.35, ease: 'easeOut' }}
@@ -105,6 +106,15 @@ export function HeroSection({ headline, description }: HeroSectionProps) {
             className="px-8 py-6 text-base font-bold shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 rounded-full"
           >
             {t('startJourney')}
+          </Button>
+          <Button
+            size="lg"
+            asChild
+            className="px-8 py-6 text-base font-bold shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 rounded-full"
+          >
+            <a href={`/${locale}/contact`}>
+              {t('bookAppointment')}
+            </a>
           </Button>
         </motion.div>
 

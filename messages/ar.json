@@ -5,6 +5,7 @@
     "description": "بناء مجتمعات مستدامة من خلال المسؤولية الاجتماعية",
     "hero": {
       "startJourney": "ابدأ رحلتك",
+      "bookAppointment": "احجز موعد",
       "watchVideo": "شاهد الفيديو",
       "scrollToPhases": "استكشف المراحل الثلاث"
     }
@@ -96,6 +97,57 @@
     "clearAllFilters": "مسح جميع التصفيات",
     "noResourcesMatch": "لا توجد موارد تطابق التصفيات",
     "noResourcesAvailable": "لا توجد موارد متاحة"
+  },
+  "Contact": {
+    "hero": {
+      "title": "تواصل معنا",
+      "description": "هل لديك أسئلة حول الأدوات؟ تريد حجز استشارة؟ يسعدنا سماع رأيك."
+    },
+    "form": {
+      "title": "أرسل لنا رسالة",
+      "name": "الاسم الكامل",
+      "namePlaceholder": "أدخل اسمك الكامل",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "أدخل بريدك الإلكتروني",
+      "phone": "رقم الهاتف",
+      "phonePlaceholder": "أدخل رقم هاتفك",
+      "reason": "سبب التواصل",
+      "reasonPlaceholder": "اختر سبباً...",
+      "preferredTime": "الوقت المفضل",
+      "preferredTimePlaceholder": "مثال: صباح أيام الأسبوع، بعد ظهر الثلاثاء",
+      "preferredTimeHint": "سيقوم فريقنا بتأكيد التوفر وإرسال دعوة تقويم.",
+      "message": "رسالتك",
+      "messagePlaceholder": "أخبرنا كيف يمكننا مساعدتك...",
+      "optional": "اختياري",
+      "submit": "إرسال الرسالة",
+      "sending": "جاري الإرسال..."
+    },
+    "reasons": {
+      "general": "استفسار عام",
+      "appointment": "حجز موعد",
+      "partnership": "فرصة شراكة",
+      "support": "الدعم الفني"
+    },
+    "info": {
+      "title": "معلومات التواصل",
+      "email": "البريد الإلكتروني",
+      "responseTime": "وقت الرد",
+      "responseTimeValue": "خلال 48 ساعة",
+      "languages": "اللغات",
+      "languagesValue": "الإنجليزية والعربية",
+      "followUs": "تابعنا",
+      "whatToExpect": "ماذا تتوقع",
+      "expectItem1": "رسالة تأكيد خلال دقائق",
+      "expectItem2": "رد شخصي خلال 48 ساعة",
+      "expectItem3": "دعوة تقويم للمواعيد"
+    },
+    "success": {
+      "title": "تم إرسال الرسالة!",
+      "description": "شكراً لتواصلك معنا. سنرد عليك خلال 48 ساعة.",
+      "sendAnother": "إرسال رسالة أخرى",
+      "backToHome": "العودة للرئيسية"
+    },
+    "backToHome": "العودة للرئيسية"
   }
 }
 

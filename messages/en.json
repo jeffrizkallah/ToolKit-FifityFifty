@@ -5,6 +5,7 @@
     "description": "Building sustainable communities through social responsibility",
     "hero": {
       "startJourney": "Start Your Journey",
+      "bookAppointment": "Book Appointment",
       "watchVideo": "Watch Video",
       "scrollToPhases": "Explore the 3 Phases"
     }
@@ -96,6 +97,57 @@
     "clearAllFilters": "Clear all filters",
     "noResourcesMatch": "No resources match your filters",
     "noResourcesAvailable": "No resources available"
+  },
+  "Contact": {
+    "hero": {
+      "title": "Get in Touch",
+      "description": "Have questions about the toolkit? Want to schedule a consultation? We'd love to hear from you."
+    },
+    "form": {
+      "title": "Send us a Message",
+      "name": "Full Name",
+      "namePlaceholder": "Enter your full name",
+      "email": "Email Address",
+      "emailPlaceholder": "Enter your email address",
+      "phone": "Phone Number",
+      "phonePlaceholder": "Enter your phone number",
+      "reason": "Reason for Contact",
+      "reasonPlaceholder": "Select a reason...",
+      "preferredTime": "Preferred Time",
+      "preferredTimePlaceholder": "e.g., Weekday mornings, Tuesday afternoons",
+      "preferredTimeHint": "Our team will confirm availability and send a calendar invite.",
+      "message": "Your Message",
+      "messagePlaceholder": "Tell us how we can help you...",
+      "optional": "optional",
+      "submit": "Send Message",
+      "sending": "Sending..."
+    },
+    "reasons": {
+      "general": "General Inquiry",
+      "appointment": "Book an Appointment",
+      "partnership": "Partnership Opportunity",
+      "support": "Technical Support"
+    },
+    "info": {
+      "title": "Contact Information",
+      "email": "Email",
+      "responseTime": "Response Time",
+      "responseTimeValue": "Within 48 hours",
+      "languages": "Languages",
+      "languagesValue": "English & Arabic",
+      "followUs": "Follow Us",
+      "whatToExpect": "What to Expect",
+      "expectItem1": "Confirmation email within minutes",
+      "expectItem2": "Personal response within 48 hours",
+      "expectItem3": "Calendar invite for appointments"
+    },
+    "success": {
+      "title": "Message Sent!",
+      "description": "Thank you for reaching out. We'll get back to you within 48 hours.",
+      "sendAnother": "Send Another Message",
+      "backToHome": "Back to Home"
+    },
+    "backToHome": "Back to Home"
   }
 }
 

@@ -24,9 +24,8 @@ export default async function middleware(request: NextRequest) {
   // Skip auth check for these paths
   const publicPaths = [
     '/login',
-    '/api/auth',
+    '/api/',  // All API routes should be accessible (they handle their own auth if needed)
     '/admin',
-    '/api/admin',
     '/_next',
     '/_vercel',
     '/favicon.ico',
@@ -42,10 +41,6 @@ export default async function middleware(request: NextRequest) {
 
   // Skip middleware for public paths and static files
   if (isPublicPath || isStaticFile) {
-    // For login page, just return the response without locale handling
-    if (pathname === '/login') {
-      return NextResponse.next();
-    }
     return NextResponse.next();
   }
 

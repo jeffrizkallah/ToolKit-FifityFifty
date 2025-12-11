@@ -130,7 +130,7 @@ export function DocumentsSection({
         className="mt-8 text-center text-sm text-gray-500"
       >
         {locale === 'ar' 
-          ? `${documents.length} مستند متاح`
+          ? `${documents.length} ${documents.length === 1 ? 'مستند متاح' : 'مستندات متاحة'}`
           : `${documents.length} document${documents.length !== 1 ? 's' : ''} available`}
       </motion.div>
 

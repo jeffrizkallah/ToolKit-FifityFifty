@@ -38,9 +38,9 @@ export function Footer({ locale, socialLinks: dbSocialLinks }: FooterProps) {
   const t = useTranslations('Navigation');
 
   const footerLinks = [
-    { key: 'home', href: '/' },
+    { key: 'home', href: `/${locale}` },
     { key: 'tools', href: '#phases-timeline' },
-    { key: 'contact', href: '#footer-contact' },
+    { key: 'contact', href: `/${locale}/contact` },
   ];
 
   // Default social links (fallback if no DB links provided)
@@ -125,7 +125,7 @@ export function Footer({ locale, socialLinks: dbSocialLinks }: FooterProps) {
                 {locale === 'ar' ? 'الشروط والأحكام' : 'Terms & Conditions'}
               </a>
               <a
-                href="#"
+                href={`/${locale}/contact`}
                 className="text-gray-400 hover:text-white transition-colors text-sm"
               >
                 {locale === 'ar' ? 'اتصل بنا' : 'Contact Us'}

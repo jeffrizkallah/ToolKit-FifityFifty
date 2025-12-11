@@ -19,6 +19,11 @@ export const metadata: Metadata = {
   authors: [{ name: 'FiftyFifty' }],
   creator: 'FiftyFifty',
   publisher: 'FiftyFifty',
+  icons: {
+    icon: '/5050 Logo cropped.png',
+    shortcut: '/5050 Logo cropped.png',
+    apple: '/5050 Logo cropped.png',
+  },
   robots: {
     index: true,
     follow: true,

@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { Menu, LogOut } from 'lucide-react';
 import { useState } from 'react';
 import Image from 'next/image';
@@ -24,6 +24,7 @@ import { Button } from './button';
 
 export function Header() {
   const t = useTranslations('Navigation');
+  const locale = useLocale();
   const [open, setOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
 
@@ -39,9 +40,9 @@ export function Header() {
   };
 
   const navLinks = [
-    { key: 'home', href: '/' },
+    { key: 'home', href: `/${locale}` },
     { key: 'tools', href: '#phases-timeline' },
-    { key: 'contact', href: '#footer-contact' },
+    { key: 'contact', href: `/${locale}/contact` },
   ];
 
   return (

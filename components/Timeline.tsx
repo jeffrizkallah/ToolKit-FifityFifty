@@ -48,7 +48,7 @@ export function Timeline({ phases, locale }: TimelineProps) {
         <div className="mt-16 text-center">
           <p className="text-gray-600 text-lg">
             {locale === 'ar'
-              ? 'انقر فوق أي مرحلة لاستكشاف الوحدات والموارد والمزيد'
+              ? 'اضغطي فوق أي مرحلة لاستكشاف الوحدات والموارد والمزيد'
               : 'Click any phase to explore modules, resources, and more'
             }
           </p>

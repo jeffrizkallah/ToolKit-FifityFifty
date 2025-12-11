@@ -320,7 +320,7 @@ export default async function PhasePage({ params: { locale, slug } }: PhasePageP
                   <BookOpen className="w-5 h-5" />
                   <span className="text-sm font-medium">
                     {validLocale === 'ar' 
-                      ? `${documents.length} مستند`
+                      ? `${documents.length} ${documents.length === 1 ? 'مستند' : 'مستندات'}`
                       : `${documents.length} Document${documents.length !== 1 ? 's' : ''}`}
                   </span>
                 </div>
